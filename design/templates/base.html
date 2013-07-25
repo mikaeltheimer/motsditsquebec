@@ -1,0 +1,25 @@
+{% load angularjs %}
+<!doctype html>
+<html ng-app>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+
+    <div class="container">
+      
+      {% block content %}{% endblock %}
+
+    </div> <!-- /content -->
+
+    <!-- Third party libraries -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.1.5/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+    {% block controllers %}{% endblock %}
+
+  </body>
+</html>

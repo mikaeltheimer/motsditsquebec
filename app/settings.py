@@ -1,4 +1,6 @@
 # Django settings for motsdits project.
+import os
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -68,7 +70,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    '/Users/stephen/devel/contracts/motsditsquebec/motsdits/static/',
+    PROJECT_PATH + '/design/static/',
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -108,6 +110,8 @@ ROOT_URLCONF = 'app.urls'
 WSGI_APPLICATION = 'app.wsgi.application'
 
 TEMPLATE_DIRS = (
+
+    PROJECT_PATH + '/templates/'
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -131,6 +135,7 @@ INSTALLED_APPS = (
     # MDQ Apps
     'motsdits',
     'api',
+    'design',
 
     # Django Built-ins
     'django.contrib.auth',

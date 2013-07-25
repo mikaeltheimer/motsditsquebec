@@ -10,5 +10,6 @@ urlpatterns = patterns(
     '',
     url(r'^api/', include('api.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^design/', include('design.urls')),
     url(r'^', include('motsdits.urls'))
 )

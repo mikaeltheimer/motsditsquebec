@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load angularjs %}
+
+{% block content %}
+  <div class="row">
+    <div class="span12">
+      <h1>These are some categories</h1>
+      <div ng-controller="ExampleCtrl">
+        <span>{{ "numCategories()" | ng }} found in the database</span>
+        <ul>
+          <li ng-repeat="category in categories">
+            <span class="active-{{category.active}}">{{ "category.name" | ng }}</span>
+          </li>
+        </ul>
+      </div>
+    </div> <!-- /span12 -->
+  </div> <!-- /row -->
+
+  <div class="row">
+    <div class="span12">
+      <h1>These are some motsdits</h1>
+      <div ng-controller="MotsDitsCtrl">
+        <span>{{ "countMotsDits()" | ng }} found in the database</span>
+        <ul>
+          <li ng-repeat="motdit in motsdits">
+            <span>{{ "motdit.mot" | ng }}</span>
+          </li>
+        </ul>
+      </div>
+    </div> <!-- /span12 -->
+  </div> <!-- /row -->
+{% endblock %}
+
+{% block controllers %}
+  <!-- Angular controllers -->
+  <script src="/static/assets/js/example.js"></script>
+  <script src="/static/assets/js/motsdits.js"></script>
+{% endblock %}
