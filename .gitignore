@@ -1,1 +1,4 @@
 *.pyc
+
+# These are generated with LESS
+design/assets/css/motsdits.css
