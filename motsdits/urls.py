@@ -6,10 +6,19 @@ admin.autodiscover()
 from django.contrib.sites.models import Site
 admin.site.unregister(Site)
 
-urlpatterns = patterns(
-    '',
+urlpatterns = patterns('',
+
+    # API routing
     url(r'^api/', include('api.urls')),
+
+    # Administration routing
     url(r'^admin/', include(admin.site.urls)),
+
+    # Design routing
     url(r'^design/', include('design.urls')),
-    url(r'example/', 'motsdits.views.example_view')
+
+    # Application routing
+    url(r'^login/$', 'motsdits.views.login'),
+    url(r'^logout/$', 'motsdits.views.logout'),
+    url(r'^$', 'motsdits.views.homepage'),
 )

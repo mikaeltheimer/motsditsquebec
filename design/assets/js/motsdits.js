@@ -1,4 +1,3 @@
-
 function MotsDitsCtrl($scope, $http) {
 
   $scope.motsdits = [];

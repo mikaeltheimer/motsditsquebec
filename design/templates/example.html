@@ -2,19 +2,14 @@
 
 {% block content %}
   {% verbatim %}
-    <div class="row">
-      <div class="span12">
-        <h1>These are some categories</h1>
-        <div ng-controller="ExampleCtrl">
-          <span>{{ numCategories() }} found in the database</span>
-          <ul>
-            <li ng-repeat="category in categories">
-              <span class="active-{{ category.active }}">{{ "category.name" | ng }}</span>
-            </li>
-          </ul>
-        </div>
-      </div> <!-- /span12 -->
-    </div> <!-- /row -->
+    <div ng-controller="ExampleCtrl">
+      <span>{{ numCategories() }} found in the database</span>
+      <ul>
+        <li ng-repeat="category in categories">
+          <span class="active-{{ category.active }}">{{ "category.name" | ng }}</span>
+        </li>
+      </ul>
+    </div>
 
     <div class="row">
       <div class="span12">

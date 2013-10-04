@@ -2,9 +2,125 @@
  * Mots-dits Quebec Application CSS
  * @author Stephen Young (me@hownowstephen.com)
  * @requires pure.min.css (http://purecss.io/)
+ *
  */
 
-@theme-color: #14132f;
+/* --------------------------------------------------
+    Includes (vars and mixins)
+   -------------------------------------------------- */
+
+@import "vars.less";
+@import "mixins.less";
+
+/* Third-party */
+@import "elements.less";
 
 
-#header { background: @theme-color; height:140px; }
+/* --------------------------------------------------
+    Mixins
+   -------------------------------------------------- */
+
+.action-text (){
+    color: @theme-color;
+    font-size: @actions-font-size;
+    font-weight:bold;
+    text-align:center;
+    text-transform:uppercase;
+}
+
+
+/* --------------------------------------------------
+    Default styling
+   -------------------------------------------------- */
+
+body { background: @body-color; }
+
+/* --------------------------------------------------
+    Common usage classes
+   -------------------------------------------------- */
+.right { float: right; }
+.left { float: left; }
+.text-right { text-align: right; }
+.text-left { text-align: left; }
+.arrow-up {
+    width: 0; height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+}
+
+
+/* --------------------------------------------------
+    Header theme
+    @TODO: Make responsive across smaller screens
+   -------------------------------------------------- */
+#header {
+    background: @theme-color; height: @header-height;
+    .logo {
+        text-align:center; margin:0px auto; width: @header-width;
+        .text { 
+            color:white;
+            height:@header-height;
+            line-height:@header-height;
+            text-align:center;
+            i { margin-right:0.5em; display:inline-block; font-size:1.2em; }
+        }
+    }
+}
+
+/* -------------------------------------------------- 
+    Account Menu
+   -------------------------------------------------- */
+
+#account-hover #account-menu-dropdown { display:none; }
+#account-hover:hover #account-menu-dropdown { display: block; }
+
+#account-menu {
+    .action-text();
+    position:absolute; top:0px; right:0px;
+    background:white;
+    padding:5px @actions-font-size;
+
+    a { .reset-a(); }
+}
+
+#account-menu-dropdown {
+    .action-text();
+    .drop-shadow(0, 1px, 2px, 0.6);
+    position: absolute; top:2em; right:5px;
+    .arrow {
+        overflow:auto;
+        .arrow-up { margin-right:5px; float: right; }
+    }
+    ul {
+        .reset-ul();
+
+        li {
+            width:150px;
+            background:white;
+            list-style:none;
+            padding:5px;
+            text-align: left;
+            a { .reset-a(); display:block; width:100%; height:100%;}
+        }
+        li:hover { background:@menu-hover; color:white; }
+    }
+    hr { margin:0px; padding:0px; border-color: @theme-color; background:white; border-top:0px; }
+}
+
+/* -------------------------------------------------- 
+    Action bar themes
+   -------------------------------------------------- */
+#actions {
+    background: white; height: @actions-height; margin-top:1px;
+
+    /* Login actions theme */
+    .login {
+        .action-text();
+        a { width:120px; display:inline-block; color: @theme-color; text-decoration: none; }
+        a:hover { color: @link-hover; }
+        a.selected { color: @link-hover; }
+        i { display:inline-block; width:@middle-width; font-size:1.5em; text-align:center; }
+    }
+
+}

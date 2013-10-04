@@ -102,6 +102,8 @@ TEMPLATE_LOADERS = (
     #'django.template.loaders.eggs.Loader',
 )
 
+APPEND_SLASH = True
+
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -139,9 +141,14 @@ AUTH_PROFILE_MODULE = 'app.UserProfile'
 
 INSTALLED_APPS = (
 
-    # Plugins
+    # Application plugins
     'storages',
+
+    # API plugins
     'rest_framework',
+    #'rest_framework.authtoken', # enable when setting up token-based authentication
+
+    # Admin plugins
     'suit',
 
     # MDQ Apps
@@ -188,4 +195,23 @@ LOGGING = {
             'propagate': True,
         },
     }
+}
+
+
+# Configure CORS
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'X-CSRFToken'
+)
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.TokenAuthentication',  # enable when setting up token-based authentication
+        'rest_framework.authentication.SessionAuthentication',
+    )
 }

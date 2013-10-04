@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, routers
 
 from motsdits.models import Category, MotDit
+import views
 
 
 # ViewSets define the view behavior.
@@ -34,5 +35,6 @@ router.register(r'motsdits', MotDitViewSet)
 urlpatterns = patterns(
     '',
     url(r'v1/', include(router.urls)),
-    url(r'auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'auth/login/', views.LoginView.as_view()),
+    url(r'admin-auth/', include('rest_framework.urls', namespace='rest_framework'))
 )

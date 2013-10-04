@@ -1,4 +1,7 @@
 *.pyc
 
-# These are generated with LESS
+# These are generated with LESS (+ duplicated as minified versions)
 design/assets/css/motsdits.css
+design/assets/css/motsdits.min.css
+design/assets/css/login.css
+design/assets/css/login.min.css

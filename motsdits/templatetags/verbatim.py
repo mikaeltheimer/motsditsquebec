@@ -2,7 +2,7 @@
 jQuery templates use constructs like:
 
     {{if condition}} print something{{/if}}
- 
+
 This, of course, completely screws up Django templates,
 because Django thinks {{ and }} mean something.
 
@@ -15,15 +15,16 @@ from django import template
 
 register = template.Library()
 
+
 class VerbatimNode(template.Node):
- 
+
     def __init__(self, text):
         self.text = text
-    
+
     def render(self, context):
         return self.text
- 
- 
+
+
 @register.tag
 def verbatim(parser, token):
     text = []

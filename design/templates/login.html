@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block css %}
+<link href="/assets/css/login.min.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block content %}
+
+  <div id="login" ng-controller="LoginCtrl">
+    <div class="oauth">
+      <div class="provider form-line" oauth-action="facebook">
+        <i class="icon icon-facebook"></i>
+        <a href="#">Se Connecter Avec Facebook</a>
+      </div>
+    </div>
+
+    <div class="middle">OU</div>
+
+    {# @TODO: Use spoof form off-screen to catch bad logins #}
+    <div class="email">
+
+      <div class="address form-line">
+        <i class="icon icon-envelope-alt"></i>
+        <input type="text" name="email" placeholder="Address Courriel">
+      </div>
+
+      <div class="password form-line">
+        <i class="icon icon-key"></i>
+        <input type="password" name="password" placeholder="Mot de Passe">
+      </div>
+
+      <button class="submit" ng-click="doLogin()">
+        <i class="icon icon-ok"></i>
+      </button>
+
+  </div>
+
+{% endblock %}
+
+
+{% block ctrl %}
+  <script src="/assets/js/login.js"></script>
+{% endblock %}

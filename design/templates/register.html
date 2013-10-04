@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Inscrire{% endblock %}
+
+{% block css %}
+<link href="/assets/css/login.min.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block content %}
+
+  <div id="register">
+    <div class="oauth">
+      <div class="provider form-line" oauth-action="facebook">
+        <i class="icon icon-facebook"></i>
+        <a href="#">S'Inscrire Avec Facebook</a>
+      </div>
+    </div>
+
+    <div class="middle">OU</div>
+
+    {# @TODO: Use spoof form off-screen to catch bad registrations #}
+    <div class="register">
+
+      {# full name #}
+      <div class="first-name form-line">
+        <i class="icon icon-user"></i>
+        <input type="text" name="firstname" placeholder="NOM*">
+      </div>
+      <div class="last-name form-line">
+        <i class="icon icon-user"></i>
+        <input type="text" name="lastname" placeholder="NOM DE FAMILLE*">
+      </div>
+
+      {# email address #}
+      <div class="email-address form-line">
+        <i class="icon icon-envelope-alt"></i>
+        <input type="text" name="email" placeholder="ADDRESS ELECTRONIQUE*">
+      </div>
+
+      {# username #}
+      <div class="username form-line">
+        <i class="icon icon-user"></i>
+        <input type="text" name="username" placeholder="NOM D'UTILISATEUR*">
+      </div>
+
+      {# password + confirmation #}
+      <div class="password form-line">
+        <i class="icon icon-key"></i>
+        <input type="password" name="password" placeholder="MOT DE PASSE*">
+      </div>
+      <div class="password2 form-line">
+        <i class="icon icon-key"></i>
+        <input type="password" name="password2" placeholder="CONFIRMER LE MOT DE PASSE*">
+      </div>
+
+      {# website #}
+      <div class="first-name form-line">
+        <i class="icon icon-link"></i>
+        <input type="text" name="website" placeholder="SITE WEB*">
+      </div>
+
+      <button class="submit">
+        <i class="icon icon-ok"></i>
+      </button>
+
+  </div>
+
+{% endblock %}
