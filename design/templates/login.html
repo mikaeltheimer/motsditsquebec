@@ -21,19 +21,21 @@
     {# @TODO: Use spoof form off-screen to catch bad logins #}
     <div class="email">
 
-      <div class="address form-line">
-        <i class="icon icon-envelope-alt"></i>
-        <input type="text" name="email" placeholder="Address Courriel">
-      </div>
+      <form ng-submit="doLogin()">
+        <div class="address form-line">
+          <i class="icon icon-envelope-alt"></i>
+          <input type="text" ng-model="email" placeholder="Address Courriel">
+        </div>
 
-      <div class="password form-line">
-        <i class="icon icon-key"></i>
-        <input type="password" name="password" placeholder="Mot de Passe">
-      </div>
+        <div class="password form-line">
+          <i class="icon icon-key"></i>
+          <input type="password" ng-model="password" placeholder="Mot de Passe">
+        </div>
 
-      <button class="submit" ng-click="doLogin()">
-        <i class="icon icon-ok"></i>
-      </button>
+        <button class="submit">
+          <i class="icon icon-ok"></i>
+        </button>
+      </form>
 
   </div>
 

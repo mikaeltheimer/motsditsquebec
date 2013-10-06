@@ -1,0 +1,59 @@
+
+@import "vars.less";
+
+/* Third-party */
+@import "elements.less";
+
+#motdit {
+
+    margin-top:1em; 
+
+    .column { /*.drop-shadow(0, 1px, 4px, 0.6);*/ }
+
+    .mot {
+        width: 98%;
+        margin-left:1%;
+
+        .photo {
+
+            .drop-shadow(0, 1px, 4px, 0.6);
+
+            position:relative;
+            img {
+                width: 100%; 
+                margin-bottom:0px;
+                display:block; 
+                z-index: -1;
+            }
+            .overlay { position: absolute; z-index: 10; background:white; padding:5px 8px; font-size:14px; font-weight:bold; text-transform: uppercase; }
+            /* Overlays */
+            .add {
+                top:5px; right:5px; color: @accent-green; text-transform: uppercase;
+                i { color: @theme-color; }
+            }
+            .heart {
+                bottom:5px; right:5px; font-size:20px;
+                i { color: @link-hover; cursor:pointer; }
+                i:hover { color: @red; }
+            }
+            .actions {
+                bottom:5px; left:2em; font-size:20px;
+                color: @theme-color;
+            }
+        }
+
+    }
+    .related {
+        width:98%;
+
+        .header {
+            width:;
+        }
+
+        .mot-grid {
+
+        }
+
+    }
+
+}

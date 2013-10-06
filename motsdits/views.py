@@ -7,7 +7,7 @@ from django.contrib.auth import logout as do_logout
 
 def homepage(request):
     '''Simply renders example.html'''
-    return render(request, 'example.html')
+    return render(request, 'index.html')
 
 
 def login(request):
@@ -22,3 +22,8 @@ def logout(request):
     '''Log the user out'''
     do_logout(request)
     return HttpResponseRedirect(reverse('motsdits.views.homepage'))
+
+
+def register(request):
+    '''Register the user'''
+    return render(request, 'register.html')

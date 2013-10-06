@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}{{ motdit.name }}{% endblock %}
+
+{% block css %}
+  <link href="/assets/css/single-motdit.min.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block content %}
+
+  <div id="motdit">
+    <div class="pure-g">
+      <div class="pure-u-1-2">
+        <div class="column mot">
+          <div class="photo">
+
+            {# Add Mot-Dit overlay #}
+            <div class="overlay add">
+              Ajouter
+              &nbsp;
+              <i class="icon icon-pencil"></i>
+              <i class="icon icon-camera"></i>
+            </div>
+
+            {# Like button overlay #}
+            <div class="overlay heart"><i class="icon icon-heart"></i></div>
+
+            {# Actions bar #}
+            <div class="overlay actions">
+              <div class="reshares">
+              </div>
+              <span class="dot">&middot;</span>
+              Osheaga
+              <i class="icon icon-marker"></i>
+              <i class="icon icon-link"></i>
+              <i class="icon icon-share-alt"></i>
+              <i class="icon icon-bookmark"></i>
+            </div>
+
+            {# Actual image #}
+            <img src="/assets/img/sample.jpg" alt="Montreal Lookout" />
+
+          </div>
+        </div>
+      </div>
+      <div class="pure-u-1-2">
+        <div class="column related">
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+{% endblock %}
