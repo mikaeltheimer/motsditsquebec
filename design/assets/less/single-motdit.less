@@ -1,8 +1,24 @@
 
 @import "vars.less";
+@import "mixins.less";
 
 /* Third-party */
 @import "elements.less";
+
+
+// Local variables
+
+@reshares-size: 48px;
+@reshares-padding: 10px;
+@actions-size: 18px;
+
+// Profile images on reviews
+@profile-image-size-lg: 120px;
+@profile-image-padding-lg: 14px; // should be even
+@profile-image-size: 80px;
+@profile-image-padding: 10px; // should be even
+
+@profile-image-margin: 10px;
 
 #motdit {
 
@@ -14,9 +30,9 @@
         width: 98%;
         margin-left:1%;
 
-        .photo {
+        .drop-shadow(0, 1px, 4px, 0.6);
 
-            .drop-shadow(0, 1px, 4px, 0.6);
+        .photo {
 
             position:relative;
             img {
@@ -34,24 +50,151 @@
             .heart {
                 bottom:5px; right:5px; font-size:20px;
                 i { color: @link-hover; cursor:pointer; }
-                i:hover { color: @red; }
+                i:hover { color: @accent-red; }
             }
             .actions {
-                bottom:5px; left:2em; font-size:20px;
+                bottom:@reshares-size / 4; left: @profile-image-size - @actions-size / 2; font-size: @actions-size;
+                padding-left:25px;
                 color: @theme-color;
+
+                // Reshares star (color coded to the mot-dit type)
+                .star {
+                    width: @reshares-size; height: @reshares-size;
+                    position:absolute;
+                    left: -@reshares-size / 2;
+                    top: -@actions-size / 2;
+                    background:white;
+                    border-radius:50%;
+                    .circle {
+                        width: @reshares-size - @reshares-padding; height: @reshares-size - @reshares-padding;
+                        border-radius:50%;
+                        margin: @reshares-padding / 2;
+                        font-size: @reshares-size - 2 * @reshares-padding;
+                        text-align:center;
+                        i { line-height: @reshares-size - @reshares-padding;}
+                    }
+                    .yellow { background: @accent-yellow; color:white; }
+                }
+
+                .connector {
+                    height: @actions-size; width: @actions-size;
+                    position:absolute; left: -@actions-size / 2; bottom: -@actions-size; z-index: -1;
+                    background: white;
+                }
+
+                // Counter for reshares w/ colors
+                .counter { font-size: 16px; }
+                .yellow { color: @accent-yellow; }
+
+                // Icons with tooltips
+                i {
+                    cursor:pointer;
+                    position: relative;
+                    span.tooltip {
+                        // Hide the tooltip until hover
+                        display:none;
+                        background: @theme-color; color:white; text-transform: uppercase;
+                        position:absolute; top: -25px; left:-25px; 
+                        font-size:10px; padding:4px; width:60px; text-align:center;
+                        // Little arrow below the tooltip
+                        span.caret {
+                            width: 0; height: 0; 
+                            border-left: 10px solid transparent;
+                            border-right: 10px solid transparent;
+                            border-top: 10px solid @theme-color;
+                            position:absolute; bottom:-5px; left:25px;
+                        }
+                    }
+                }
+                i:hover span.tooltip { display:block; }
+            }
+        }
+
+        .content {
+            // Header for the content pane
+            .header {
+                .action-text();
+                background:white;
+                border-top:1px solid @grey-inactive; border-bottom:1px solid #6d6875;
+                height: 34px; text-align:center; line-height:34px;
+                a { .reset-a(); color: @grey-inactive; }
+                a.selected { color: @theme-color; }
+                span.dot { padding: 0px 1em; text-align: center; }
+            }
+
+            // Single reviews
+            .review {
+                background: @theme-color; color: white;
+                min-height: @profile-image-size-lg + 2 * @profile-image-margin;
+
+                // User profile image on review
+                .user { 
+
+                    float:left; width: @profile-image-size-lg;
+                    display:block; padding:10px;
+                    height:100%;
+
+                    .profile-image {
+                        width: @profile-image-size; height: @profile-image-size;
+                        background: white;
+                        border-radius:50%;
+                        margin:0px auto; margin-top:10px;
+                        img {
+                            border-radius:50%;
+                            width:@profile-image-size - @profile-image-padding; height: @profile-image-size - @profile-image-padding;
+                            margin: @profile-image-padding / 2;
+                        }
+                    }
+                }
+                .reviewbody {
+
+                    .username { padding-top:20px; padding-bottom:0.5em; font-weight:bold; font-size:0.9em; }
+                    .text { font-weight:normal; line-height: 1.2em; padding-right: 0.5em; padding-bottom:1em;}
+
+                }
+            }
+            // Some other review stylings
+            .review:nth-child(2n + 1) {
+                background: white; color: @theme-color;
+                .profile-image { background: @theme-color; }
+            }
+
+            // Only the first review
+            .review:first-child {
+                .profile-image {
+                    width: @profile-image-size-lg !important; height: @profile-image-size-lg;
+                    margin-top:0px;
+                    img {
+                        width:@profile-image-size-lg - @profile-image-padding-lg; height: @profile-image-size-lg - @profile-image-padding-lg;
+                        margin: @profile-image-padding-lg / 2;
+                    }
+                }
             }
         }
 
     }
     .related {
-        width:98%;
+        width:98%; margin-left:1%;
 
         .header {
-            width:;
+            .action-text(); .drop-shadow(0, 1px, 4px, 0.6);
+            text-align:left;
+            padding:1em 1em; background:white;
+            color: @theme-color;
+            i { padding:0px 0.3em; color: @grey-inactive;}
+            i.selected {color: @theme-color; }
         }
 
-        .mot-grid {
+        .grid-mot {
 
+            img {
+                max-width:50%;
+                margin-bottom:0px;
+                display:block; 
+                z-index: -1;
+            }
+            .overlay { position: absolute; z-index: 10; background:white; padding:5px 8px; font-size:14px; font-weight:bold; text-transform: uppercase; }
+            
         }
 
     }

@@ -27,28 +27,93 @@
 
             {# Actions bar #}
             <div class="overlay actions">
-              <div class="reshares">
+              <div class="star">
+                <div class="circle yellow"><i class="icon icon-star"></i></div>
               </div>
+              <div class="connector"></div>
+              <span class="counter yellow">1234</span>
               <span class="dot">&middot;</span>
-              Osheaga
-              <i class="icon icon-marker"></i>
-              <i class="icon icon-link"></i>
-              <i class="icon icon-share-alt"></i>
-              <i class="icon icon-bookmark"></i>
+              <span class="name">Mont Royal Lookout</span>
+              <i class="icon icon-map-marker">
+                <span class="tooltip">Location<span class="caret"></span></span>
+              </i>
+              <i class="icon icon-link">
+                <span class="tooltip">Site-Web<span class="caret"></span></span>
+              </i>
+              <i class="icon icon-share-alt">
+                <span class="tooltip">Partager<span class="caret"></span></span>
+              </i>
+              <i class="icon icon-bookmark">
+                <span class="tooltip">Sauver<span class="caret"></span></span>
+              </i>
             </div>
 
             {# Actual image #}
             <img src="/assets/img/sample.jpg" alt="Montreal Lookout" />
 
           </div>
+
+          {# Reviews and other Mot-dit content #}
+          <div class="content">
+            <div class="header">
+              <a href="#">Tags</a><span class="dot">&middot;</span><a class="selected" href="#">Critiques</a>
+            </div>
+            <div id="reviews">
+              {% for username, review in reviews %}
+                <div class="review">
+                  <table>
+                    <tr><td>
+                      <div class="user">
+                        <div class="profile-image">
+                          <img src="/assets/img/profile-sample.jpg" alt="hownowstephen" />
+                        </div>
+                      </div>
+                    </td><td>
+                      <div class="reviewbody">
+                        <div class="username">{{ username }}</div>
+                        <div class="text">
+                          {{ review }}
+                        </div>
+                      </div>
+                    </td></tr>
+                  </table>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="pure-u-1-2">
         <div class="column related">
+          {% comment %}
+          <div class="header">
+            <i class="icon icon-reorder"></i>
+            <i class="icon icon-star selected"></i>
+            <span class="title">Populaires</span>
+          </div>
+          {% endcomment %}
+          {% for name, image in mots %}
+            <div class="grid-mot">
+              <div class="overlay">
+                <div class="star">
+                  <div class="circle yellow"><i class="icon icon-star"></i></div>
+                </div>
+                <span class="counter yellow">1234</span>
+                <span class="dot">&middot;</span>
+                <span class="name">{{ name }}</span>
+              </div>
+              <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
+            </div>
+          {% endfor %}
         </div>
       </div>
     </div>
 
   </div>
 
+{% endblock %}
+
+{% block js %}
+  
 {% endblock %}
