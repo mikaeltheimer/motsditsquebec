@@ -1,4 +1,4 @@
-var MDQ = angular.module('MotsDitsQuebec', ['ngCookies']);
+var MDQ = angular.module('MotsDitsQuebec', ['ngCookies', 'iso.directives']);
 
 MDQ.controller('LoginCtrl', function($scope, $http, $window, $cookies) {
 

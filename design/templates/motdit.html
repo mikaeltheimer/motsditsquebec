@@ -6,9 +6,11 @@
   <link href="/assets/css/single-motdit.min.css" rel="stylesheet" media="screen">
 {% endblock %}
 
+{% block ctrl %}<script type="text/javascript" src="/assets/js/motdit.js"></script>{% endblock %}
+
 {% block content %}
 
-  <div id="motdit">
+  <div id="motdit" ng-controller="MotDitCtrl">
     <div class="pure-g">
       <div class="pure-u-1-2">
         <div class="column mot">
@@ -62,19 +64,23 @@
               {% for username, review in reviews %}
                 <div class="review">
                   <table>
-                    <tr><td>
-                      <div class="user">
+                    <tr>
+                      <td class="user">
                         <div class="profile-image">
                           <img src="/assets/img/profile-sample.jpg" alt="hownowstephen" />
                         </div>
-                      </div>
-                    </td><td>
+                      </td>
+                    <td>
                       <div class="reviewbody">
                         <div class="username">{{ username }}</div>
                         <div class="text">
                           {{ review }}
                         </div>
                       </div>
+                    </td>
+                    <td class="thumbs">
+                      <i class="icon icon-thumbs-up"></i>
+                      <i class="icon icon-thumbs-down"></i>
                     </td></tr>
                   </table>
                 </div>
@@ -93,27 +99,25 @@
             <span class="title">Populaires</span>
           </div>
           {% endcomment %}
-          {% for name, image in mots %}
-            <div class="grid-mot">
-              <div class="overlay">
-                <div class="star">
-                  <div class="circle yellow"><i class="icon icon-star"></i></div>
+          <div class="mots-grid" isotope-container iso-options-subscribe="my-iso-opts" iso-method-subscribe="my-iso-method">
+            {% for name, image in mots %}
+              <div class="grid-mot" isotope-item>
+                <div class="overlay">
+                  <div class="star">
+                    <div class="circle yellow"><i class="icon icon-star"></i></div>
+                  </div>
+                  <span class="counter yellow">1234</span>
+                  <span class="dot">&middot;</span>
+                  <span class="name">{{ name }}</span>
                 </div>
-                <span class="counter yellow">1234</span>
-                <span class="dot">&middot;</span>
-                <span class="name">{{ name }}</span>
+                <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
               </div>
-              <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
-            </div>
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
 
   </div>
 
-{% endblock %}
-
-{% block js %}
-  
 {% endblock %}
