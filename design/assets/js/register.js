@@ -1,6 +1,4 @@
-var MDQRegister = angular.module('MotsDitsQuebec', ['ngCookies']);
-
-MDQRegister.controller('RegisterCtrl', function($scope, $http, $window, $cookies) {
+angular.module('MotsDitsQuebec').controller('RegisterCtrl', function($scope, $http, $window, $cookies) {
 
   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
   $scope.response = {};

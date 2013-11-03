@@ -29,12 +29,28 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Third party libraries -->
+    <!-- jQuery + plugins (only for angular bindings to jquery modules) -->
     <script src="/assets/js/thirdparty/jquery/jquery.js"></script>
+    <script src="/assets/js/thirdparty/jquery-bridget/jquery.bridget.js"></script>
+
+    <!-- Masonry -->
+    <script src="/assets/js/thirdparty/get-style-property/get-style-property.js"></script>
+    <script src="/assets/js/thirdparty/get-size/get-size.js"></script>
+    <script src="/assets/js/thirdparty/eventEmitter/EventEmitter.js"></script>
+    <script src="/assets/js/thirdparty/eventie/eventie.js"></script>
+    <script src="/assets/js/thirdparty/doc-ready/doc-ready.js"></script>
+    <script src="/assets/js/thirdparty/matches-selector/matches-selector.js"></script>
+    <script src="/assets/js/thirdparty/outlayer/item.js"></script>
+    <script src="/assets/js/thirdparty/outlayer/outlayer.js"></script>
+    <script src="/assets/js/thirdparty/masonry/masonry.js"></script>
+
+    <!-- Angular + plugins -->
     <script src="/assets/js/thirdparty/angular/angular.min.js"></script>
     <script src="/assets/js/thirdparty/angular-cookies/angular-cookies.min.js"></script>
-    <script src="/assets/js/thirdparty/isotope/jquery.isotope.js"></script>
-    <script src="/assets/js/thirdparty/angular-isotope/dist/angular-isotope.min.js"></script>
+    <script src="/assets/js/thirdparty/angular-masonry/angular-masonry.js"></script>
+
+    <!-- Initialize the main controller -->
+    <script src="/assets/js/motsdits.js"></script>
 
     {% block ctrl %}{% endblock %}
   </body>

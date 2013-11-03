@@ -1,6 +1,4 @@
-var MDQ = angular.module('MotsDitsQuebec', ['ngCookies', 'iso.directives']);
-
-MDQ.controller('LoginCtrl', function($scope, $http, $window, $cookies) {
+angular.module('MotsDitsQuebec').controller('LoginCtrl', function($scope, $http, $window, $cookies) {
 
   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
   $scope.response = {};

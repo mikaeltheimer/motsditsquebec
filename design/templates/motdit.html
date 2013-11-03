@@ -99,9 +99,9 @@
             <span class="title">Populaires</span>
           </div>
           {% endcomment %}
-          <div class="mots-grid" isotope-container iso-options-subscribe="my-iso-opts" iso-method-subscribe="my-iso-method">
+          <div class="mots-grid" masonry>
             {% for name, image in mots %}
-              <div class="grid-mot" isotope-item>
+              <div class="grid-mot masonry-brick">
                 <div class="overlay">
                   <div class="star">
                     <div class="circle yellow"><i class="icon icon-star"></i></div>

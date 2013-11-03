@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}{{ motdit.name }}{% endblock %}
+
+{% block css %}
+  <link href="/assets/css/grid.min.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block ctrl %}<script type="text/javascript" src="/assets/js/grid.js"></script>{% endblock %}
+
+{% block content %}
+
+  <div id="grid" ng-controller="GridCtrl" masonry>
+    {% for name, image in mots %}
+      <div class="griditem masonry-brick">
+        <div class="overlay">
+          <div class="star">
+            <div class="circle yellow"><i class="icon icon-star"></i></div>
+          </div>
+          <span class="counter yellow">1234</span>
+          <span class="dot">&middot;</span>
+          <span class="name">{{ name }}</span>
+        </div>
+        <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
+      </div>
+    {% endfor %}
+  </div>
+
+{% endblock %}

@@ -1,13 +1,5 @@
-function MotsDitsCtrl($scope, $http) {
+var MotsDitsQuebec = angular.module('MotsDitsQuebec', ['ngCookies', 'wu.masonry']);
 
-  $scope.motsdits = [];
-
-  $http.get('/api/v1/motsdits/?format=json').success(function(data) {
-    $scope.motsdits = data;
-  });
-
-  $scope.countMotsDits = function(){
-    return $scope.motsdits.length;
-  };
-
-}
+MotsDitsQuebec.controller('MainCtrl', function($scope, $http, $window, $cookies) {
+  // Any global logic would go here
+});
