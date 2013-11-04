@@ -1,9 +1,96 @@
+@import "thirdparty/elements.less";
+
+@import "includes/block.less";
+@import "includes/mixins.less";
+@import "includes/vars.less";
+
 #grid {
 
-    .griditem {
+    margin-top:0.5em;
+
+    // Basic grid item details (default to motdit grid entry)
+    .grid-item {
         width:24.25%; margin-left:5px; margin-bottom:5px;
         float:left;
-        border:1px solid #000;
-        img {width:100%; }
+        // Shadow this thing
+        .drop-shadow(0, 1px, 4px, 0.6);
+        // And make it a grid block item
+        .gridblock(6px, 20px);
+
+
+        // Caption below feed items
+        .caption {
+            background:white;
+            padding:10px 0px;
+
+            overflow:auto;
+
+            .connector {
+                height:32px; width:38px; position:relative;
+                .dot {
+                    border-radius:50%;
+                    width:12px; height:12px;
+                    position:absolute; bottom:0px; left:19px - 6px;
+                }
+                .yellow { background: @accent-yellow; color:white; }
+                float:left;
+            }
+
+            // Who was this action performed by + what did they do
+            .description {
+                .description-text { color: @grey-faded; font-size: 14px; }
+                .user { color: @theme-color; font-weight:bold; font-size:16px; }
+                float:left;
+            }
+
+            // User interactions (one per grid type)
+            .action {
+                float:right; height:32px; font-size:24px; line-height:52px; margin-right:8px; color: @grey-faded;
+
+                .icon { cursor:pointer; float:right; display:block; padding:0px 2px;}
+                // Like action
+                .icon-heart:hover, .icon-heart.selected { color: @accent-red; }
+                .icon-thumbs-up:hover, .icon-thumbs-up.selected { color: @accent-green; }
+                .icon-thumbs-down:hover, .icon-thumbs-down.selected { color: @accent-red; }
+            }
+
+        }
     }
+
+    // Date grid entry
+    .grid-date {
+        .date {
+            padding:12px;
+            background: white;
+            color: @theme-color; font-size: 40px; font-weight: bold; text-transform: uppercase;
+            .fade { color: @grey-faded; }
+        }
+    }
+
+    // Text grid entry
+    .grid-text {
+
+        background: @theme-color;
+        .quote {
+            position:relative;
+            padding:20px; padding-bottom:50px;
+            
+            blockquote {
+                color: white;
+                margin:0px 5px;
+                font-size:0.8em;
+                font-weight:normal;
+                z-index:10;
+            }
+            .watermark {
+                z-index: 5;
+                font-size:140px; line-height:140px;
+                opacity: 0.5;
+                position:absolute; top:10px; left: 10px;
+                color: @grey-faded;
+                .noselect();
+            }
+        }
+    }
+
 }

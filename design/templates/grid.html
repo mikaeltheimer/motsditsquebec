@@ -12,7 +12,7 @@
 
   <div id="grid" ng-controller="GridCtrl" masonry>
     {% for name, image in mots %}
-      <div class="griditem masonry-brick">
+      <div class="grid-item masonry-brick">
         <div class="overlay">
           <div class="star">
             <div class="circle yellow"><i class="icon icon-star"></i></div>
@@ -21,9 +21,60 @@
           <span class="dot">&middot;</span>
           <span class="name">{{ name }}</span>
         </div>
-        <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
+        <a href="#">
+          <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
+        </a>
       </div>
     {% endfor %}
+
+    {# Sample date marker #}
+    <div class="grid-item grid-date masonry-brick">
+      <div class="date">
+        <div class="fade">Dimanche</div>
+        <div>3</div>
+        <div>Novembre</div>
+        <div class="fade">2013</div>
+      </div>
+    </div>
+
+    {# Sample activity data #}
+    <div class="grid-item grid-activity masonry-brick">
+    </div>
+
+    {# Sample text data #}
+    <div class="grid-item grid-text masonry-brick">
+      <div class="quote">
+        <div class="overlay">
+          <div class="bridge"></div>
+          <div class="star">
+            <div class="circle yellow"><i class="icon icon-star"></i></div>
+          </div>
+          <span class="counter yellow">1234</span>
+          <span class="dot">&middot;</span>
+          <span class="name">Some Mot-dit</span>
+        </div>
+        <blockquote>
+          This is a sample quote excerpt from stephen young talking about the most fantastic mot-dit you ever knew about.
+        </blockquote>
+        {# Watermark it with the quote symbol #}
+        <div class="watermark">&ldquo;</div>
+      </div>
+      <div class="caption">
+        <div class="connector">
+          <div class="dot yellow"></div>
+        </div>
+        <div class="description">
+          <div class="description-text">Nouvelle critique par:</div>
+          <div class="user">hownowstephen</div>
+        </div>
+        <div class="action">
+          <i class="icon icon-heart"></i>
+          <i class="icon icon-thumbs-up"></i>
+          <i class="icon icon-thumbs-down"></i>
+        </div>
+      </div>
+    </div>
+
   </div>
 
 {% endblock %}
