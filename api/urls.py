@@ -4,6 +4,7 @@ from rest_framework import viewsets, routers
 
 from motsdits.models import Category, MotDit
 import views
+import serializers
 
 
 # ViewSets define the view behavior.
@@ -21,6 +22,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class MotDitViewSet(viewsets.ModelViewSet):
     model = MotDit
+    serializer_class = serializers.MotDitSerializer
 
 
 # Routers provide an easy way of automatically determining the URL conf

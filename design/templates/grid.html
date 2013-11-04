@@ -9,72 +9,102 @@
 {% block ctrl %}<script type="text/javascript" src="/assets/js/grid.js"></script>{% endblock %}
 
 {% block content %}
+  {#% verbatim %#}
 
-  <div id="grid" ng-controller="GridCtrl" masonry>
-    {% for name, image in mots %}
-      <div class="grid-item masonry-brick">
-        <div class="overlay">
-          <div class="star">
-            <div class="circle yellow"><i class="icon icon-star"></i></div>
+    <div id="grid" ng-controller="{% block controller %}GridCtrl{% endblock %}" masonry>
+      {% for name, image in mots %}
+        <div class="grid-item masonry-brick" ng-repeat=>
+          <div class="motdit">
+            <div class="overlay">
+              <div class="star">
+                <div class="circle yellow"><i class="icon icon-star"></i></div>
+              </div>
+              <span class="counter yellow">1234</span>
+              <span class="dot">&middot;</span>
+              <span class="name">{{ name }}</span>
+            </div>
+            <a href="#">
+              <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
+            </a>
           </div>
-          <span class="counter yellow">1234</span>
-          <span class="dot">&middot;</span>
-          <span class="name">{{ name }}</span>
         </div>
-        <a href="#">
-          <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
-        </a>
+      {% endfor %}
+
+      {# Sample date marker #}
+      <div class="grid-item grid-date masonry-brick">
+        <div class="date">
+          <div class="fade">Dimanche</div>
+          <div>3</div>
+          <div>Novembre</div>
+          <div class="fade">2013</div>
+        </div>
       </div>
-    {% endfor %}
 
-    {# Sample date marker #}
-    <div class="grid-item grid-date masonry-brick">
-      <div class="date">
-        <div class="fade">Dimanche</div>
-        <div>3</div>
-        <div>Novembre</div>
-        <div class="fade">2013</div>
-      </div>
-    </div>
-
-    {# Sample activity data #}
-    <div class="grid-item grid-activity masonry-brick">
-    </div>
-
-    {# Sample text data #}
-    <div class="grid-item grid-text masonry-brick">
-      <div class="quote">
-        <div class="overlay">
-          <div class="bridge"></div>
-          <div class="star">
-            <div class="circle yellow"><i class="icon icon-star"></i></div>
+      {# Sample activity data #}
+      <div class="grid-item grid-activity masonry-brick">
+        <div class="motdit">
+          <div class="overlay">
+            <div class="bridge"></div>
+            <div class="star">
+              <div class="circle yellow"><i class="icon icon-star"></i></div>
+            </div>
+            <span class="counter yellow">1234</span>
+            <span class="dot">&middot;</span>
+            <span class="name">Downtown Again</span>
           </div>
-          <span class="counter yellow">1234</span>
-          <span class="dot">&middot;</span>
-          <span class="name">Some Mot-dit</span>
+          <a href="#">
+            <img src="/assets/img/samples/downtown-montreal.jpg" alt="downtown">
+          </a>
         </div>
-        <blockquote>
-          This is a sample quote excerpt from stephen young talking about the most fantastic mot-dit you ever knew about.
-        </blockquote>
-        {# Watermark it with the quote symbol #}
-        <div class="watermark">&ldquo;</div>
-      </div>
-      <div class="caption">
-        <div class="connector">
-          <div class="dot yellow"></div>
-        </div>
-        <div class="description">
-          <div class="description-text">Nouvelle critique par:</div>
-          <div class="user">hownowstephen</div>
-        </div>
-        <div class="action">
-          <i class="icon icon-heart"></i>
-          <i class="icon icon-thumbs-up"></i>
-          <i class="icon icon-thumbs-down"></i>
+        <div class="caption">
+          <div class="connector">
+            <div class="dot yellow"></div>
+          </div>
+          <div class="description">
+            <div class="description-text">Photo aimee par:</div>
+            <div class="user">mrawesome</div>
+          </div>
+          <div class="action">
+            <i class="icon icon-heart"></i>
+          </div>
         </div>
       </div>
+
+      {# Sample text data #}
+      <div class="grid-item grid-text masonry-brick">
+        <div class="quote">
+          <div class="overlay">
+            <div class="bridge"></div>
+            <div class="star">
+              <div class="circle yellow"><i class="icon icon-star"></i></div>
+            </div>
+            <span class="counter yellow">0</span>
+            <span class="dot">&middot;</span>
+            <span class="name">Some Mot-dit</span>
+          </div>
+          <blockquote>
+            This is a sample quote excerpt from stephen young talking about the most fantastic mot-dit you never knew about. It can go on and on, so if I were you, I'd strap in for a nice long reading session. We need to decide if we show everything, or if we cut it off.
+          </blockquote>
+          {# Watermark it with the quote symbol #}
+          <div class="watermark">&ldquo;</div>
+        </div>
+        <div class="caption">
+          <div class="connector">
+            <div class="dot yellow"></div>
+          </div>
+          <div class="description">
+            <div class="description-text">Nouvelle critique par:</div>
+            <div class="user">hownowstephen</div>
+          </div>
+          <div class="action">
+            <i class="icon icon-thumbs-down"></i>
+            <i class="icon icon-thumbs-up"></i>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-  </div>
+  {#% endverbatim %#}
 
 {% endblock %}

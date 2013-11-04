@@ -4,18 +4,23 @@
 @import "includes/mixins.less";
 @import "includes/vars.less";
 
+@fill-space: 97.5%;
+
+// Basic grid
 #grid {
 
     margin-top:0.5em;
 
     // Basic grid item details (default to motdit grid entry)
     .grid-item {
-        width:24.25%; margin-left:5px; margin-bottom:5px;
+        width: @fill-space / 4; margin-left:5px; margin-bottom:5px;
         float:left;
         // Shadow this thing
         .drop-shadow(0, 1px, 4px, 0.6);
         // And make it a grid block item
         .gridblock(6px, 20px);
+
+        .motdit { position:relative; }
 
 
         // Caption below feed items
@@ -45,11 +50,13 @@
 
             // User interactions (one per grid type)
             .action {
-                float:right; height:32px; font-size:24px; line-height:52px; margin-right:8px; color: @grey-faded;
+
+                float:right; margin-top:8px; font-size:24px; margin-right:8px; color: @grey-faded;
 
                 .icon { cursor:pointer; float:right; display:block; padding:0px 2px;}
                 // Like action
                 .icon-heart:hover, .icon-heart.selected { color: @accent-red; }
+                // Thumbs up / Thumbs down
                 .icon-thumbs-up:hover, .icon-thumbs-up.selected { color: @accent-green; }
                 .icon-thumbs-down:hover, .icon-thumbs-down.selected { color: @accent-red; }
             }
@@ -93,4 +100,18 @@
         }
     }
 
+}
+
+
+// Responsiveness for grid
+@media (max-width: 599px) {
+    #grid .grid-item { width:@fill-space; }
+}
+
+@media (min-width: 600px) and (max-width: 767px) {
+    #grid .grid-item { width: @fill-space / 2; }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+    #grid .grid-item { width: @fill-space / 3; }
 }

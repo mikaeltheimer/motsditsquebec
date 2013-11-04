@@ -8,7 +8,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('Stephen Young', 'stephen@hownowstephen.com'),
+    ('Stephen Young', 'me@hownowstephen.com'),
 )
 
 MANAGERS = ADMINS
@@ -56,6 +56,14 @@ USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
+
+# Default to storing everyhing in Amazon S3
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+AWS_ACCESS_KEY_ID = "AKIAIMQSPV3SJ4Y7GI3Q"
+AWS_SECRET_ACCESS_KEY = "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"
+AWS_STORAGE_BUCKET_NAME = "motsdits"
+
+#STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
@@ -150,6 +158,8 @@ INSTALLED_APPS = (
 
     # Admin plugins
     'suit',
+    'django_extensions',
+    'south',
 
     # MDQ Apps
     'motsdits',

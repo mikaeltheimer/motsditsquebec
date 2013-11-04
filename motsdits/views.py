@@ -7,7 +7,7 @@ from django.contrib.auth import logout as do_logout
 
 def homepage(request):
     '''Simply renders example.html'''
-    return render(request, 'index.html')
+    return render(request, 'grid.html')
 
 
 def login(request):
