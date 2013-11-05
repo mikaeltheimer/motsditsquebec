@@ -10,7 +10,7 @@
 
 
 {% block content %}
-  <div id="grid" ng-controller="HomepageCtrl" masonry>
+  <div id="grid" ng-controller="HomepageCtrl" masonry class="ng-cloak" ng-cloak>
     <div class="grid-item masonry-brick" ng-repeat="mot in motsdits">
       {% include "includes/grid/motdit.html" %}
     </div>
