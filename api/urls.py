@@ -1,5 +1,6 @@
 from django.conf.urls.defaults import url, patterns, include
 from django.contrib.auth.models import User, Group
+from django.http import Http404 
 from rest_framework import viewsets, routers
 
 from motsdits.models import Category, MotDit
@@ -23,6 +24,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class MotDitViewSet(viewsets.ModelViewSet):
     model = MotDit
     serializer_class = serializers.MotDitSerializer
+    lookup_field = 'slug'
 
 
 # Routers provide an easy way of automatically determining the URL conf

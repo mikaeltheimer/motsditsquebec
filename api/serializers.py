@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from motsdits.models import MotDit, Category
+from motsdits.models import *
 from django.contrib.auth.models import User
 
 
@@ -33,15 +33,35 @@ class CompactCategorySerializer(serializers.ModelSerializer):
         fields = ('name', 'slug', )
 
 
+class CompactPhotoSerializer(serializers.ModelSerializer):
+
+    s3_url = serializers.SerializerMethodField('get_s3_url')
+
+    class Meta:
+        model = Photo
+
+    def get_s3_url(self, obj):
+        '''Returns the amazon S3 url for a photo'''
+        return obj.photo.url
+
+
+class CompactOpinionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Opinion
+
+
 class MotDitSerializer(serializers.ModelSerializer):
     '''Ensures that related objects get serialized'''
 
     created_by = CompactUserSerializer()
     category = CompactCategorySerializer(many=True)
     recommendations = CompactUserSerializer(many=True)
+    top_photo = CompactPhotoSerializer()
+    top_opinion = CompactOpinionSerializer()
 
     class Meta:
         model = MotDit
         depth = 1
-        fields = ('id', 'created_by', 'created', 'category', 'recommendations', 'mot', 'slug', )
+        fields = ('id', 'created_by', 'created', 'category', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', )
         lookup_field = 'slug'

@@ -1,0 +1,15 @@
+{% verbatim %}
+  <div class="motdit">
+    <div class="overlay">
+      <div class="star">
+        <div class="circle yellow"><i class="icon icon-star"></i></div>
+      </div>
+      <span class="counter yellow">{{ mot.recommendations.length }}</span>
+      <span class="dot">&middot;</span>
+      <span class="name">{{ mot.name }}</span>
+    </div>
+    <a href="/mot/{{ mot.slug }}">
+      <img src="{{ mot.top_photo.s3_url }}" alt="{{ mot.name }}">
+    </a>
+  </div>
+{% endverbatim %}

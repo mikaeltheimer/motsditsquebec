@@ -44,6 +44,7 @@
     <script src="/assets/js/thirdparty/eventie/eventie.js"></script>
     <script src="/assets/js/thirdparty/doc-ready/doc-ready.js"></script>
     <script src="/assets/js/thirdparty/matches-selector/matches-selector.js"></script>
+    <script src="/assets/js/thirdparty/imagesloaded/imagesloaded.js"></script>
     <script src="/assets/js/thirdparty/outlayer/item.js"></script>
     <script src="/assets/js/thirdparty/outlayer/outlayer.js"></script>
     <script src="/assets/js/thirdparty/masonry/masonry.js"></script>
@@ -57,5 +58,9 @@
     <script src="/assets/js/motsdits.js"></script>
 
     {% block ctrl %}{% endblock %}
+
+    {% if user.is_authenticated %}
+        {% include "includes/menus/account.html" %}
+      {% endif %}
   </body>
 </html>

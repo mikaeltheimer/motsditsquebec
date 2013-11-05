@@ -18,8 +18,15 @@ urlpatterns = patterns('',
     url(r'^design/', include('design.urls')),
 
     # Application routing
+
+    ## User account creation and access
     url(r'^login/$', 'motsdits.views.login'),
     url(r'^logout/$', 'motsdits.views.logout'),
     url(r'^register/$', 'motsdits.views.register'),
+
+    ## Displaying data
+    url(r'^mot/([^/]+)/?$', 'motsdits.views.motdit'),
+
+
     url(r'^$', 'motsdits.views.homepage'),
 )

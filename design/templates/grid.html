@@ -6,25 +6,27 @@
   <link href="/assets/css/grid.min.css" rel="stylesheet" media="screen">
 {% endblock %}
 
-{% block ctrl %}<script type="text/javascript" src="/assets/js/grid.js"></script>{% endblock %}
+{% block ctrl %}
+  <script type="text/javascript" src="/assets/js/grid.js"></script>
+{% endblock %}
 
 {% block content %}
   {#% verbatim %#}
 
-    <div id="grid" ng-controller="{% block controller %}GridCtrl{% endblock %}" masonry>
+    <div id="grid" ng-controller="{% block controller_name %}GridCtrl{% endblock %}" masonry>
       {% for name, image in mots %}
-        <div class="grid-item masonry-brick" ng-repeat=>
+        <div class="grid-item masonry-brick" ng-repeat="mot in motsdits">
           <div class="motdit">
             <div class="overlay">
               <div class="star">
                 <div class="circle yellow"><i class="icon icon-star"></i></div>
               </div>
-              <span class="counter yellow">1234</span>
+              <span class="counter yellow">{{ mot.recommendations.length }}</span>
               <span class="dot">&middot;</span>
-              <span class="name">{{ name }}</span>
+              <span class="name">{{ mot.name }}</span>
             </div>
             <a href="#">
-              <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
+              <img src="/assets/img/samples/{{ image }}" alt="{{ mot.name }}">
             </a>
           </div>
         </div>

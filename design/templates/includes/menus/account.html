@@ -13,6 +13,13 @@
       <li><a href="#">Mes amis</a></li>
     </ul>
     <hr>
+    {% if user.is_superuser %}
+      <ul>
+        <li><a href="/admin/">Admin</a></li>
+        <li><a href="/api/v1/">API Root</a></li>
+      </ul>
+      <hr>
+    {% endif %}
     <ul>
       <li><a href="#">Editer mon profil</a></li>
       <li><a href="/logout/">Deconnexion</a></li>

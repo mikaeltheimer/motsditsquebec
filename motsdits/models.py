@@ -5,7 +5,7 @@ from django.contrib import admin
 import mixins
 from datetime import datetime
 
-__all__ = ['Category', 'MotDit', 'Photo', 'Avis', 'UserGuide', 'UserProfile']
+__all__ = ['Category', 'MotDit', 'Photo', 'Opinion', 'UserGuide', 'UserProfile']
 
 FORMAT_CHOICES = (
     ('H', 'HTML'),
@@ -34,12 +34,13 @@ class Category(BaseModel):
 
     # Category name
     name = models.CharField(max_length=200)
-    slug = models.SlugField()
+    slug = models.SlugField(null=True)
     parent = models.ForeignKey('self', blank=True, null=True)
 
     def save(self, **kwargs):
         '''Saves a unique slug for the category'''
-        mixins.unique_slugify(self, self.name)
+        if self.name is None:
+            mixins.unique_slugify(self, self.name)
         return super(Category, self).save()
 
     def __str__(self):
@@ -64,35 +65,32 @@ class MotDit(BaseModel):
         verbose_name_plural = "mots-dits"
 
     # Actual word information
-    mot = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200)
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, null=True)
     category = models.ManyToManyField(Category, related_name='categories')
 
     # Social information
     recommendations = models.ManyToManyField(User, related_name="recommendations")
     top_photo = models.ForeignKey("Photo", related_name="top_photo", null=True)
-    top_avis = models.ForeignKey("Avis", related_name="top_avis", null=True)
+    top_opinion = models.ForeignKey("Opinion", related_name="top_opinion", null=True)
 
     def save(self, **kwargs):
         '''Saves a unique slug for the category'''
-        mixins.unique_slugify(self, self.mot)
+        if self.slug is None:
+            mixins.unique_slugify(self, self.name)
         return super(MotDit, self).save()
 
     def __str__(self):
-        return self.mot
+        return self.name
 
 
-class Avis(BaseModel):
+class Opinion(BaseModel):
     '''An opinion about a specific mot-dit'''
-
-    class Meta:
-        verbose_name = "opinion"
-        verbose_name_plural = "opinions"
 
     # Mot-dit this opinion relates to
     motdit = models.ForeignKey(MotDit, related_name="motdit")
 
-    # Actual text of the avis
+    # Actual text of the opinion
     text = models.TextField()
     format = models.CharField(max_length=1, choices=FORMAT_CHOICES, default='T')
 
@@ -100,17 +98,17 @@ class Avis(BaseModel):
     approvals = models.ManyToManyField(User, related_name="approvals")
 
     def __str__(self):
-        '''Stringifies an avis'''
+        '''Stringifies an opinion'''
         return ' '.join(self.text.split(' ')[:10]) + ('...' if len(self.text.split(' ')) > 10 else '')
 
 
-class AvisAdmin(admin.ModelAdmin):
+class OpinionAdmin(admin.ModelAdmin):
     list_display = ('motdit', 'created_by', 'approved')
     fields = ('motdit', 'text', 'created_by', )
 
 
-class AvisInlineAdmin(admin.TabularInline):
-    model = Avis
+class OpinionInlineAdmin(admin.TabularInline):
+    model = Opinion
     fk_name = 'motdit'
     fields = ('motdit', 'text', 'format')
 
@@ -144,14 +142,14 @@ class PhotoInlineAdmin(admin.TabularInline):
 
 
 class MotDitAdmin(admin.ModelAdmin):
-    list_display = ('mot', )
+    list_display = ('name', 'top_photo', 'top_opinion', )
 
-    inlines = [PhotoInlineAdmin, AvisInlineAdmin]
+    inlines = [PhotoInlineAdmin, OpinionInlineAdmin]
 
 
 # Register all the models in the admin
 admin.site.register(MotDit, MotDitAdmin)
-admin.site.register(Avis, AvisAdmin)
+admin.site.register(Opinion, OpinionAdmin)
 admin.site.register(Photo, PhotoAdmin)
 
 

@@ -62,6 +62,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 AWS_ACCESS_KEY_ID = "AKIAIMQSPV3SJ4Y7GI3Q"
 AWS_SECRET_ACCESS_KEY = "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"
 AWS_STORAGE_BUCKET_NAME = "motsdits"
+AWS_QUERYSTRING_AUTH = False
 
 #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
@@ -160,6 +161,7 @@ INSTALLED_APPS = (
     'suit',
     'django_extensions',
     'south',
+    'sekizai',
 
     # MDQ Apps
     'motsdits',
