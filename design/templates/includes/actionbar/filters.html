@@ -1,24 +1,41 @@
-<div class="filters">
-  <div class="profile">
-      <img src="/assets/img/profile-sample.jpg">
-  </div>
-  <div class="filter yellow">
-    Toutes Categories
+{% verbatim %}
+  <div class="filters" ng-controller="FilterCtrl">
+    <div class="profile">
+        <img src="/assets/img/profile-sample.jpg">
+    </div>
+    <div class="filter yellow">
+      <span class="name">{{ active_category.name }}</span>
 
-    <i class="icon icon-angle-down"></i>
-    <ul class="menu">
-      <li>Menu Item</li>
-    </ul>
-    <div class="arrow"></div>
+      <i class="icon icon-angle-down show-menu"></i>
+      <ul id="category-menu" class="menu">
+        <li ng-repeat="category in categories">
+          <a href ng-click="showCategory(category);">{{ category.name }}</a>
+        </li>
+      </ul>
+      <div class="arrow"></div>
+    </div>
+
+    <!-- Choose subfilters -->
+    <div class="filter">
+      <div class="name">Type</div>
+      <i class="icon icon-angle-down show-menu"></i>
+      <div class="arrow"></div>
+    </div>
+    <div class="filter">
+      <div class="name">Quand</div>
+      <i class="icon icon-angle-down show-menu"></i>
+      <div class="arrow"></div>
+    </div>
+
+    <div class="filter green" ng-hide="subfilter == null">
+      <span class="name">Some Filter</span>
+      <span class="close">×</span>
+      <div class="arrow"></div>
+    </div>
+    <!--div class="filter red">
+      <i class="icon icon-map-marker"></i>
+      <span class="close">×</span>
+    </div>
+    <input type="text" name="search-box" class="red"-->
   </div>
-  <div class="filter green">
-    Some Filter
-    <span class="close">×</span>
-    <div class="arrow"></div>
-  </div>
-  <div class="filter red">
-    <i class="icon icon-map-marker"></i>
-    <span class="close">×</span>
-  </div>
-  <input type="text" name="search-box" class="red">
-</div>
+{% endverbatim %}

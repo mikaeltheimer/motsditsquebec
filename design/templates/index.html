@@ -12,7 +12,7 @@
 {% block content %}
   <div id="grid" ng-controller="HomepageCtrl" masonry
     class="ng-cloak" ng-cloak
-    infinite-scroll="load_more()" infinite-scroll-disabled='busy' infinite-scroll-distance='1'
+    infinite-scroll="load_more()" infinite-scroll-disabled='busy' infinite-scroll-distance='1.5'
   >
     <div class="grid-item masonry-brick" ng-repeat="mot in motsdits">
       {% include "includes/grid/motdit.html" %}

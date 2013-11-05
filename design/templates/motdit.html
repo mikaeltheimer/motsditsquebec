@@ -52,7 +52,7 @@
               </div>
 
               <!-- And the image! -->
-              <img src="{{ motdit.top_photo.s3_url }}" alt="{{ motdit.name }}" />
+              <img ng-src="{{ motdit.top_photo.s3_url }}" alt="{{ motdit.name }}" />
 
             </div>
 
@@ -106,17 +106,3 @@
 
 {% endblock %}
 
-{% comment %}
-              {% for name, image in mots %}
-                <div class="grid-mot masonry-brick" ng-repeat="related_mot in related">
-                  <div class="overlay">
-                    <div class="star">
-                      <div class="circle yellow"><i class="icon icon-star"></i></div>
-                    </div>
-                    <span class="counter yellow">1234</span>
-                    <span class="dot">&middot;</span>
-                    <span class="name">{{ name }}</span>
-                  </div>
-                  <img src="/assets/img/samples/{{ image }}" alt="{{ name }}">
-                </div>
-{% endcomment %}

@@ -9,7 +9,7 @@
       <span class="name">{{ mot.name }}</span>
     </div>
     <a href="/mot/{{ mot.slug }}">
-      <img src="{{ mot.top_photo.s3_url }}" alt="{{ mot.name }}">
+      <img ng-src="{{ mot.top_photo.s3_url }}" alt="{{ mot.name }}">
     </a>
   </div>
 {% endverbatim %}

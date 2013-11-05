@@ -22,7 +22,7 @@ class BaseModel(models.Model):
 
     # Meta information
     created = models.DateTimeField('date created', default=datetime.utcnow)
-    created_by = models.ForeignKey(User, null=False)
+    created_by = models.ForeignKey(User, null=True)
     approved = models.BooleanField()
 
 
@@ -51,7 +51,7 @@ class Category(BaseModel):
 
     def save(self, **kwargs):
         '''Saves a unique slug for the category'''
-        if self.name is None:
+        if not self.slug:
             mixins.unique_slugify(self, self.name)
         return super(Category, self).save()
 
@@ -69,6 +69,32 @@ class CategoryAdmin(BaseModelAdmin):
 admin.site.register(Category, CategoryAdmin)
 
 
+class Tag(BaseModel):
+    '''A text tag related to one or many motsdits'''
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
+
+    def save(self, **kwargs):
+        '''Saves a unique slug for the category'''
+        if not self.slug:
+            mixins.unique_slugify(self, self.name)
+        return super(Tag, self).save()
+
+    def __str__(self):
+        return self.name
+
+
+class TagAdmin(BaseModelAdmin):
+    list_display = ('name', 'slug', 'motsdits_tagged', )
+
+    def motsdits_tagged(self, obj):
+        '''Determine the number of tagged motsdits'''
+        return MotDit.objects.filter(tags__id=obj.id).count()
+
+
+admin.site.register(Tag, TagAdmin)
+
+
 class MotDit(BaseModel):
     '''A word around which the rest of the application content is centered'''
 
@@ -79,16 +105,17 @@ class MotDit(BaseModel):
     # Actual word information
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, null=True)
-    category = models.ManyToManyField(Category, related_name='categories')
+    category = models.ManyToManyField(Category, related_name='motdit')
 
     # Social information
-    recommendations = models.ManyToManyField(User, related_name="recommendations")
-    top_photo = models.ForeignKey("Photo", related_name="top_photo", null=True, blank=True)
-    top_opinion = models.ForeignKey("Opinion", related_name="top_opinion", null=True, blank=True)
+    recommendations = models.ManyToManyField(User, related_name="motdit_recommendation")
+    tags = models.ManyToManyField(Tag, related_name="motdit")
+    top_photo = models.ForeignKey("Photo", related_name="motdit_top", null=True, blank=True)
+    top_opinion = models.ForeignKey("Opinion", related_name="motdit_top", null=True, blank=True)
 
     def save(self, **kwargs):
         '''Saves a unique slug for the category'''
-        if self.slug is None:
+        if not self.slug:
             mixins.unique_slugify(self, self.name)
         return super(MotDit, self).save()
 
@@ -100,14 +127,14 @@ class Opinion(BaseModel):
     '''An opinion about a specific mot-dit'''
 
     # Mot-dit this opinion relates to
-    motdit = models.ForeignKey(MotDit, related_name="motdit")
+    motdit = models.ForeignKey(MotDit, related_name="opinion")
 
     # Actual text of the opinion
     text = models.TextField()
     format = models.CharField(max_length=1, choices=FORMAT_CHOICES, default='T')
 
     # Social information
-    approvals = models.ManyToManyField(User, related_name="approvals")
+    approvals = models.ManyToManyField(User, related_name="user")
 
     def __str__(self):
         '''Stringifies an opinion'''
@@ -135,7 +162,7 @@ class Photo(BaseModel):
     photo = models.FileField(upload_to='motsdits')
     title = models.TextField(null=True, blank=True)
 
-    likes = models.ManyToManyField(User, related_name='likes')
+    likes = models.ManyToManyField(User, related_name='photo_likes')
 
     def __str__(self):
         '''Stringifies a photo for admin purposes'''
@@ -157,7 +184,7 @@ class MotDitAdmin(BaseModelAdmin):
     list_display = ('name', 'top_photo', 'top_opinion', )
 
     inlines = [PhotoInlineAdmin, OpinionInlineAdmin]
-    fields = ('name', 'category', 'created_by', 'top_photo', 'top_opinion', )
+    fields = ('name', 'category', 'created_by', 'top_photo', 'top_opinion', 'tags', )
 
 
 # Register all the models in the admin

@@ -23,6 +23,7 @@ class MotDitViewSet(viewsets.ModelViewSet):
     model = MotDit
     serializer_class = serializers.MotDitSerializer
     lookup_field = 'slug'
+    filter_fields = ('category__id', )
 
 
 class OpinionViewSet(viewsets.ModelViewSet):

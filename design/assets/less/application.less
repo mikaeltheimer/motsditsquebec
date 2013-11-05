@@ -143,9 +143,18 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
                 position:absolute; top:-1px; right:-@actions-height / 2;
                 display:inline-block; z-index:100;
             }
-            i { display:inline-block; margin:0px 3px; font-weight: bold; cursor:pointer; font-size: 18px; }
+
+            .show-menu:hover~.menu, .menu:hover { display:block; }
+            i { display:inline-block; margin:0px 3px; font-weight: bold; cursor:pointer; font-size: 18px; height:@actions-height - 4px}
             .close { display:inline-block; margin-left:3px; font-size:18px; cursor:pointer; }
-            .menu { display:none; }
+            // Dropdown menus
+            .menu {
+                .reset-ul();
+                z-index: 10000;
+                display:none; position:absolute; right:0px;
+                li { padding:2px 6px; text-align:center; white-space: nowrap; }
+                li a { color: inherit; text-decoration: none; text-transform: uppercase; }
+            }
         }
 
         // Input boxes
@@ -158,21 +167,28 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
         .filter:first-child { padding-left: @actions-height / 2 - 5px; }
 
         // Set up filter colors
+
+        // Yellow filters
         .filter.yellow {
+            .menu { background: @accent-yellow; color:white; }
             background: @accent-yellow; color:white;
             .arrow { border-left-color: @accent-yellow;  }
             border:1px solid lighten(@accent-yellow, 10%);
         }
         input.yellow { border-color: @accent-yellow; }
 
+        // Green filters
         .filter.green {
-             background: @accent-green; color:white;
+            .menu { background: @accent-green; color:white; }
+            background: @accent-green; color:white;
             .arrow { border-left-color: @accent-green;  }
             border:1px solid lighten(@accent-green, 10%);
         }
         input.green { border-color: @accent-green; }
 
+        // Red filters
         .filter.red {
+            .menu { background: @accent-red; color:white; }
             background: @accent-red; color:white;
             .arrow { border-left-color: @accent-red;  }
             border:1px solid lighten(@accent-red, 10%);

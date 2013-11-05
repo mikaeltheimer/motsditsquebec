@@ -1,5 +1,5 @@
 
-angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http, $window, $cookies) {
+angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http, $window, $cookies, $timeout) {
 
   // Motdit data
   $scope.motdit = {};
