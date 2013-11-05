@@ -1,7 +1,10 @@
 {% verbatim %}
-  <div class="filters" ng-controller="FilterCtrl">
-    <div class="profile">
-        <img src="/assets/img/profile-sample.jpg">
+  <div class="filters ng-cloak" ng-controller="FilterCtrl" ng-cloak>
+
+    <!-- Special by-user filter -->
+    <div class="profile" ng-hide="userfilter == null">
+        <img ng-src="{{ userfilter.gravatar }}">
+        <span class="close">×</span>
     </div>
     <div class="filter yellow">
       <span class="name">{{ active_category.name }}</span>
@@ -17,12 +20,14 @@
 
     <!-- Choose subfilters -->
     <div class="filter">
-      <div class="name">Type</div>
+      <span class="name">Type:</span>
+      <span class="datalist"></span>
       <i class="icon icon-angle-down show-menu"></i>
       <div class="arrow"></div>
     </div>
     <div class="filter">
-      <div class="name">Quand</div>
+      <span class="name">Quand:</span>
+      <span class="datalist"></span>
       <i class="icon icon-angle-down show-menu"></i>
       <div class="arrow"></div>
     </div>
