@@ -28,6 +28,8 @@ class MotDitViewSet(viewsets.ModelViewSet):
 class OpinionViewSet(viewsets.ModelViewSet):
     '''Viewset for the Opinion model'''
     model = Opinion
+    serializer_class = serializers.OpinionSerializer
+    filter_fields = ('created_by__username', 'motdit__slug', )
 
 
 class GuideViewSet(viewsets.ModelViewSet):

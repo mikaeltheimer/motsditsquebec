@@ -155,6 +155,7 @@ INSTALLED_APPS = (
 
     # API plugins
     'rest_framework',
+    'django_filters',
     #'rest_framework.authtoken', # enable when setting up token-based authentication
 
     # Admin plugins
@@ -225,5 +226,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.TokenAuthentication',  # enable when setting up token-based authentication
         'rest_framework.authentication.SessionAuthentication',
-    )
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'PAGINATE_BY': 50,
+    'PAGINATE_BY_PARAM': 'count'
 }

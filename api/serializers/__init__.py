@@ -31,7 +31,7 @@ class OpinionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Opinion
         depth = 1
-        fields = ('created_boy', 'motdit', )
+        fields = ('created_by', 'motdit', 'text', )
 
 
 class MotDitSerializer(serializers.ModelSerializer):

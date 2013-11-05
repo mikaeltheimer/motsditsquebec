@@ -22,8 +22,20 @@ class BaseModel(models.Model):
 
     # Meta information
     created = models.DateTimeField('date created', default=datetime.utcnow)
-    created_by = models.ForeignKey(User, null=True)
+    created_by = models.ForeignKey(User, null=False)
     approved = models.BooleanField()
+
+
+class BaseModelAdmin(admin.ModelAdmin):
+    '''Ensures we prepopulate the created_by field in the admin'''
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'created_by':
+            kwargs['initial'] = request.user.id
+            return db_field.formfield(**kwargs)
+        return super(BaseModelAdmin, self).formfield_for_foreignkey(
+            db_field, request, **kwargs
+        )
 
 
 class Category(BaseModel):
@@ -47,7 +59,7 @@ class Category(BaseModel):
         return self.name
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(BaseModelAdmin):
     list_display = ('name', 'parent_name')
 
     def parent_name(self, obj):
@@ -71,8 +83,8 @@ class MotDit(BaseModel):
 
     # Social information
     recommendations = models.ManyToManyField(User, related_name="recommendations")
-    top_photo = models.ForeignKey("Photo", related_name="top_photo", null=True)
-    top_opinion = models.ForeignKey("Opinion", related_name="top_opinion", null=True)
+    top_photo = models.ForeignKey("Photo", related_name="top_photo", null=True, blank=True)
+    top_opinion = models.ForeignKey("Opinion", related_name="top_opinion", null=True, blank=True)
 
     def save(self, **kwargs):
         '''Saves a unique slug for the category'''
@@ -102,7 +114,7 @@ class Opinion(BaseModel):
         return ' '.join(self.text.split(' ')[:10]) + ('...' if len(self.text.split(' ')) > 10 else '')
 
 
-class OpinionAdmin(admin.ModelAdmin):
+class OpinionAdmin(BaseModelAdmin):
     list_display = ('motdit', 'created_by', 'approved')
     fields = ('motdit', 'text', 'created_by', )
 
@@ -121,7 +133,7 @@ class Photo(BaseModel):
 
     # File upload field
     photo = models.FileField(upload_to='motsdits')
-    title = models.TextField()
+    title = models.TextField(null=True, blank=True)
 
     likes = models.ManyToManyField(User, related_name='likes')
 
@@ -130,7 +142,7 @@ class Photo(BaseModel):
         return "{} ({})".format(self.title, self.photo)
 
 
-class PhotoAdmin(admin.ModelAdmin):
+class PhotoAdmin(BaseModelAdmin):
     list_display = ('photo', 'title', 'created_by')
     fields = ('motdit', 'photo', 'title', 'created_by')
 
@@ -141,10 +153,11 @@ class PhotoInlineAdmin(admin.TabularInline):
     fields = ('motdit', 'photo', 'title')
 
 
-class MotDitAdmin(admin.ModelAdmin):
+class MotDitAdmin(BaseModelAdmin):
     list_display = ('name', 'top_photo', 'top_opinion', )
 
     inlines = [PhotoInlineAdmin, OpinionInlineAdmin]
+    fields = ('name', 'category', 'created_by', 'top_photo', 'top_opinion', )
 
 
 # Register all the models in the admin

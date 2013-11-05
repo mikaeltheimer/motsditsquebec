@@ -25,7 +25,11 @@
     {# Action bar: contains the main filters and actions #}
     <div id="actions">
       {% block actions %}
-        {% include "includes/actionbar/login.html" %}
+        {% if not user.is_authenticated %}
+            {% include "includes/actionbar/login.html" %}
+        {% else %}
+            {% include "includes/actionbar/filters.html" %}
+        {% endif %}
       {% endblock %}
     </div>
 
@@ -53,9 +57,10 @@
     <script src="/assets/js/thirdparty/angular/angular.min.js"></script>
     <script src="/assets/js/thirdparty/angular-cookies/angular-cookies.min.js"></script>
     <script src="/assets/js/thirdparty/angular-masonry/angular-masonry.js"></script>
+    <script src="/assets/js/thirdparty/nginfinitescroll/build/ng-infinite-scroll.min.js"></script>
 
     <!-- Initialize the main controller -->
-    <script src="/assets/js/motsdits.js"></script>
+    <script src="/assets/js/application.js"></script>
 
     {% block ctrl %}{% endblock %}
 

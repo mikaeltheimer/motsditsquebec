@@ -3,7 +3,7 @@
 {% block title %}{{ motdit.name }}{% endblock %}
 
 {% block css %}
-  <link href="/assets/css/single-motdit.min.css" rel="stylesheet" media="screen">
+  <link href="/assets/css/motdit.min.css" rel="stylesheet" media="screen">
 {% endblock %}
 
 {% block ctrl %}<script type="text/javascript" src="/assets/js/motdit.js"></script>{% endblock %}
@@ -62,19 +62,19 @@
                 <a href="#">Tags</a><span class="dot">&middot;</span><a class="selected" href="#">Critiques</a>
               </div>
               <div id="reviews">
-                <div class="review" ng-repeat"review in reviews">
+                <div class="review" ng-repeat="review in reviews">
                   <table>
                     <tr>
                       <td class="user">
                         <div class="profile-image">
-                          <img src="/assets/img/profile-sample.jpg" alt="hownowstephen" />
+                          <img src="{{ review.created_by.gravatar }}" alt="{{ review.created_by.username }}" />
                         </div>
                       </td>
                     <td>
                       <div class="reviewbody">
-                        <div class="username">{{ username }}</div>
+                        <div class="username">{{ review.created_by.username }}</div>
                         <div class="text">
-                          {{ review }}
+                          {{ review.text }}
                         </div>
                       </div>
                     </td>

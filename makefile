@@ -14,8 +14,8 @@ assets:
 	lessc $(LESS)/login.less $(CSS)/login.css
 	@csso $(CSS)/login.css $(CSS)/login.min.css
 # Single mot-dit page css
-	lessc $(LESS)/single-motdit.less $(CSS)/single-motdit.css
-	@csso $(CSS)/single-motdit.css $(CSS)/single-motdit.min.css
+	lessc $(LESS)/motdit.less $(CSS)/motdit.css
+	@csso $(CSS)/motdit.css $(CSS)/motdit.min.css
 # Grid css
 	lessc $(LESS)/grid.less $(CSS)/grid.css
 	@csso $(CSS)/grid.css $(CSS)/grid.min.css

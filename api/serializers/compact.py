@@ -2,6 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from motsdits.models import Opinion, Category, Photo, MotDit
 
+import base
+
 
 class CompactOpinionSerializer(serializers.ModelSerializer):
     '''Creates a smaller version of an Opinion object'''
@@ -23,18 +25,19 @@ class CompactPhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
+        fields = ('s3_url', )
 
     def get_s3_url(self, obj):
         '''Returns the amazon S3 url for a photo'''
         return obj.photo.url
 
 
-class CompactUserSerializer(serializers.ModelSerializer):
+class CompactUserSerializer(base.BaseUserSerializer):
     '''Creates a compact version of a User object'''
 
     class Meta:
         model = User
-        fields = ('id', 'username')
+        fields = ('id', 'username', 'gravatar', )
 
 
 class CompactMotDitSerializer(serializers.ModelSerializer):
