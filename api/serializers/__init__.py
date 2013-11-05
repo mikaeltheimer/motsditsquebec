@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from motsdits.models import *
 from django.contrib.auth.models import User
+from motsdits.models import Opinion, MotDit
+import compact
 
 
 class LoginSerializer(serializers.Serializer):
@@ -21,47 +22,35 @@ class RegisterSerializer(serializers.Serializer):
     website = serializers.URLField()
 
 
-class CompactUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ('id', 'username')
+class OpinionSerializer(serializers.ModelSerializer):
+    ''' Returns a full opinion object'''
 
-
-class CompactCategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = ('name', 'slug', )
-
-
-class CompactPhotoSerializer(serializers.ModelSerializer):
-
-    s3_url = serializers.SerializerMethodField('get_s3_url')
-
-    class Meta:
-        model = Photo
-
-    def get_s3_url(self, obj):
-        '''Returns the amazon S3 url for a photo'''
-        return obj.photo.url
-
-
-class CompactOpinionSerializer(serializers.ModelSerializer):
+    created_by = compact.CompactUserSerializer()
+    motdit = compact.CompactMotDitSerializer()
 
     class Meta:
         model = Opinion
+        depth = 1
+        fields = ('created_boy', 'motdit', )
 
 
 class MotDitSerializer(serializers.ModelSerializer):
     '''Ensures that related objects get serialized'''
 
-    created_by = CompactUserSerializer()
-    category = CompactCategorySerializer(many=True)
-    recommendations = CompactUserSerializer(many=True)
-    top_photo = CompactPhotoSerializer()
-    top_opinion = CompactOpinionSerializer()
+    created_by = compact.CompactUserSerializer()
+    category = compact.CompactCategorySerializer(many=True)
+    recommendations = compact.CompactUserSerializer(many=True)
+    top_photo = compact.CompactPhotoSerializer()
+    top_opinion = compact.CompactOpinionSerializer()
 
     class Meta:
         model = MotDit
         depth = 1
         fields = ('id', 'created_by', 'created', 'category', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', )
         lookup_field = 'slug'
+
+
+class FullUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'first_name', 'last_name', 'date_joined', 'email', 'last_login', )
