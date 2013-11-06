@@ -3,10 +3,12 @@ from django.conf.urls.defaults import url, patterns, include
 from django.contrib import admin
 admin.autodiscover()
 
-##from django.contrib.sites.models import Site
-#admin.site.unregister(Site)
+from django.contrib.sites.models import Site
+admin.site.unregister(Site)
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+
+    '',  # Pattern base
 
     # API routing
     url(r'^api/', include('api.urls')),
@@ -26,7 +28,8 @@ urlpatterns = patterns('',
 
     ## Displaying data
     url(r'^mot/([^/]+)/?$', 'motsdits.views.motdit'),
-
+    url(r'^feed/?$', 'motsdits.views.feed'),
+    url(r'^feed/(?P<username>[^/]+)/?$', 'motsdits.views.feed'),
 
     url(r'^$', 'motsdits.views.homepage'),
 )

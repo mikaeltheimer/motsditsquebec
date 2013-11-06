@@ -4,6 +4,7 @@
  */
 
  @import "vars.less";
+ @import "mixins.less";
 
  // Related Mots-dit grid
 @small-star: 30px;
@@ -55,6 +56,8 @@
         // Counter text next to star
         .counter { margin-left: -10px; }
         .yellow { color: @accent-yellow; }
+
+        .name a { .reset-a(); }
     }
 
 }

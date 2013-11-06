@@ -53,6 +53,14 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             line-height:@header-height;
             text-align:center;
             i { margin-right:0.5em; display:inline-block; font-size:1.2em; }
+            width:140px;
+            input { 
+                width:100px;
+                background: @theme-color; border: none; color:white;
+            }
+            .placeholder(#FFF);
+            //.placeholder(input:focus, @theme-color);
+            input:focus { background: white; color: @theme-color; }
         }
     }
 }
@@ -67,7 +75,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
 #account-menu {
     .action-text();
     z-index:10000;
-    position:absolute; top:0px; right:0px;
+    position:absolute; top: @header-height / 2 - @actions-font-size / 2; right:5px;
     background:white;
     padding:5px @actions-font-size;
 
@@ -77,7 +85,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
 #account-menu-dropdown {
     .action-text();
     .drop-shadow(0, 1px, 2px, 0.6);
-    position: absolute; top:2em; right:5px;
+    position: absolute; top:@header-height / 2 + @actions-font-size / 2 + 14px; right:10px;
     .arrow {
         overflow:auto;
         .arrow-up { margin-right:5px; float: right; }

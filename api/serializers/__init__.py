@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from motsdits.models import Opinion, MotDit
+from motsdits.models import Opinion, MotDit, Activity
 import compact
 
 
@@ -54,3 +54,46 @@ class FullUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name', 'date_joined', 'email', 'last_login', )
+
+
+class ActivityObjectRelatedField(serializers.RelatedField):
+    """
+    A custom field to use for the `tagged_object` generic relationship.
+    """
+
+    def to_native(self, value):
+        ''' Resolves the object and returns it'''
+        if isinstance(value, MotDit):
+            serializer = MotDitSerializer(value)
+        elif isinstance(value, Opinion):
+            serializer = OpinionSerializer(value)
+
+        return serializer.data
+
+
+class ActivitySerializer(serializers.ModelSerializer):
+    '''Ensures that related objects get serialized'''
+
+    created_by = compact.CompactUserSerializer()
+    content_object = ActivityObjectRelatedField()
+    type = serializers.SerializerMethodField('get_type')
+    message = serializers.SerializerMethodField('get_message')
+    # @TODO: content_object serializer
+
+    class Meta:
+        model = Activity
+        depth = 2
+        fields = ('id', 'created_by', 'created', 'content_object', 'activity_type', 'type', 'message', )
+
+    def get_type(self, obj):
+        '''Returns the amazon S3 url for a photo'''
+        return obj.content_object.__class__.__name__
+
+    def get_message(self, obj):
+        '''Returns a message related to this activity'''
+        if obj.activity_type == 'motdit-add':
+            return 'Nouveau Mot-Dit par:'
+        elif obj.activity_type == 'motdit-favourite':
+            return 'Mot-Dit Aimee par:'
+        elif obj.activity_type == 'motdit-comment':
+            return 'Nouvelle Critique par:'

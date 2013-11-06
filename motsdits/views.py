@@ -15,6 +15,11 @@ def motdit(request, motdit):
     return render(request, 'motdit.html')
 
 
+def feed(request, username=None):
+    '''Renders the default user feed'''
+    return render(request, 'feed.html')
+
+
 def login(request):
     '''Simple login view, redirects the user if they're already authenticated'''
     if request.user.is_authenticated():

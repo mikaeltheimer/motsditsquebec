@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.models import ContentType
 
 import mixins
 from datetime import datetime
@@ -204,6 +206,9 @@ class UserGuideAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_by')
 
 
+admin.site.register(UserGuide, UserGuideAdmin)
+
+
 class UserProfile(models.Model):
     '''User profile information'''
 
@@ -214,4 +219,26 @@ class UserProfile(models.Model):
     guides = models.ManyToManyField(UserGuide, related_name='guides')
 
 
-admin.site.register(UserGuide, UserGuideAdmin)
+ACTIVITY_CHOICES = (
+    ('motdit-add', 'Added Mot-dit'),
+    ('motdit-favourite', 'Favourited Mot-dit'),
+    ('motdit-comment', 'Commented on a Mot-dit'),
+)
+
+
+class Activity(BaseModel):
+    '''Activity objects represent any of a variety of actions in the application'''
+
+    # Maps the activity to any object in the database
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    activity_type = models.CharField(max_length=30, choices=ACTIVITY_CHOICES)
+
+
+class ActivityAdmin(admin.ModelAdmin):
+    '''Activity model'''
+    list_display = ('activity_type', 'content_object', 'created_by', 'created', )
+
+
+admin.site.register(Activity, ActivityAdmin)

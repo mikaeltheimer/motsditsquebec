@@ -4,12 +4,12 @@
       <div class="star">
         <div class="circle yellow"><i class="icon icon-star"></i></div>
       </div>
-      <span class="counter yellow">{{ mot.recommendations.length }}</span>
+      <span class="counter yellow">{{ item.recommendations.length }}</span>
       <span class="dot">&middot;</span>
-      <span class="name">{{ mot.name }}</span>
+      <span class="name">{{ item.name }}</span>
     </div>
-    <a href="/mot/{{ mot.slug }}">
-      <img ng-src="{{ mot.top_photo.s3_url }}" alt="{{ mot.name }}">
+    <a href="/mot/{{ item.slug }}">
+      <img ng-src="{{ item.top_photo.s3_url }}" alt="{{ item.name }}">
     </a>
   </div>
 {% endverbatim %}

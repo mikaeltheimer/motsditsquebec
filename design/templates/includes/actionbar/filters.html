@@ -2,11 +2,11 @@
   <div class="filters ng-cloak" ng-controller="FilterCtrl" ng-cloak>
 
     <!-- Special by-user filter -->
-    <div class="profile" ng-hide="userfilter == null">
+    <div class="profile" ng-hide="userfilter != null">
         <img ng-src="{{ userfilter.gravatar }}">
         <span class="close">×</span>
     </div>
-    <div class="filter yellow">
+    <div class="filter red">
       <span class="name">{{ active_category.name }}</span>
 
       <i class="icon icon-angle-down show-menu"></i>
@@ -19,16 +19,38 @@
     </div>
 
     <!-- Choose subfilters -->
-    <div class="filter">
+
+    <!-- Type subfilter -->
+    <div class="filter" ng-hide="type_subfilters">
       <span class="name">Type:</span>
       <span class="datalist"></span>
       <i class="icon icon-angle-down show-menu"></i>
+      <ul id="type-menu" class="menu">
+        <li ng-repeat="subfilter in type_subfilters">
+          <a href ng-click="addSubfilter(subfilter);">{{ subfilter.name }}</a>
+        </li>
+      </ul>
       <div class="arrow"></div>
     </div>
-    <div class="filter">
+
+    <!-- Time subfilter -->
+    <div class="filter" ng-hide="time_subfilters">
       <span class="name">Quand:</span>
       <span class="datalist"></span>
       <i class="icon icon-angle-down show-menu"></i>
+      <ul id="type-menu" class="menu">
+        <li ng-repeat="subfilter in time_subfilters">
+          <a href ng-click="addSubfilter(subfilter);">{{ subfilter.name }}</a>
+        </li>
+      </ul>
+      <div class="arrow"></div>
+    </div>
+
+    <div class="filter yellow">
+      <span class="name">Schwartz</span>
+
+      <i class="icon icon-angle-down show-menu"></i>
+
       <div class="arrow"></div>
     </div>
 
@@ -37,10 +59,10 @@
       <span class="close">×</span>
       <div class="arrow"></div>
     </div>
-    <!--div class="filter red">
+    <div class="filter red">
       <i class="icon icon-map-marker"></i>
       <span class="close">×</span>
     </div>
-    <input type="text" name="search-box" class="red"-->
+    <input type="text" name="search-box" class="red">
   </div>
 {% endverbatim %}

@@ -5,17 +5,17 @@
 {% endblock %}
 
 {% block ctrl %}
-  <script type="text/javascript" src="/assets/js/homepage.js"></script>
+  <script type="text/javascript" src="/assets/js/controllers/feed.js"></script>
 {% endblock %}
 
 
 {% block content %}
-  <div id="grid" ng-controller="HomepageCtrl" masonry
+  <div id="grid" ng-controller="FeedCtrl" masonry
     class="ng-cloak" ng-cloak
     infinite-scroll="load_more()" infinite-scroll-disabled='busy' infinite-scroll-distance='1.5'
   >
-    <div class="grid-item masonry-brick" ng-repeat="item in motsdits">
-      {% include "includes/grid/motdit.html" %}
+    <div class="grid-item masonry-brick" ng-repeat="item in activities">
+      {% include "includes/grid/feed-item.html" %}
     </div>
   </div>
 {% endblock %}

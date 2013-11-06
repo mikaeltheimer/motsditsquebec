@@ -1,0 +1,79 @@
+{# @TODO: investigate ng-switch #}
+
+{% verbatim %}
+
+<!-- Motdit format -->
+<div ng-hide="item.type != 'MotDit'">
+  <div class="motdit">
+    <div class="overlay">
+      <div class="star">
+        <div class="circle yellow"><i class="icon icon-star"></i></div>
+      </div>
+      <span class="counter yellow">{{ item.content_object.recommendations.length }}</span>
+      <span class="dot">&middot;</span>
+      <span class="name">{{ item.content_object.name }}</span>
+    </div>
+    <a href="/mot/{{ item.content_object.slug }}">
+      <img ng-src="{{ item.content_object.top_photo.s3_url }}" alt="{{ item.content_object.name }}">
+    </a>
+  </div>
+  <div class="caption">
+    <div class="connector">
+      <div class="dot yellow"></div>
+    </div>
+    <div class="description">
+      <div class="description-text">{{ item.message }}</div>
+      <div class="user">{{ item.created_by.username }}</div>
+    </div>
+    <div class="action">
+      <i class="icon icon-heart"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Date format -->
+<div class="grid-date" ng-hide="item.type != 'DateMarker'">
+  <div class="date">
+    <div class="fade">{{ item.day }}</div>
+    <div>{{ item.date }}</div>
+    <div>{{ item.month }}</div>
+    <div class="fade">{{ item.year }}</div>
+  </div>
+</div>
+<!-- Opinion format -->
+<div class="grid-text" ng-hide="item.type != 'Opinion'">
+  <div class="quote">
+    <div class="overlay">
+      <div class="bridge"></div>
+      <div class="star">
+        <div class="circle yellow"><i class="icon icon-star"></i></div>
+      </div>
+      <span class="counter yellow">0</span>
+      <span class="dot">&middot;</span>
+      <span class="name">
+        <a href="/mot/{{ item.content_object.motdit.slug }}">
+          {{ item.content_object.motdit.name }}
+        </span>
+      </a>
+    </div>
+    <blockquote>
+      {{ item.content_object.text }}
+    </blockquote>
+    <div class="watermark">&ldquo;</div>
+  </div>
+  <div class="caption">
+    <div class="connector">
+      <div class="dot yellow"></div>
+    </div>
+    <div class="description">
+      <div class="description-text">{{ item.message }}</div>
+      <div class="user">{{ item.created_by.username }}</div>
+    </div>
+    <div class="action">
+      <i class="icon icon-thumbs-down"></i>
+      <i class="icon icon-thumbs-up"></i>
+    </div>
+  </div>
+</div>
+
+{% endverbatim %}

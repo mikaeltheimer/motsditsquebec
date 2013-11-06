@@ -23,3 +23,19 @@
     -ms-user-select: none;
     user-select: none;
 }
+
+// Placeholder text
+.placeholder(@placeholder-color){
+    input::-webkit-input-placeholder { /* WebKit browsers */
+        color:    @placeholder-color;
+    }
+    input:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+        color:   @placeholder-color;
+    }
+    input::-moz-placeholder { /* Mozilla Firefox 19+ */
+        color:    @placeholder-color;
+    }
+    input:-ms-input-placeholder { /* Internet Explorer 10+ */
+        color:    @placeholder-color;
+    }
+}
