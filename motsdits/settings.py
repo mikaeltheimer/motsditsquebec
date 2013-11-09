@@ -231,3 +231,9 @@ REST_FRAMEWORK = {
     'PAGINATE_BY': 50,
     'PAGINATE_BY_PARAM': 'count'
 }
+
+# Allow for local configuration
+try:
+    from local_settings import *
+except ImportError:
+    pass
