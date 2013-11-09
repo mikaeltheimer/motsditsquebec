@@ -2,7 +2,7 @@
   <div class="filters ng-cloak" ng-controller="FilterCtrl" ng-cloak>
 
     <!-- Special by-user filter -->
-    <div class="profile" ng-hide="userfilter != null">
+    <div class="profile" ng-hide="userfilter == null">
         <img ng-src="{{ userfilter.gravatar }}">
         <span class="close">×</span>
     </div>
@@ -63,6 +63,6 @@
       <i class="icon icon-map-marker"></i>
       <span class="close">×</span>
     </div>
-    <input type="text" name="search-box" class="red">
-  </div-->
+    <input type="text" name="search-box" class="red"-->
+  </div>
 {% endverbatim %}
