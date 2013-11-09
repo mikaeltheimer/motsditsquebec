@@ -19,3 +19,7 @@ assets:
 # Grid css
 	lessc $(LESS)/grid.less $(CSS)/grid.css
 	@csso $(CSS)/grid.css $(CSS)/grid.min.css
+
+# Creates a usable requirements file
+requirements:
+	pip freeze | sed -e '/git-remote-helpers/ d' > requirements.txt
