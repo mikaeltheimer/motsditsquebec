@@ -17,7 +17,7 @@ angular.module('MotsDitsQuebec').controller('RegisterCtrl', function($scope, $ht
     $http.post('/api/auth/register/?format=json', message).success(function(data) {
       $scope.response = data;
       if($scope.response.created){
-        $window.location.href = "/register/success/";
+        $window.location.href = "/login/?registered=1";
       }else{
         alert("Registration failed!");
       }

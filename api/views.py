@@ -20,7 +20,7 @@ class LoginView(APIView):
         '''Perform authentication via AngularJS'''
         serializer = serializers.LoginSerializer(data=request.DATA)
         if serializer.is_valid():
-            userAuth = authenticate(username=serializer.data['username'], password=serializer.data['password'])
+            userAuth = authenticate(username=serializer.data['email'], password=serializer.data['password'])
             if userAuth:
                 if userAuth.is_active:
                     login(request, userAuth)

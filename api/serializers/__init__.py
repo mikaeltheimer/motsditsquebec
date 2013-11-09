@@ -6,7 +6,7 @@ import compact
 
 class LoginSerializer(serializers.Serializer):
     '''Simple serializer for login requests'''
-    username = serializers.CharField(max_length=255)
+    email = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=255)
 
 

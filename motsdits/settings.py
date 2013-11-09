@@ -126,7 +126,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'motsdits.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'motsdits.wsgi.application'
 
 TEMPLATE_DIRS = (
 
@@ -147,6 +147,7 @@ from django.template.loader import add_to_builtins
 add_to_builtins('motsdits.templatetags.verbatim')
 
 AUTH_PROFILE_MODULE = 'app.UserProfile'
+AUTHENTICATION_BACKENDS = ('motsdits.backends.EmailAuthBackend', 'django.contrib.auth.backends.ModelBackend', )
 
 INSTALLED_APPS = (
 

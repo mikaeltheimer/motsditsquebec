@@ -4,7 +4,7 @@ angular.module('MotsDitsQuebec').controller('LoginCtrl', function($scope, $http,
   $scope.response = {};
 
   $scope.doLogin = function(){
-    $http.post('/api/auth/login/?format=json', {'username': this.email, 'password': this.password}).success(function(data) {
+    $http.post('/api/auth/login/?format=json', {'email': this.email, 'password': this.password}).success(function(data) {
       $scope.response = data;
       if($scope.response.isLogged){
         $window.location.href = "/";
