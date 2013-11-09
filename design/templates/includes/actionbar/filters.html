@@ -6,7 +6,9 @@
         <img ng-src="{{ userfilter.gravatar }}">
         <span class="close">×</span>
     </div>
-    <div class="filter yellow">
+
+    <!-- Primary filter -->
+    <div class="filter red">
       <span class="name">{{ active_category.name }}</span>
 
       <i class="icon icon-angle-down show-menu"></i>
@@ -18,7 +20,7 @@
       <div class="arrow"></div>
     </div>
 
-    <!-- Choose subfilters -->
+    <!--  Subfilters -->
 
     <!-- Type subfilter -->
     <div class="filter" ng-hide="!type_subfilters">
@@ -52,17 +54,17 @@
       <i class="icon icon-angle-down show-menu"></i>
 
       <div class="arrow"></div>
-    </div>
+    </div-->
 
-    <div class="filter green" ng-hide="subfilter == null">
+    <!--div class="filter green" ng-hide="subfilter == null">
       <span class="name">Some Filter</span>
       <span class="close">×</span>
       <div class="arrow"></div>
-    </div>
-    <div class="filter red">
+    </div-->
+    <!--div class="filter red">
       <i class="icon icon-map-marker"></i>
       <span class="close">×</span>
-    </div>
-    <input type="text" name="search-box" class="red"-->
+    </div-->
+    <!--input type="text" name="search-box" class="red"-->
   </div>
 {% endverbatim %}
