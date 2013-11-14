@@ -8,6 +8,12 @@ from rest_framework import status
 import serializers
 from django.utils import decorators
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.conf import settings
+
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+
+import os.path
 
 
 class LoginView(APIView):
@@ -58,3 +64,22 @@ class RegisterView(APIView):
                 return Response({'created': False, 'reason': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TempUploadView(APIView):
+    '''Performs a temporary file upload'''
+
+    renderer_classes = (JSONRenderer, )
+
+    @decorators.method_decorator(ensure_csrf_cookie)
+    def post(self, request):
+        '''Accepts an uploaded file'''
+
+        # @TODO: check file size
+        # @TODO: Perform the read incrementally to ensure we can't be overwhelmed
+        path = default_storage.save(
+            'tmp/images/test.jpg',
+            ContentFile(request.FILES['image'].read())
+        )
+
+        return Response({'src': os.path.join(settings.MEDIA_URL, path)}, status=status.HTTP_200_OK)

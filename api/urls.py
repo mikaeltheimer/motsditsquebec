@@ -57,6 +57,10 @@ router.register(r'activities', ActivityViewSet)
 # Additionally, we include login URLs for the browseable API.
 urlpatterns = patterns(
     '',
+
+    # Overrides and custom urls
+    url(r'v1/photos/upload/tmp', views.TempUploadView.as_view()),
+
     url(r'v1/', include(router.urls)),
     url(r'auth/login/', views.LoginView.as_view()),
     url(r'auth/register/', views.RegisterView.as_view()),

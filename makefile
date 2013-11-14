@@ -19,6 +19,9 @@ assets:
 # Grid css
 	lessc $(LESS)/grid.less $(CSS)/grid.css
 	@csso $(CSS)/grid.css $(CSS)/grid.min.css
+# Edit page css
+	lessc $(LESS)/edit-motdit.less $(CSS)/edit-motdit.css
+	@csso $(CSS)/edit-motdit.css $(CSS)/edit-motdit.min.css
 
 # Creates a usable requirements file
 requirements:

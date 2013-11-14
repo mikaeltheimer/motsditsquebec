@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block css %}
+  <link href="/assets/css/edit-motdit.min.css" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block ctrl %}
+  <script type="text/javascript" src="/assets/js/controllers/edit-motdit.js"></script>
+{% endblock %}
+
+
+{% block content %}
+  <div id="create-motdit">
+    {% include "forms/motdit.html" %}
+  </div>
+{% endblock %}

@@ -1,0 +1,98 @@
+@import "thirdparty/elements.less";
+
+@import "includes/block.less";
+@import "includes/mixins.less";
+@import "includes/vars.less";
+
+@input-width: 450px;
+@input-height: 34px;
+@input-font-size: 16px;
+
+
+#create-motdit {
+    max-width:50%; min-width:600px; margin:1em auto; background:white;
+    padding-top:0.5em; overflow: auto;
+     // Shadow this thing
+    .drop-shadow(0, 1px, 4px, 0.6);
+
+    h2 {
+        text-align:center;
+        span.smaller { font-size: 70%; }
+    }
+
+    h3 {
+        color: @theme-color; text-align:center; font-weight:normal;
+        i { display:block; text-align:center; }
+    }
+
+    h3.faded { color: @grey-inactive; }
+
+    .select {
+        width: @input-width; margin:0px auto; position:relative;
+        border:1px solid @grey-inactive;
+        cursor:pointer;
+        select {
+            cursor:pointer;
+            background: transparent;
+            width: @input-width;
+            padding: 5px;
+            font-size: @input-font-size;
+            line-height: 1;
+            border: 0;
+            border-radius: 0;
+            height: @input-height;
+            -webkit-appearance: none;
+            text-align:center;
+        }
+        i {
+            position:absolute; right:10px; top:8px; z-index:10; font-size:20px;
+            font-weight:bold; pointer-events:none;
+        }
+    }
+
+    input[type="text"] {
+        width: @input-width - 10px; height: @input-height - 10px; font-size:@input-font-size; line-height: 1; padding: 5px;
+        margin:0px auto; display:block;
+        border:1px solid @grey-inactive;
+    }
+
+    textarea {
+        width:@input-width; height: @input-font-size * 5;
+        margin:0px auto; display:block; border:1px solid @grey-inactive;
+    }
+
+    hr { width:30%; margin:2em auto;}
+
+    .suggestions {
+
+        width: @input-width; margin:0px auto;
+        margin-top: 1em;
+
+        .suggestion { background: @grey-faded; display:inline-block; padding:0.3em 0.5em; }
+    }
+
+    .photo-options {
+        width: @input-width; margin:0px auto;
+        td {
+            padding:5px; text-align:center; position:relative;
+            input[type="file"] { position: absolute; width:100%; height:100%; z-index:2; top:0; left:0; opacity: 0; cursor:pointer;}
+            button {
+                width:100%; background:black; border:0px; color:white;
+                padding:0.5em 0px;
+            }
+            button:disabled { background: @grey-faded; color: @grey-inactive; }
+        }
+    }
+
+    .submit {
+        width: @input-width; overflow:auto; margin:0px auto;
+        margin-bottom:2em; margin-top:1em;
+        input {
+            background: @accent-green; display:block; float:right; color:white; padding:0.5em 1.5em; border:0px;
+            margin-right:5px; width:@input-width / 3;
+        }
+    }
+
+}
+
+#motdit-form {}
