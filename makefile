@@ -4,11 +4,14 @@ JS=design/assets/js
 
 all:
 
-load-fixtures:
+# Loads all fixture files
+ldfixtures:
 	python manage.py loaddata motsdits/fixtures/*
 
-save-fixtures:
-	python manage.py dumpdata motsdits > motsdits/fixtures/testdata.json
+# Creates all necessary fixture files
+mkfixtures:
+	python manage.py dumpdata auth.User --indent 4 > motsdits/fixtures/auth-users.json
+	python manage.py dumpdata motsdits --indent 4 > motsdits/fixtures/test-data.json
 
 cleandb:
 	python manage.py sqlclear motsdits | python manage.py dbshell;
