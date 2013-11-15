@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib.contenttypes import generic
@@ -15,6 +17,14 @@ FORMAT_CHOICES = (
     ('H', 'HTML'),
     ('T', 'Text'),
     ('M', 'Markdown')
+)
+
+SUBFILTER_TYPES = (
+    ('type', 'Type'),
+    ('genre', 'Genre'),
+    ('mois', 'Mois'),
+    ('prix', 'Prix'),
+    ('region', 'Région'),
 )
 
 
@@ -53,6 +63,7 @@ class Category(BaseModel):
 class Subfilter(BaseModel):
     '''A sub-filter'''
 
+    subfilter_type = models.CharField(max_length=100, choices=SUBFILTER_TYPES)
     name = models.CharField(max_length=200)
     slug = models.SlugField(null=True)
     category = models.ForeignKey(Category)
