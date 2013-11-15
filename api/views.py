@@ -109,6 +109,8 @@ class CreateNewMotDitView(APIView):
         motdit = models.MotDit(
             created_by=request.user,
             name=request.DATA['name'],
+            website=request.DATA.get('website'),
+            address=request.DATA.get('address')
         )
         motdit.save()
 
@@ -147,6 +149,17 @@ class CreateNewMotDitView(APIView):
             )
 
             motdit.top_photo = photo
+
+        if request.DATA.get('tags').strip():
+            for tag_name in map(lambda x: x.strip(), request.DATA['tags'].split(',')):
+                tag, created = models.Tag.objects.get_or_create(
+                    slug=tag_name.lower(),
+                    defaults={'name': tag_name}
+                )
+                if created:
+                    tag.save()
+                # finally, add to the motdit
+                motdit.tags.add(tag)
 
         motdit.save()
 
