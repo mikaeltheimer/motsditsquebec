@@ -46,7 +46,7 @@ class Category(BaseModel):
             mixins.unique_slugify(self, self.name)
         return super(Category, self).save()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -63,7 +63,7 @@ class Subfilter(BaseModel):
             mixins.unique_slugify(self, self.name)
         return super(Subfilter, self).save()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -78,7 +78,7 @@ class Tag(BaseModel):
             mixins.unique_slugify(self, self.name)
         return super(Tag, self).save()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -132,7 +132,7 @@ class MotDit(BaseModel):
 
         return super(MotDit, self).save()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -149,7 +149,7 @@ class Opinion(BaseModel):
     # Social information
     approvals = models.ManyToManyField(User, related_name="user")
 
-    def __str__(self):
+    def __unicode__(self):
         '''Stringifies an opinion'''
         return ' '.join(self.text.split(' ')[:10]) + ('...' if len(self.text.split(' ')) > 10 else '')
 
@@ -166,7 +166,7 @@ class Photo(BaseModel):
 
     likes = models.ManyToManyField(User, related_name='photo_likes')
 
-    def __str__(self):
+    def __unicode__(self):
         '''Stringifies a photo for admin purposes'''
         return "{} ({})".format(self.title, self.photo)
 

@@ -14,7 +14,7 @@ mkfixtures:
 	python manage.py dumpdata motsdits --indent 4 > motsdits/fixtures/test-data.json
 
 cleandb:
-	python manage.py sqlclear motsdits | python manage.py dbshell;
+	echo 'drop database motsdits; create database motsdits;' | python manage.py dbshell;
 	python manage.py syncdb;
 
 assets:
