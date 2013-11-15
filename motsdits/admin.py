@@ -22,8 +22,8 @@ class CategoryAdmin(BaseModelAdmin):
 
 
 class SubfilterAdmin(BaseModelAdmin):
-    list_display = ('name', 'slug', 'category_name', )
-    fields = ('name', 'category', )
+    list_display = ('name', 'subfilter_type', 'category_name', )
+    fields = ('name', 'category', 'subfilter_type', )
 
     def category_name(self, obj):
         return obj.category.name if obj.category else None

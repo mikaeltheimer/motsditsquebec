@@ -63,7 +63,7 @@ class Category(BaseModel):
 class Subfilter(BaseModel):
     '''A sub-filter'''
 
-    subfilter_type = models.CharField(max_length=100, choices=SUBFILTER_TYPES)
+    subfilter_type = models.CharField(max_length=6, choices=SUBFILTER_TYPES)
     name = models.CharField(max_length=200)
     slug = models.SlugField(null=True)
     category = models.ForeignKey(Category)
