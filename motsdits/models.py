@@ -138,9 +138,9 @@ class MotDit(BaseModel):
     category = models.ManyToManyField(Category, related_name='motdit')
 
     # Non-required information
-    website = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    geo = GeopositionField()
+    website = models.CharField(max_length=255, null=True)
+    address = models.CharField(max_length=255, null=True)
+    geo = GeopositionField(null=True)
 
     # Social information
     recommendations = models.ManyToManyField(User, related_name="motdit_recommendation")
