@@ -15,7 +15,7 @@ class CompactCategorySerializer(serializers.ModelSerializer):
     '''Creates a smaller version of a Category object'''
     class Meta:
         model = Category
-        fields = ('name', 'slug', )
+        fields = ('id', 'name', 'slug', )
 
 
 class CompactSubfilterSerializer(serializers.ModelSerializer):

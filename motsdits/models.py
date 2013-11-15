@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
+from geoposition.fields import GeopositionField
 
 import mixins
 from datetime import datetime
@@ -135,6 +136,11 @@ class MotDit(BaseModel):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, null=True)
     category = models.ManyToManyField(Category, related_name='motdit')
+
+    # Non-required information
+    website = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    geo = GeopositionField()
 
     # Social information
     recommendations = models.ManyToManyField(User, related_name="motdit_recommendation")

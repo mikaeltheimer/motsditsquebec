@@ -1,0 +1,73 @@
+{% verbatim %}
+  <div class="photo">
+
+    <!-- Add content overlay -->
+    <div class="overlay add">
+      Ajouter
+      &nbsp;
+      <i class="icon icon-pencil"></i>
+      <i class="icon icon-camera"></i>
+    </div>
+
+    <!-- Like button -->
+    <div class="overlay heart"><i class="icon icon-heart"></i></div>
+
+    <!-- Actions overlay -->
+    <div class="overlay actions">
+      <div class="star">
+        <div class="circle yellow"><i class="icon icon-star"></i></div>
+      </div>
+      <div class="connector"></div>
+      <span class="counter yellow">{{ motdit.recommendations.length }}</span>
+      <span class="dot">&middot;</span>
+      <span class="name" ng-show="motdit.name">{{ motdit.name }}</span>
+      <i class="icon icon-map-marker">
+        <span class="tooltip">Location<span class="caret"></span></span>
+      </i>
+      <i class="icon icon-link">
+        <span class="tooltip">Site-Web<span class="caret"></span></span>
+      </i>
+      <i class="icon icon-share-alt">
+        <span class="tooltip">Partager<span class="caret"></span></span>
+      </i>
+      <i class="icon icon-bookmark">
+        <span class="tooltip">Sauver<span class="caret"></span></span>
+      </i>
+    </div>
+
+    <!-- And the image! -->
+    <img ng-src="{{ motdit.top_photo.s3_url }}" alt="{{ motdit.name }}" />
+
+  </div>
+
+  <!-- Reviews -->
+  <div class="content">
+    <div class="header">
+      <a href="#">Tags</a><span class="dot">&middot;</span><a class="selected" href="#">Critiques</a>
+    </div>
+    <div id="reviews">
+      <div class="review" ng-repeat="review in reviews">
+        <table>
+          <tr>
+            <td class="user">
+              <div class="profile-image">
+                <img src="{{ review.created_by.gravatar }}" alt="{{ review.created_by.username }}" />
+              </div>
+            </td>
+          <td>
+            <div class="reviewbody">
+              <div class="username">{{ review.created_by.username }}</div>
+              <div class="text">
+                {{ review.text }}
+              </div>
+            </div>
+          </td>
+          <td class="thumbs">
+            <i class="icon icon-thumbs-up"></i>
+            <i class="icon icon-thumbs-down"></i>
+          </td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endverbatim %}

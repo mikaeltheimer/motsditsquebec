@@ -1,88 +1,90 @@
-<div id="motdit-form" ng-controller="EditMotditCtrl" class="ng-cloak" ng-cloak>
+{% verbatim %}
+  <div id="motdit-form" ng-controller="EditMotditCtrl" class="ng-cloak" ng-cloak>
 
-  <h3 class="faded">Commencez par choisir la categorie de ce que vous souhaitez partager</h3>
+    <h3 class="faded">Commencez par choisir la categorie de ce que vous souhaitez partager</h3>
 
-  <div class="select colored">
-    <select name="category" ng-model="form.category" ng-options="c.name for c in categories"></select>
-    <i class="icon icon-angle-down"></i>
-  </div>
-
-  <h3 class="faded">Entrez maintenant le titre du mot-dit pour lequel vous voulez partager un avis<br />ou un photo</h3>
-
-  <input type="text" placeholder="Nom du Mot-dit (ex. Schwartz Montreal)">
-
-  <div class="subfilter" ng-show="form.category.subfilters">
-    <h3>Selectionnez le ou les filtres correspondant au mot-dit</h3>
-
-    <div class="select">
-      <select name="subfilter" ng-model="form.subfilter" ng-options="f.name for f in form.category.subfilters">
-        <option style="display:none" value="">-- Selectionnez un filtre --</option>
-      </select>
+    <div class="select colored">
+      <select name="category" ng-model="form.category" ng-options="c.name for c in categories"></select>
       <i class="icon icon-angle-down"></i>
     </div>
+
+    <h3 class="faded">Entrez maintenant le titre du mot-dit pour lequel vous voulez partager un avis<br />ou un photo</h3>
+
+    <input type="text" placeholder="Nom du Mot-dit (ex. Schwartz Montreal)" ng-model="form.name">
+
+    <div class="subfilter" ng-show="form.category.subfilters">
+      <h3>Selectionnez le ou les filtres correspondant au mot-dit</h3>
+
+      <div class="select">
+        <select name="subfilter" ng-model="form.subfilter" ng-options="f.name for f in form.category.subfilters">
+          <option style="display:none" value="">-- Selectionnez un filtre --</option>
+        </select>
+        <i class="icon icon-angle-down"></i>
+      </div>
+    </div>
+
+    <hr>
+
+    <h2>
+      Champs Optionnels <br />
+      <span class="smaller">(mais recommandes)</span>
+    </h2>
+
+    <h3>Indiquez l'adresse exacte du mot-dit</h3>
+
+    <input type="text" placeholder="Adresse (ex. 1234 Rue Vraie)" ng-model="form.address">
+
+    <h3>Entrez l'url du site-web du mot-dit</h3>
+
+    <input type="text" placeholder="Site-web (ex. www.google.com)" ng-model="form.website">
+
+    <hr>
+
+    <h3>
+      <i class="icon icon-pencil"></i>
+      Donnez votre avis sur le mot-dit
+    </h3>
+
+    <textarea placeholder="J'ai beaucoup aime car..." ng-model="form.opinion"></textarea>
+
+    <h3>
+      <i class="icon icon-tag"></i>
+      Entrez quelques mots-cles (tags) associes au mot-dit
+    </h3>
+
+    <input type="text" placeholder="Ex. poutine, drole, sport, etc" ng-model="form.tags">
+
+    <div class="suggestions">
+      Suggestions:
+        <span class="suggestion">+ Musique</span>
+        <span class="suggestion">+ Indie Rock</span>
+        <span class="suggestion">+ Weekend</span>
+    </div>
+
+    <h3>
+      <i class="icon icon-camera"></i>
+      Optionel: Ajoutez une photo a partir de...
+    </h3>
+
+    <div class="photo" ng-show="form.photo">
+      <img ng-src="{{ form.photo }}" />
+    </div>
+
+    <table class="photo-options">
+      <tr>
+        <td>
+          <button id="photo-local">Ordinateur</button>
+          <input type="file" accept="image/*" image="image" onchange="angular.element(this).scope().preload_image(this)" ng-model="image">
+        </td>
+        <td><button id="photo-facebook" disabled>Facebook</button></td>
+        <td><button id="photo-instagram" disabled>Instagram</button></td>
+      </tr>
+    </table>
+
+    <div class="submit">
+      <input type="submit" value="Publier" ng-click="submit_form()">
+    </div>
+
+
   </div>
-
-  <hr>
-
-  <h2>
-    Champs Optionnels <br />
-    <span class="smaller">(mais recommandes)</span>
-  </h2>
-
-  <h3>Indiquez l'adresse exacte du mot-dit</h3>
-
-  <input type="text" placeholder="Adresse (ex. 1234 Rue Vraie)" ng-model="form.address">
-
-  <h3>Entrez l'url du site-web du mot-dit</h3>
-
-  <input type="text" placeholder="Site-web (ex. www.google.com)" ng-model="form.website">
-
-  <hr>
-
-  <h3>
-    <i class="icon icon-pencil"></i>
-    Donnez votre avis sur le mot-dit
-  </h3>
-
-  <textarea placeholder="J'ai beaucoup aime car..." ng-model="form.opinion"></textarea>
-
-  <h3>
-    <i class="icon icon-tag"></i>
-    Entrez quelques mots-cles (tags) associes au mot-dit
-  </h3>
-
-  <input type="text" placeholder="Ex. poutine, drole, sport, etc" ng-model="form.tags">
-
-  <div class="suggestions">
-    Suggestions:
-      <span class="suggestion">+ Musique</span>
-      <span class="suggestion">+ Indie Rock</span>
-      <span class="suggestion">+ Weekend</span>
-  </div>
-
-  <h3>
-    <i class="icon icon-camera"></i>
-    Optionel: Ajoutez une photo a partir de...
-  </h3>
-
-  <div class="photo" ng-show="form.photo">
-    <img ng-src="{{form.photo}}" /> 
-  </div>
-
-  <table class="photo-options">
-    <tr>
-      <td>
-        <button id="photo-local">Ordinateur</button>
-        <input type="file" accept="image/*" image="image" onchange="angular.element(this).scope().preload_image(this)" ng-model="image">
-      </td>
-      <td><button id="photo-facebook" disabled>Facebook</button></td>
-      <td><button id="photo-instagram" disabled>Instagram</button></td>
-    </tr>
-  </table>
-
-  <div class="submit">
-    <input type="submit" value="Publier" ng-click="submit_form()">
-  </div>
-
-
-</div>
+{% endverbatim %}

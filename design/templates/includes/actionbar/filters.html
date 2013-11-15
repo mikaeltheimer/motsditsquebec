@@ -12,11 +12,17 @@
       <span class="name">{{ active_category.name }}</span>
 
       <i class="icon icon-angle-down show-menu"></i>
-      <ul id="category-menu" class="menu">
-        <li ng-repeat="category in categories">
-          <a href ng-click="showCategory(category);">{{ category.name }}</a>
-        </li>
-      </ul>
+
+      <div class="menu-container">
+        <div class="right-align">
+          <div class="arrow-up"></div>
+        </div>
+        <ul id="category-menu" class="menu">
+          <li ng-repeat="category in categories">
+            <a href ng-click="showCategory(category);">{{ category.name }}</a>
+          </li>
+        </ul>
+      </div>
       <div class="arrow"></div>
     </div>
 

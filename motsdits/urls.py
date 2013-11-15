@@ -23,10 +23,13 @@ urlpatterns = patterns(
     url(r'^design/', include('design.urls')),
 
     # Application routing
+    url(r'^new/', 'motsdits.views.create_motdit'),
 
     ## User account creation and access
     url(r'^login/$', 'motsdits.views.login'),
+    url(r'^accounts/login/$', 'motsdits.views.login'),
     url(r'^logout/$', 'motsdits.views.logout'),
+    url(r'^accounts/logout/$', 'motsdits.views.logout'),
     url(r'^register/$', 'motsdits.views.register'),
 
     ## Displaying data

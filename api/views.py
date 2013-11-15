@@ -12,6 +12,11 @@ from django.conf import settings
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.core.files import File
+from django.core.files import File
+from django.core.files.temp import NamedTemporaryFile
+from urlparse import urlparse
+import urllib2
 
 import os.path
 from uuid import uuid4
@@ -97,17 +102,55 @@ class CreateNewMotDitView(APIView):
     def post(self, request):
         '''Creates a new Mot-dit, with related content'''
 
-        raise NotImplemented
-        motdit = models.Motdit(
+        from pprint import pprint
+        pprint(request.DATA)
 
+        # @TODO: Form validation
+        motdit = models.MotDit(
+            created_by=request.user,
+            name=request.DATA['name'],
         )
+        motdit.save()
+
+        # Add the category
+        motdit.category.add(models.Category.objects.get(id=request.DATA['category']['id']))
 
         # Create an opinion object
         if request.DATA.get('opinion').strip():
             opinion = models.Opinion(
-
+                created_by=request.user,
+                motdit=motdit,
+                text=request.DATA['opinion']
             )
+            opinion.save()
+            motdit.top_opinion = opinion
 
         # Create a photo object
         if request.DATA.get('photo').strip():
-            pass
+
+            url = request.DATA['photo']
+
+            # Thanks to: http://stackoverflow.com/questions/1393202/django-add-image-in-an-imagefield-from-image-url
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urllib2.urlopen(url).read())
+            img_temp.flush()
+
+            photo = models.Photo(
+                created_by=request.user,
+                motdit=motdit
+            )
+
+            photo.photo.save(
+                urlparse(url).path.split('/')[-1],
+                File(img_temp),
+                save=True
+            )
+
+            motdit.top_photo = photo
+
+        motdit.save()
+
+        return Response({
+            'success': True,
+            'motdit': serializers.compact.CompactMotDitSerializer(motdit).data
+        }, status=status.HTTP_200_OK)

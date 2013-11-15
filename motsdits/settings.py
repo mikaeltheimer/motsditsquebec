@@ -153,6 +153,7 @@ INSTALLED_APPS = (
 
     # Application plugins
     'storages',
+    'geoposition',
 
     # API plugins
     'rest_framework',

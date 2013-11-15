@@ -37,7 +37,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         depth = 1
-        fields = ('name', 'slug', 'subfilters', )
+        fields = ('id', 'name', 'slug', 'subfilters', )
 
     def get_subfilters(self, obj):
         '''Returns a set of subfilters related to this object'''

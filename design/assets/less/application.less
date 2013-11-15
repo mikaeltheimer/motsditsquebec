@@ -31,9 +31,9 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
 .text-left { text-align: left; }
 .arrow-up {
     width: 0; height: 0; 
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-bottom: 10px solid white;
+    border-left: @arrow-height solid transparent;
+    border-right: @arrow-height solid transparent;
+    border-bottom: @arrow-height solid white;
 }
 
 
@@ -43,25 +43,18 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
    -------------------------------------------------- */
 #header {
     background: @theme-color; height: @header-height;
-    padding:5px 0px;
-    .logo {
-        img { height:@header-height; width:auto; }
-        text-align:center; margin:0px auto; width: @header-width;
-        .text { 
-            color:white;
-            height:@header-height;
-            line-height:@header-height;
-            text-align:center;
-            i { margin-right:0.5em; display:inline-block; font-size:1.2em; }
-            width:140px;
-            input { 
-                width:100px;
-                background: @theme-color; border: none; color:white;
-            }
-            .placeholder(#FFF);
-            //.placeholder(input:focus, @theme-color);
-            input:focus { background: white; color: @theme-color; }
-        }
+    padding:5px 0px; color:white; 
+
+    // Updated to use a table layout for easier maneuvering
+    table {
+        width: @header-width; margin:0px auto;
+        img { height: @header-height; width:auto; }
+        td:first-child, td:last-child { width:140px; }
+        td { text-align:center; }
+        a { .reset-a(); }
+        input { width:100px; background: @theme-color; border: none; color:white; }
+        .placeholder(#FFF);
+        input:focus { background: white; color: @theme-color; }
     }
 }
 
@@ -138,7 +131,9 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             .close { position:absolute; top: @actions-height / 2 - 8px; right: 2px; font-size:16px; display:inline-block; height:100%; cursor:pointer; }
         }
 
+        .filter:hover { .menu-container { display: block; }}
         .filter {
+            cursor:pointer;
             min-width:11em;
             float:left; white-space: nowrap;
             position:relative;
@@ -155,7 +150,18 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
                 display:inline-block; z-index:100;
             }
 
-            .show-menu:hover~.menu, .menu:hover { display:block; }
+            .show-menu:hover~.menu-container, .menu-container:hover { display:block; }
+            .menu-container {
+                display:none;
+                // Ensures the arrow displays on the right side
+                .right-align {
+                    overflow:auto;
+                    .arrow-up { float:right; }
+                }
+
+                z-index: 10000;
+                position:absolute; right:0px; top:@actions-height - 1px;
+            }
             i {
                 display:inline-block;
                 cursor:pointer;
@@ -167,10 +173,8 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             // Dropdown menus
             .menu {
                 .reset-ul();
-                z-index: 10000;
-                display:none; position:absolute; right:0px;
                 li { padding:2px 6px; text-align:center; white-space: nowrap; }
-                li a { color: inherit; text-decoration: none; text-transform: uppercase; }
+                li a { color: inherit; text-decoration: none; text-transform: uppercase; display:block; width:100%; height:100%; }
             }
         }
 
@@ -190,6 +194,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             .menu { background: @accent-yellow; color:white; }
             background: @accent-yellow; color:white;
             .arrow { border-left-color: @accent-yellow;  }
+            .arrow-up { border-bottom-color: @accent-yellow; }
             border:1px solid lighten(@accent-yellow, 10%);
         }
         input.yellow { border-color: @accent-yellow; }
@@ -199,6 +204,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             .menu { background: @accent-green; color:white; }
             background: @accent-green; color:white;
             .arrow { border-left-color: @accent-green;  }
+            .arrow-up { border-bottom-color: @accent-green; }
             border:1px solid lighten(@accent-green, 10%);
         }
         input.green { border-color: @accent-green; }
@@ -208,6 +214,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             .menu { background: @accent-red; color:white; }
             background: @accent-red; color:white;
             .arrow { border-left-color: @accent-red;  }
+            .arrow-up { border-bottom-color: @accent-red; }
             border:1px solid lighten(@accent-red, 10%);
         }
         input.red { border-color: @accent-red; }

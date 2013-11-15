@@ -5,7 +5,6 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
   $scope.categories = [];
   $scope.form = {};
 
-  // @TODO: preview of image
   $scope.preload_image = function(el) {
 
     var image = el.files[0];
@@ -18,6 +17,7 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
         headers: {'Content-Type': undefined },
         transformRequest: angular.identity
     }).success(function(result) {
+        // Set the value of the photo
         $scope.form.photo = result.src;
         console.log($scope.form.photo);
     });

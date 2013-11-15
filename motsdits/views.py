@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 from django.contrib.auth import logout as do_logout
+from django.contrib.auth.decorators import login_required
 
 
 def homepage(request):
@@ -13,6 +14,12 @@ def homepage(request):
 def motdit(request, motdit):
     '''Renders a motdit page'''
     return render(request, 'motdit.html')
+
+
+@login_required
+def create_motdit(request):
+    '''Renders a motdit page'''
+    return render(request, 'create-motdit.html')
 
 
 def feed(request, username=None):
