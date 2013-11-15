@@ -3,8 +3,11 @@ from django.conf.urls import url, patterns, include
 from django.contrib import admin
 admin.autodiscover()
 
-from django.contrib.sites.models import Site
-admin.site.unregister(Site)
+try:
+    from django.contrib.sites.models import Site
+    admin.site.unregister(Site)
+except:
+    pass
 
 urlpatterns = patterns(
 

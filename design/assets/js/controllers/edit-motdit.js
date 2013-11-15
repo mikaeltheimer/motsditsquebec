@@ -3,10 +3,9 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 
   $scope.categories = [];
-  $scope.subfilters = {};
+  $scope.form = {};
 
-  //$scope.image_url = null;
-
+  // @TODO: preview of image
   $scope.preload_image = function(el) {
 
     var image = el.files[0];
@@ -16,20 +15,25 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
     console.log("Uploading... " + image.name);
 
     $http.post('/api/v1/photos/upload/tmp', formData, {
-        headers: { 'Content-Type': false },
+        headers: {'Content-Type': undefined },
         transformRequest: angular.identity
     }).success(function(result) {
-        $scope.image_url = result.src;
-        console.log($scope.image_url);
+        $scope.form.photo = result.src;
+        console.log($scope.form.photo);
+    });
+  };
+
+  $scope.submit_form = function(){
+    console.log("Submitting a new mot-dit...");
+    $http.post('/api/v1/motsdits/new', $scope.form).success(function(result){
+      console.log('Success!!');
     });
   };
 
   // Load the categories list
   $http.get('/api/v1/categories/').success(function(response){
     $scope.categories = response.results;
-    $scope.category = $scope.categories[0];
+    $scope.form.category = $scope.categories[0];
   });
-
-  // @TODO: Load all the subfilters
 
 });

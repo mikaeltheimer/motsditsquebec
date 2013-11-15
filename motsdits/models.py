@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 import mixins
 from datetime import datetime
 
-__all__ = ['Category', 'MotDit', 'Photo', 'Opinion', 'UserGuide', 'UserProfile']
+__all__ = ['Category', 'Subfilter', 'MotDit', 'Photo', 'Opinion', 'UserGuide', 'UserProfile']
 
 FORMAT_CHOICES = (
     ('H', 'HTML'),
@@ -25,7 +25,7 @@ class BaseModel(models.Model):
     # Meta information
     created = models.DateTimeField('date created', default=datetime.utcnow)
     created_by = models.ForeignKey(User, null=True)
-    approved = models.BooleanField()
+    approved = models.BooleanField(default=True)
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -49,7 +49,6 @@ class Category(BaseModel):
     # Category name
     name = models.CharField(max_length=200)
     slug = models.SlugField(null=True)
-    parent = models.ForeignKey('self', blank=True, null=True)
 
     def save(self, **kwargs):
         '''Saves a unique slug for the category'''
@@ -62,13 +61,41 @@ class Category(BaseModel):
 
 
 class CategoryAdmin(BaseModelAdmin):
-    list_display = ('name', 'parent_name')
+    list_display = ('name', 'slug')
 
     def parent_name(self, obj):
         return obj.parent.name if obj.parent else None
 
 # Register in the admin
 admin.site.register(Category, CategoryAdmin)
+
+
+class Subfilter(BaseModel):
+    '''A sub-filter'''
+
+    name = models.CharField(max_length=200)
+    slug = models.SlugField(null=True)
+    category = models.ForeignKey(Category)
+
+    def save(self, **kwargs):
+        '''Ensure a unique slug'''
+        if not self.slug:
+            mixins.unique_slugify(self, self.name)
+        return super(Subfilter, self).save()
+
+    def __str__(self):
+        return self.name
+
+
+class SubfilterAdmin(BaseModelAdmin):
+    list_display = ('name', 'slug', 'category_name', )
+    fields = ('name', 'category', )
+
+    def category_name(self, obj):
+        return obj.category.name if obj.category else None
+
+# Register in the admin
+admin.site.register(Subfilter, SubfilterAdmin)
 
 
 class Tag(BaseModel):
@@ -228,6 +255,9 @@ ACTIVITY_CHOICES = (
 
 class Activity(BaseModel):
     '''Activity objects represent any of a variety of actions in the application'''
+
+    class Meta:
+        verbose_name_plural = 'activities'
 
     # Maps the activity to any object in the database
     content_type = models.ForeignKey(ContentType)

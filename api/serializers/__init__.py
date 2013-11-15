@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from motsdits.models import Opinion, MotDit, Activity
+from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity
 import compact
 
 
@@ -20,6 +20,28 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=255)
     password2 = serializers.CharField(max_length=255)
     website = serializers.URLField()
+
+
+class SubfilterSerializer(serializers.ModelSerializer):
+    '''Creates a smaller version of a Subfilter object'''
+    class Meta:
+        model = Subfilter
+        fields = ('name', 'slug', 'id', )
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    '''Returns a full category object, including all subfilters'''
+
+    subfilters = serializers.SerializerMethodField('get_subfilters')
+
+    class Meta:
+        model = Category
+        depth = 1
+        fields = ('name', 'slug', 'subfilters', )
+
+    def get_subfilters(self, obj):
+        '''Returns a set of subfilters related to this object'''
+        return map(lambda o: compact.CompactSubfilterSerializer(o).data, Subfilter.objects.filter(category=obj))
 
 
 class OpinionSerializer(serializers.ModelSerializer):

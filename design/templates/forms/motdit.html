@@ -3,22 +3,23 @@
   <h3 class="faded">Commencez par choisir la categorie de ce que vous souhaitez partager</h3>
 
   <div class="select colored">
-    <select name="category" ng-model="category" ng-options="c.name for c in categories"></select>
+    <select name="category" ng-model="form.category" ng-options="c.name for c in categories"></select>
     <i class="icon icon-angle-down"></i>
   </div>
 
   <h3 class="faded">Entrez maintenant le titre du mot-dit pour lequel vous voulez partager un avis<br />ou un photo</h3>
 
-  <input type="text">
+  <input type="text" placeholder="Nom du Mot-dit (ex. Schwartz Montreal)">
 
-  <h3>Selectionnez le ou les filtres correspondant au mot-dit</h3>
+  <div class="subfilter" ng-show="form.category.subfilters">
+    <h3>Selectionnez le ou les filtres correspondant au mot-dit</h3>
 
-  <div class="select">
-    <select>
-      <option>Here is the first option</option>
-      <option>The second option</option>
-    </select>
-    <i class="icon icon-angle-down"></i>
+    <div class="select">
+      <select name="subfilter" ng-model="form.subfilter" ng-options="f.name for f in form.category.subfilters">
+        <option style="display:none" value="">-- Selectionnez un filtre --</option>
+      </select>
+      <i class="icon icon-angle-down"></i>
+    </div>
   </div>
 
   <hr>
@@ -30,11 +31,11 @@
 
   <h3>Indiquez l'adresse exacte du mot-dit</h3>
 
-  <input type="text" placeholder="Adresse">
+  <input type="text" placeholder="Adresse (ex. 1234 Rue Vraie)" ng-model="form.address">
 
   <h3>Entrez l'url du site-web du mot-dit</h3>
 
-  <input type="text" placeholder="Site-web">
+  <input type="text" placeholder="Site-web (ex. www.google.com)" ng-model="form.website">
 
   <hr>
 
@@ -43,14 +44,14 @@
     Donnez votre avis sur le mot-dit
   </h3>
 
-  <textarea placeholder="J'ai beaucoup aime car..."></textarea>
+  <textarea placeholder="J'ai beaucoup aime car..." ng-model="form.opinion"></textarea>
 
   <h3>
     <i class="icon icon-tag"></i>
     Entrez quelques mots-cles (tags) associes au mot-dit
   </h3>
 
-  <input type="text" placeholder="Ex. poutine, drole, sport, etc">
+  <input type="text" placeholder="Ex. poutine, drole, sport, etc" ng-model="form.tags">
 
   <div class="suggestions">
     Suggestions:
@@ -64,8 +65,9 @@
     Optionel: Ajoutez une photo a partir de...
   </h3>
 
-
-  <img ng-src="{{image_url}}"/> 
+  <div class="photo" ng-show="form.photo">
+    <img ng-src="{{form.photo}}" /> 
+  </div>
 
   <table class="photo-options">
     <tr>
@@ -79,7 +81,7 @@
   </table>
 
   <div class="submit">
-    <input type="submit" value="Publier">
+    <input type="submit" value="Publier" ng-click="submit_form()">
   </div>
 
 

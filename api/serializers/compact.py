@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from motsdits.models import Opinion, Category, Photo, MotDit
+from motsdits.models import Opinion, Category, Subfilter, Photo, MotDit
 
 import base
 
@@ -16,6 +16,13 @@ class CompactCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('name', 'slug', )
+
+
+class CompactSubfilterSerializer(serializers.ModelSerializer):
+    '''Creates a smaller version of a Subfilter object'''
+    class Meta:
+        model = Subfilter
+        fields = ('id', 'name', 'slug', )
 
 
 class CompactPhotoSerializer(serializers.ModelSerializer):

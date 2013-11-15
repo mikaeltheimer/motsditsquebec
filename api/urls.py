@@ -2,7 +2,7 @@ from django.conf.urls import url, patterns, include
 from django.contrib.auth.models import User
 from rest_framework import viewsets, routers
 
-from motsdits.models import Category, MotDit, Opinion, UserGuide, Activity
+from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity
 import views
 import serializers
 
@@ -16,6 +16,15 @@ class UserViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     '''Viewset for categories'''
     model = Category
+    serializer_class = serializers.CategorySerializer
+
+
+class SubfilterViewSet(viewsets.ModelViewSet):
+    '''Viewset for user guides'''
+    model = Subfilter
+    serializer_class = serializers.compact.CompactSubfilterSerializer
+    paginate_by = None
+    filter_fields = ('category', )
 
 
 class MotDitViewSet(viewsets.ModelViewSet):
@@ -48,6 +57,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'categories', CategoryViewSet)
+router.register(r'subfilters', SubfilterViewSet)
 router.register(r'motsdits', MotDitViewSet)
 router.register(r'opinions', OpinionViewSet)
 router.register(r'guides', GuideViewSet)
@@ -60,8 +70,13 @@ urlpatterns = patterns(
 
     # Overrides and custom urls
     url(r'v1/photos/upload/tmp', views.TempUploadView.as_view()),
+    # @TODO: this breaks REST, work out a better override / path
+    url(r'v1/motsdits/new', views.CreateNewMotDitView.as_view()),
 
+    # Basic API
     url(r'v1/', include(router.urls)),
+
+    # Authentication & registration
     url(r'auth/login/', views.LoginView.as_view()),
     url(r'auth/register/', views.RegisterView.as_view()),
     url(r'admin-auth/', include('rest_framework.urls', namespace='rest_framework'))

@@ -14,6 +14,9 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
 import os.path
+from uuid import uuid4
+
+from motsdits import models
 
 
 class LoginView(APIView):
@@ -73,13 +76,38 @@ class TempUploadView(APIView):
 
     @decorators.method_decorator(ensure_csrf_cookie)
     def post(self, request):
-        '''Accepts an uploaded file'''
+        '''Stores an uploaded file in our S3 temp folder'''
 
         # @TODO: check file size
         # @TODO: Perform the read incrementally to ensure we can't be overwhelmed
         path = default_storage.save(
-            'tmp/images/test.jpg',
+            'tmp/images/{}.jpg'.format(uuid4()),
             ContentFile(request.FILES['image'].read())
         )
 
         return Response({'src': os.path.join(settings.MEDIA_URL, path)}, status=status.HTTP_200_OK)
+
+
+class CreateNewMotDitView(APIView):
+    '''Creates a new Mot-dit from the full form, including any opinion / photo object related to it'''
+
+    renderer_classes = (JSONRenderer, )
+
+    @decorators.method_decorator(ensure_csrf_cookie)
+    def post(self, request):
+        '''Creates a new Mot-dit, with related content'''
+
+        raise NotImplemented
+        motdit = models.Motdit(
+
+        )
+
+        # Create an opinion object
+        if request.DATA.get('opinion').strip():
+            opinion = models.Opinion(
+
+            )
+
+        # Create a photo object
+        if request.DATA.get('photo').strip():
+            pass
