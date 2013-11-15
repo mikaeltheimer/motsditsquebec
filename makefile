@@ -2,6 +2,14 @@ LESS=design/assets/less
 CSS=design/assets/css
 JS=design/assets/js
 
+all:
+
+load-fixtures:
+	python manage.py loaddata motsdits/fixtures/*
+
+save-fixtures:
+	python manage.py dumpdata motsdits > motsdits/fixtures/testdata.json
+
 cleandb:
 	python manage.py sqlclear motsdits | python manage.py dbshell;
 	python manage.py syncdb;

@@ -164,7 +164,6 @@ INSTALLED_APPS = (
     'suit',
     'django_extensions',
     'south',
-    'sekizai',
 
     # MDQ Apps
     'motsdits',
