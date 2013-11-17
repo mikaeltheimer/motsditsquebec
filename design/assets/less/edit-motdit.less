@@ -27,7 +27,7 @@
 
     h3.faded { color: @grey-inactive; }
 
-    .select {
+    .select.single {
         width: @input-width; margin:0px auto; position:relative;
         border:1px solid @grey-inactive;
         cursor:pointer;
@@ -48,6 +48,12 @@
             position:absolute; right:10px; top:8px; z-index:10; font-size:20px;
             font-weight:bold; pointer-events:none;
         }
+    }
+
+    .select.multi {
+        width: @input-width; margin:0px auto; position:relative;
+        border:1px solid @grey-inactive; margin-bottom:1em;
+        select { width: @input-width; border:0px; }
     }
 
     input[type="text"] {

@@ -3,7 +3,7 @@
 
     <h3 class="faded">Commencez par choisir la categorie de ce que vous souhaitez partager</h3>
 
-    <div class="select colored">
+    <div class="select single colored">
       <select name="category" ng-model="form.category" ng-options="c.name for c in categories"></select>
       <i class="icon icon-angle-down"></i>
     </div>
@@ -15,11 +15,10 @@
     <div class="subfilter" ng-show="form.category.assoc_subfilters">
       <h3>Selectionnez le ou les filtres correspondant au mot-dit</h3>
 
-      <div class="select" ng-repeat="(type, values) in form.category.assoc_subfilters">
-        <select name="subfilter" ng-model="form.subfilters[type]" ng-options="f.name for f in values">
+      <div class="select multi" ng-repeat="(type, values) in form.category.assoc_subfilters">
+        <select name="subfilter" multiple ng-model="form.subfilters[type]" ng-options="f.name for f in values">
           <option style="display:none" value="">-- Selectionnez un {{ type }} --</option>
         </select>
-        <i class="icon icon-angle-down"></i>
       </div>
     </div>
 
