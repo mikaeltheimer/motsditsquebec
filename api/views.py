@@ -116,8 +116,12 @@ class CreateNewMotDitView(APIView):
         motdit.save()
 
         # Add the subfilters
-        for key, subfilter in request.DATA.get('subfilters', {}).iteritems():
-            motdit.subfilters.add(models.Subfilter.objects.get(id=subfilter['id']))
+        for key, subfilters in request.DATA.get('subfilters', {}).iteritems():
+            if not isinstance(subfilters, list):
+                subfilters = [subfilters]
+
+            for subfilter in subfilters:
+                motdit.subfilters.add(models.Subfilter.objects.get(id=subfilter['id']))
 
         # Create an opinion object
         if request.DATA.get('opinion').strip():
