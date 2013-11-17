@@ -12,12 +12,12 @@
 
     <input type="text" placeholder="Nom du Mot-dit (ex. Schwartz Montreal)" ng-model="form.name">
 
-    <div class="subfilter" ng-show="form.category.subfilters">
+    <div class="subfilter" ng-show="form.category.assoc_subfilters">
       <h3>Selectionnez le ou les filtres correspondant au mot-dit</h3>
 
-      <div class="select">
-        <select name="subfilter" ng-model="form.subfilter" ng-options="f.name for f in form.category.subfilters">
-          <option style="display:none" value="">-- Selectionnez un filtre --</option>
+      <div class="select" ng-repeat="(type, values) in form.category.assoc_subfilters">
+        <select name="subfilter" ng-model="form.subfilters[type]" ng-options="f.name for f in values">
+          <option style="display:none" value="">-- Selectionnez un {{ type }} --</option>
         </select>
         <i class="icon icon-angle-down"></i>
       </div>

@@ -5,7 +5,10 @@
     <div class="overlay add">
       Ajouter
       &nbsp;
-      <i class="icon icon-pencil"></i>
+      <a href="#modal-text" class="call-modal" title="Clicking this link shows the modal">
+        <i class="icon icon-pencil"></i>
+      </a>
+
       <i class="icon icon-camera"></i>
     </div>
 
@@ -70,4 +73,19 @@
       </div>
     </div>
   </div>
+
+
+      <section class="semantic-content" id="modal-text" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+          <div class="modal-inner">
+                  <header><h2 id="modal-label">Sample</h2></header>
+
+                  <div class="modal-content">
+                          <p>FORM GOES HERE.</p>
+                  </div>
+          </div>
+
+          <!-- Use Hash-Bang to maintain scroll position when closing modal -->
+          <a href="#!" class="modal-close" title="Close this modal"
+                            data-dismiss="modal">&times;</a>
+      </section>
 {% endverbatim %}

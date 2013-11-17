@@ -22,7 +22,7 @@ class CompactSubfilterSerializer(serializers.ModelSerializer):
     '''Creates a smaller version of a Subfilter object'''
     class Meta:
         model = Subfilter
-        fields = ('id', 'name', 'slug', )
+        fields = ('id', 'name', 'slug', 'subfilter_type', )
 
 
 class CompactPhotoSerializer(serializers.ModelSerializer):

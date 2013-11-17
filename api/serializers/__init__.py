@@ -26,7 +26,7 @@ class SubfilterSerializer(serializers.ModelSerializer):
     '''Creates a smaller version of a Subfilter object'''
     class Meta:
         model = Subfilter
-        fields = ('name', 'slug', 'id', )
+        fields = ('name', 'slug', 'id', 'subfilter_type', )
 
 
 class CategorySerializer(serializers.ModelSerializer):

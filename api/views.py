@@ -110,12 +110,14 @@ class CreateNewMotDitView(APIView):
             created_by=request.user,
             name=request.DATA['name'],
             website=request.DATA.get('website'),
-            address=request.DATA.get('address')
+            address=request.DATA.get('address'),
+            category=models.Category.objects.get(id=request.DATA['category']['id'])
         )
         motdit.save()
 
-        # Add the category
-        motdit.category.add(models.Category.objects.get(id=request.DATA['category']['id']))
+        # Add the subfilters
+        for key, subfilter in request.DATA.get('subfilters', {}):
+            motdit.category.add(models.Subfilter.objects.get(id=subfilter['id']))
 
         # Create an opinion object
         if request.DATA.get('opinion').strip():

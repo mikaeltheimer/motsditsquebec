@@ -3,7 +3,7 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
 
   $scope.categories = [];
-  $scope.form = {};
+  $scope.form = {subfilters: {}};
 
   $scope.preload_image = function(el) {
 
@@ -33,6 +33,25 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
   // Load the categories list
   $http.get('/api/v1/categories/').success(function(response){
     $scope.categories = response.results;
+
+    // Enumerates subfilters by type to show all available subfilters properly
+    angular.forEach($scope.categories, function(c, index){
+
+      var subfilters = {};
+      angular.forEach(c.subfilters, function(s){
+        // ensure the array exists;
+        if(!subfilters[s.subfilter_type]) subfilters[s.subfilter_type] = [];
+        // push the subfilter into the new dict
+        subfilters[s.subfilter_type].push(s);
+      });
+
+      console.log(subfilters);
+      $scope.categories[index].assoc_subfilters = subfilters;
+
+    });
+
+    console.log($scope.categories[0]);
+
     $scope.form.category = $scope.categories[0];
   });
 
