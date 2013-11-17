@@ -104,7 +104,7 @@ class MotDit(BaseModel):
     name = models.CharField(max_length=200)
     slug = models.SlugField(max_length=200, null=True)
     category = models.ForeignKey(Category, related_name='motdit', null=True)
-    subfilter = models.ManyToManyField(Subfilter, related_name='motdit')
+    subfilters = models.ManyToManyField(Subfilter, related_name='motdit')
 
     # Non-required information
     website = models.CharField(max_length=255, null=True)
