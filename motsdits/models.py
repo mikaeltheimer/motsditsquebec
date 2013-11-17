@@ -141,9 +141,12 @@ class MotDit(BaseModel):
                 raise MotDit.DoesNotExist("Address geolocation is out of date or not available")
         except MotDit.DoesNotExist:
             url = "http://maps.googleapis.com/maps/api/geocode/json?address={},QC&sensor=false".format(self.address.replace(' ', '+'))
-            geocoded = json.loads(requests.get(url).content)
-            self.geo.latitude = geocoded['results'][0]['geometry']['location']['lat']
-            self.geo.longitude = geocoded['results'][0]['geometry']['location']['lng']
+            try:
+                geocoded = json.loads(requests.get(url).content)
+                self.geo.latitude = geocoded['results'][0]['geometry']['location']['lat']
+                self.geo.longitude = geocoded['results'][0]['geometry']['location']['lng']
+            except Exception:
+                pass
 
         return super(MotDit, self).save()
 

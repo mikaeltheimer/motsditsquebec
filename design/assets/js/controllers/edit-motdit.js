@@ -25,9 +25,14 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
 
   $scope.submit_form = function(){
     console.log("Submitting a new mot-dit...");
-    $http.post('/api/v1/motsdits/new', $scope.form).success(function(result){
-      console.log('Success!!');
-    });
+    $http.post('/api/v1/motsdits/new', $scope.form).
+      success(function(result){
+        alert("Saved your motdit, redirecting to the page!");
+        $window.location.href = "/mot/" + result.motdit.slug;
+      }).
+      error(function(data, status){
+        alert("Error saving mot-dit " + status);
+      });
   };
 
   // Load the categories list
