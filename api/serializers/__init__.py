@@ -60,7 +60,8 @@ class MotDitSerializer(serializers.ModelSerializer):
     '''Ensures that related objects get serialized'''
 
     created_by = compact.CompactUserSerializer()
-    category = compact.CompactCategorySerializer(many=True)
+    category = compact.CompactCategorySerializer()
+    subfilters = compact.CompactSubfilterSerializer(many=True)
     recommendations = compact.CompactUserSerializer(many=True)
     top_photo = compact.CompactPhotoSerializer()
     top_opinion = compact.CompactOpinionSerializer()
@@ -68,7 +69,7 @@ class MotDitSerializer(serializers.ModelSerializer):
     class Meta:
         model = MotDit
         depth = 1
-        fields = ('id', 'created_by', 'created', 'category', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', )
+        fields = ('id', 'created_by', 'created', 'category', 'subfilters', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', )
         lookup_field = 'slug'
 
 

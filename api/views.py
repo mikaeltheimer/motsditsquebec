@@ -105,7 +105,7 @@ class CreateNewMotDitView(APIView):
         from pprint import pprint
         pprint(request.DATA)
 
-        # @TODO: Form validation
+        # @TODO: Form validation and rollback on failure
         motdit = models.MotDit(
             created_by=request.user,
             name=request.DATA['name'],
@@ -116,8 +116,8 @@ class CreateNewMotDitView(APIView):
         motdit.save()
 
         # Add the subfilters
-        for key, subfilter in request.DATA.get('subfilters', {}):
-            motdit.category.add(models.Subfilter.objects.get(id=subfilter['id']))
+        for key, subfilter in request.DATA.get('subfilters', {}).iteritems():
+            motdit.subfilters.add(models.Subfilter.objects.get(id=subfilter['id']))
 
         # Create an opinion object
         if request.DATA.get('opinion').strip():
