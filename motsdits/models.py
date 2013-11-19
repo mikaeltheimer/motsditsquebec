@@ -11,6 +11,8 @@ from datetime import datetime
 import json
 import requests
 
+from unidecode import unidecode
+
 __all__ = ['Category', 'Subfilter', 'MotDit', 'Photo', 'Opinion', 'UserGuide', 'UserProfile']
 
 FORMAT_CHOICES = (
@@ -140,8 +142,9 @@ class MotDit(BaseModel):
             if not obj or obj.address != self.address and self.address:
                 raise MotDit.DoesNotExist("Address geolocation is out of date or not available")
         except MotDit.DoesNotExist:
-            url = "http://maps.googleapis.com/maps/api/geocode/json?address={},QC&sensor=false".format(self.address.replace(' ', '+'))
             try:
+                addr = unidecode(self.address.replace(' ', '+'))
+                url = "http://maps.googleapis.com/maps/api/geocode/json?address={},QC&sensor=false".format(addr)
                 geocoded = json.loads(requests.get(url).content)
                 self.geo.latitude = geocoded['results'][0]['geometry']['location']['lat']
                 self.geo.longitude = geocoded['results'][0]['geometry']['location']['lng']
