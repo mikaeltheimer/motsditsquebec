@@ -10,9 +10,10 @@ from django.utils import decorators
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.conf import settings
 
+from django.db import transaction
+
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.core.files import File
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from urlparse import urlparse
@@ -102,74 +103,74 @@ class CreateNewMotDitView(APIView):
     def post(self, request):
         '''Creates a new Mot-dit, with related content'''
 
-        from pprint import pprint
-        pprint(request.DATA)
+        # Ensures that we don't create the motdit if something fails...
+        with transaction.atomic():
 
-        # @TODO: Form validation and rollback on failure
-        motdit = models.MotDit(
-            created_by=request.user,
-            name=request.DATA['name'],
-            website=request.DATA.get('website'),
-            address=request.DATA.get('address'),
-            category=models.Category.objects.get(id=request.DATA['category']['id'])
-        )
-        motdit.save()
-
-        # Add the subfilters
-        for key, subfilters in request.DATA.get('subfilters', {}).iteritems():
-            if not isinstance(subfilters, list):
-                subfilters = [subfilters]
-
-            for subfilter in subfilters:
-                motdit.subfilters.add(models.Subfilter.objects.get(id=subfilter['id']))
-
-        # Create an opinion object
-        if request.DATA.get('opinion').strip():
-            opinion = models.Opinion(
+            # @TODO: Form validation and rollback on failure
+            motdit = models.MotDit(
                 created_by=request.user,
-                motdit=motdit,
-                text=request.DATA['opinion']
+                name=request.DATA['name'],
+                website=request.DATA.get('website'),
+                address=request.DATA.get('address'),
+                category=models.Category.objects.get(id=request.DATA['category']['id'])
             )
-            opinion.save()
-            motdit.top_opinion = opinion
+            motdit.save()
 
-        # Create a photo object
-        if request.DATA.get('photo').strip():
+            # Add the subfilters
+            for key, subfilters in request.DATA.get('subfilters', {}).iteritems():
+                if not isinstance(subfilters, list):
+                    subfilters = [subfilters]
 
-            url = request.DATA['photo']
+                for subfilter in subfilters:
+                    motdit.subfilters.add(models.Subfilter.objects.get(id=subfilter['id']))
 
-            # Thanks to: http://stackoverflow.com/questions/1393202/django-add-image-in-an-imagefield-from-image-url
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(urllib2.urlopen(url).read())
-            img_temp.flush()
-
-            photo = models.Photo(
-                created_by=request.user,
-                motdit=motdit
-            )
-
-            photo.photo.save(
-                urlparse(url).path.split('/')[-1],
-                File(img_temp),
-                save=True
-            )
-
-            motdit.top_photo = photo
-
-        if request.DATA.get('tags').strip():
-            for tag_name in map(lambda x: x.strip(), request.DATA['tags'].split(',')):
-                tag, created = models.Tag.objects.get_or_create(
-                    slug=tag_name.lower(),
-                    defaults={'name': tag_name}
+            # Create an opinion object
+            if request.DATA.get('opinion').strip():
+                opinion = models.Opinion(
+                    created_by=request.user,
+                    motdit=motdit,
+                    text=request.DATA['opinion']
                 )
-                if created:
-                    tag.save()
-                # finally, add to the motdit
-                motdit.tags.add(tag)
+                opinion.save()
+                motdit.top_opinion = opinion
 
-        motdit.save()
+            # Create a photo object
+            if request.DATA.get('photo', '').strip():
 
-        return Response({
-            'success': True,
-            'motdit': serializers.compact.CompactMotDitSerializer(motdit).data
-        }, status=status.HTTP_200_OK)
+                url = request.DATA['photo']
+
+                # Thanks to: http://stackoverflow.com/questions/1393202/django-add-image-in-an-imagefield-from-image-url
+                img_temp = NamedTemporaryFile(delete=True)
+                img_temp.write(urllib2.urlopen(url).read())
+                img_temp.flush()
+
+                photo = models.Photo(
+                    created_by=request.user,
+                    motdit=motdit
+                )
+
+                photo.photo.save(
+                    urlparse(url).path.split('/')[-1],
+                    File(img_temp),
+                    save=True
+                )
+
+                motdit.top_photo = photo
+
+            if request.DATA.get('tags', '').strip():
+                for tag_name in map(lambda x: x.strip(), request.DATA['tags'].split(',')):
+                    tag, created = models.Tag.objects.get_or_create(
+                        slug=tag_name.lower(),
+                        defaults={'name': tag_name}
+                    )
+                    if created:
+                        tag.save()
+                    # finally, add to the motdit
+                    motdit.tags.add(tag)
+
+            motdit.save()
+
+            return Response({
+                'success': True,
+                'motdit': serializers.compact.CompactMotDitSerializer(motdit).data
+            }, status=status.HTTP_200_OK)

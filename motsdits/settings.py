@@ -18,7 +18,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'motsdits',
         'USER': 'stephen',
-        'PASSWORD': 'goose'
+        'PASSWORD': 'goose',
+        'OPTIONS': {'init_command': 'SET storage_engine=INNODB'},  # Improve performance once DB is settled by removing this
     },
     'postgres': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

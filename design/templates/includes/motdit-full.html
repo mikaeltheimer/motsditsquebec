@@ -5,11 +5,12 @@
     <div class="overlay add">
       Ajouter
       &nbsp;
-      <a href="#modal-text" class="call-modal" title="Clicking this link shows the modal">
+      <a href="#review-modal" class="call-modal" title="Ajouter un avis">
         <i class="icon icon-pencil"></i>
       </a>
-
-      <i class="icon icon-camera"></i>
+      <a href="#photo-modal" class="call-modal" title="Ajouter un photo">
+        <i class="icon icon-camera"></i>
+      </a>
     </div>
 
     <!-- Like button -->
@@ -73,19 +74,7 @@
       </div>
     </div>
   </div>
-
-
-      <section class="semantic-content" id="modal-text" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
-          <div class="modal-inner">
-                  <header><h2 id="modal-label">Sample</h2></header>
-
-                  <div class="modal-content">
-                          <p>FORM GOES HERE.</p>
-                  </div>
-          </div>
-
-          <!-- Use Hash-Bang to maintain scroll position when closing modal -->
-          <a href="#!" class="modal-close" title="Close this modal"
-                            data-dismiss="modal">&times;</a>
-      </section>
 {% endverbatim %}
+
+{% include "forms/review-modal.html" %}
+{% include "forms/photo-modal.html" %}
