@@ -5,6 +5,8 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
   $scope.categories = [];
   $scope.form = {subfilters: {}};
 
+  $scope.submit_disabled = true;
+
   $scope.preload_image = function(el) {
 
     var image = el.files[0];
@@ -13,18 +15,23 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
 
     console.log("Uploading... " + image.name);
 
+    $scope.submit_disabled = true;
+
     $http.post('/api/v1/photos/upload/tmp', formData, {
         headers: {'Content-Type': undefined },
         transformRequest: angular.identity
     }).success(function(result) {
         // Set the value of the photo
         $scope.form.photo = result.src;
-        console.log($scope.form.photo);
+        $scope.submit_disabled = false;
     });
   };
 
   $scope.submit_form = function(){
     console.log("Submitting a new mot-dit...");
+
+    $scope.submit_disabled = true;
+
     $http.post('/api/v1/motsdits/new', $scope.form).
       success(function(result){
         alert("Saved your motdit, redirecting to the page!");
@@ -32,6 +39,7 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
       }).
       error(function(data, status){
         alert("Error saving mot-dit " + status);
+        $scope.submit_disabled = false;
       });
   };
 
@@ -49,15 +57,12 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
         // push the subfilter into the new dict
         subfilters[s.subfilter_type].push(s);
       });
-
-      console.log(subfilters);
       $scope.categories[index].assoc_subfilters = subfilters;
 
     });
 
-    console.log($scope.categories[0]);
-
     $scope.form.category = $scope.categories[0];
+    $scope.submit_disabled = false;
   });
 
 });
