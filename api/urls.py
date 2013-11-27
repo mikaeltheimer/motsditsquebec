@@ -112,6 +112,20 @@ class MotDitViewSet(viewsets.ModelViewSet):
             motdit.save()
             return Response(serializer(opinion, context={'request': request}).data)
 
+    @action(methods=['POST'])
+    def recommend(self, request, slug=None):
+        '''Recommend the motdit'''
+
+        motdit = MotDit.objects.get(slug=slug)
+        serializer = serializers.compact.CompactUserSerializer
+
+        if request.DATA['recommend']:
+            motdit.recommendations.add(request.user)
+        else:
+            motdit.recommendations.remove(request.user)
+        motdit.save()
+        return Response({'user': serializer(request.user).data, 'recommended': request.DATA['recommend']})
+
 
 class OpinionViewSet(viewsets.ModelViewSet):
     '''Viewset for the Opinion model'''

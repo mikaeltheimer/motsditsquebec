@@ -1,6 +1,9 @@
 
 angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http, $window, $cookies, $timeout) {
 
+  // Pull the motdit from the URL
+  var motdit_id = (/mot\/([^\/\#\!]+)\/?/g).exec($window.location)[1];
+
   // Motdit data
   $scope.motdit = {};
   // Motdit reviews
@@ -35,9 +38,29 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http
 
   };
 
+  $scope.recommend = function(){
 
-  // Pull the motdit from the URL
-  var motdit_id = (/mot\/([^\/]+)\/?/g).exec($window.location)[1];
+    var new_state = !$scope.motdit.user_recommends;
+
+    console.log('/api/v1/motsdits/' + motdit_id + '/recommend/');
+
+    $http.post('/api/v1/motsdits/' + motdit_id + '/recommend/', {'recommend': new_state}).
+      success(function(data){
+        if(data.recommended){
+          console.log("Recommended motdit!");
+          $scope.motdit.recommendations.unshift(data.user);
+          $scope.motdit.user_recommends = true;
+        }else{
+          console.log("Un-recommended motdit!");
+          // @TODO: actually remove what we don't want to have in there
+          $scope.motdit.recommendations.shift();
+          $scope.motdit.user_recommends = false;
+        }
+      }).
+      error(function(data){
+        console.log("Error recommending motdit");
+    });
+  };
 
   // Load the motdit
   $http.get('/api/v1/motsdits/' + motdit_id + '/?format=json').success(function(data) {

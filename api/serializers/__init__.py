@@ -77,11 +77,12 @@ class MotDitSerializer(serializers.ModelSerializer):
     top_opinion = compact.CompactOpinionSerializer()
 
     top_photo = serializers.SerializerMethodField('get_top_photo')
+    user_recommends = serializers.SerializerMethodField('get_user_recommends')
 
     class Meta:
         model = MotDit
         depth = 1
-        fields = ('id', 'created_by', 'created', 'category', 'subfilters', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', )
+        fields = ('id', 'created_by', 'created', 'category', 'subfilters', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', 'user_recommends', )
         lookup_field = 'slug'
 
     def get_top_photo(self, obj):
@@ -91,6 +92,11 @@ class MotDitSerializer(serializers.ModelSerializer):
             if self.context.get('request'):
                 data['user_likes'] = self.context['request'].user in obj.top_photo.likes.all()
             return data
+
+    def get_user_recommends(self, obj):
+        '''Determines whether the current user recommends this motdit'''
+        if self.context.get('request'):
+            return self.context['request'].user in obj.recommendations.all()
 
 
 class FullUserSerializer(serializers.ModelSerializer):
