@@ -1,10 +1,14 @@
 from django.conf.urls import url, patterns, include
 from django.contrib.auth.models import User
 from rest_framework import viewsets, routers
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
-from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity
+from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
 import views
 import serializers
+from functions import temp_file_from_url
+from urlparse import urlparse
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -34,12 +38,78 @@ class MotDitViewSet(viewsets.ModelViewSet):
     lookup_field = 'slug'
     filter_fields = ('category__id', )
 
+    @action(methods=['GET', 'POST'])
+    def photos(self, request, slug=None):
+        '''Allows adding / viewing of photos'''
+
+        motdit = MotDit.objects.get(slug=slug)
+        serializer = serializers.PhotoSerializer
+
+        if request.method == 'GET':
+            return Response(map(lambda x: serializer(x).data, motdit.photos.all()))
+
+        elif request.method == 'POST':
+
+            url = request.DATA['photo']
+
+            photo = Photo(created_by=request.user, motdit=motdit)
+
+            photo.photo.save(
+                urlparse(url).path.split('/')[-1],
+                temp_file_from_url(url),
+                save=True
+            )
+
+            motdit.top_photo = photo
+            motdit.save()
+
+            return Response(serializer(photo).data)
+
+    @action(methods=['GET', 'POST'])
+    def opinions(self, request, slug=None):
+        '''Allows adding / viewing of opinions'''
+
+        motdit = MotDit.objects.get(slug=slug)
+        serializer = serializers.OpinionSerializer
+
+        if request.method == 'GET':
+            return Response({'results': map(lambda x: serializer(x, context={'request': request}).data, motdit.opinions.all())})
+
+        elif request.method == 'POST':
+
+            opinion = Opinion(
+                created_by=request.user,
+                motdit=motdit,
+                text=request.DATA['opinion']
+            )
+            opinion.save()
+            motdit.top_opinion = opinion
+            motdit.save()
+            return Response(serializer(opinion, context={'request': request}).data)
+
 
 class OpinionViewSet(viewsets.ModelViewSet):
     '''Viewset for the Opinion model'''
     model = Opinion
     serializer_class = serializers.OpinionSerializer
     filter_fields = ('created_by__username', 'motdit__slug', )
+
+    @action(methods=['POST'])
+    def vote(self, request, pk=None):
+        '''Register a vote'''
+
+        opinion = Opinion.objects.get(pk=pk)
+
+        if request.DATA['approve']:
+            opinion.approvals.add(request.user)
+            opinion.dislikes.remove(request.user)
+        else:
+            opinion.dislikes.add(request.user)
+            opinion.approvals.remove(request.user)
+
+        opinion.save()
+
+        return Response({'success': True})
 
 
 class GuideViewSet(viewsets.ModelViewSet):

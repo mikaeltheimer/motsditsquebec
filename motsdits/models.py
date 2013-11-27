@@ -133,7 +133,7 @@ class MotDit(BaseModel):
         if not self.slug:
             mixins.unique_slugify(self, self.name)
 
-        if not self.website.startswith('http'):
+        if self.website and not self.website.startswith('http'):
             self.website = 'http://{}'.format(self.website)
 
         # Re-geocode, if necessary
@@ -161,25 +161,36 @@ class Opinion(BaseModel):
     '''An opinion about a specific mot-dit'''
 
     # Mot-dit this opinion relates to
-    motdit = models.ForeignKey(MotDit, related_name="opinion")
+    motdit = models.ForeignKey(MotDit, related_name="opinions")
 
     # Actual text of the opinion
     text = models.TextField()
     format = models.CharField(max_length=1, choices=FORMAT_CHOICES, default='T')
 
     # Social information
-    approvals = models.ManyToManyField(User, related_name="user")
+    approvals = models.ManyToManyField(User, related_name="approvals")
+    dislikes = models.ManyToManyField(User, related_name="dislikes")
+
+    score = models.IntegerField(default=0)
 
     def __unicode__(self):
         '''Stringifies an opinion'''
         return ' '.join(self.text.split(' ')[:10]) + ('...' if len(self.text.split(' ')) > 10 else '')
+
+    def save(self, *args, **kwargs):
+        '''recalculate score on save'''
+        try:
+            self.score = self.approvals.count() - self.dislikes.count()
+        except ValueError:
+            pass
+        return super(Opinion, self).save(*args, **kwargs)
 
 
 class Photo(BaseModel):
     '''A photo related to a specific mot-dit'''
 
     # Mot-dit this photo refers to
-    motdit = models.OneToOneField(MotDit)
+    motdit = models.ForeignKey(MotDit, related_name='photos')
 
     # File upload field
     photo = models.FileField(upload_to='motsdits')

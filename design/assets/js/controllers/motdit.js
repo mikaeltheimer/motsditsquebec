@@ -8,6 +8,17 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http
   // Related objects
   $scope.related = [];
 
+  $scope.vote = function(opinion, approve){
+    $http.post('/api/v1/opinions/' + opinion.id + '/vote/', {'approve': approve}).
+      success(function(data){
+        console.log("Vote accepted!");
+        opinion.user_vote = approve;
+      }).
+      error(function(data){
+        console.log("Error registering vote...");
+      });
+  };
+
   // Pull the motdit from the URL
   var motdit_id = (/mot\/([^\/]+)\/?/g).exec($window.location)[1];
 
@@ -22,7 +33,7 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http
   });
 
   // Load reviews
-  $http.get('/api/v1/opinions/?motdit__slug=' + motdit_id + '&format=json').success(function(data) {
+  $http.get('/api/v1/motsdits/' + motdit_id + '/opinions/?format=json').success(function(data) {
     $scope.reviews = data.results;
   });
 

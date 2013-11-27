@@ -14,10 +14,10 @@ from django.db import transaction
 
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
+
 from urlparse import urlparse
-import urllib2
+
+from functions import temp_file_from_url
 
 import os.path
 from uuid import uuid4
@@ -138,11 +138,7 @@ class CreateNewMotDitView(APIView):
             if request.DATA.get('photo', '').strip():
 
                 url = request.DATA['photo']
-
-                # Thanks to: http://stackoverflow.com/questions/1393202/django-add-image-in-an-imagefield-from-image-url
-                img_temp = NamedTemporaryFile(delete=True)
-                img_temp.write(urllib2.urlopen(url).read())
-                img_temp.flush()
+                photo_file = temp_file_from_url(url)
 
                 photo = models.Photo(
                     created_by=request.user,
@@ -151,7 +147,7 @@ class CreateNewMotDitView(APIView):
 
                 photo.photo.save(
                     urlparse(url).path.split('/')[-1],
-                    File(img_temp),
+                    photo_file,
                     save=True
                 )
 

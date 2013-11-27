@@ -1,0 +1,24 @@
+// Basic modal form elements
+
+@import "thirdparty/elements.less";
+
+@import "includes/block.less";
+@import "includes/mixins.less";
+
+@import "includes/forms/buttons.less";
+
+@input-font-size: 16px;
+
+.modal {
+
+    .mixin-photo-buttons(100%);
+    .mixin-submit-btn(100%);
+
+    .submit { margin-bottom: 0.5em; }
+
+    textarea {
+        width:100%; height: @input-font-size * 5; font-size: @input-font-size;
+        margin:0px auto; display:block; border:1px solid @grey-inactive;
+    }
+}
+

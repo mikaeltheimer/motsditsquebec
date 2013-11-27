@@ -28,6 +28,10 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
   };
 
   $scope.submit_form = function(){
+
+    if($scope.submit_disabled)
+      return console.log("Can't submit...");
+
     console.log("Submitting a new mot-dit...");
 
     $scope.submit_disabled = true;

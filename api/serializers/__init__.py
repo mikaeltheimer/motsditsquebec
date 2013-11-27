@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity
+from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity, Photo
 import compact
 
 
@@ -49,11 +49,22 @@ class OpinionSerializer(serializers.ModelSerializer):
 
     created_by = compact.CompactUserSerializer()
     motdit = compact.CompactMotDitSerializer()
+    user_vote = serializers.SerializerMethodField('get_user_vote')
 
     class Meta:
         model = Opinion
         depth = 1
-        fields = ('created_by', 'motdit', 'text', )
+        fields = ('created_by', 'user_vote', 'motdit', 'text', 'id', )
+
+    def get_user_vote(self, obj):
+        '''Retrieves the current acting user's vote about this opinion'''
+        if self.context.get('request'):
+            # @TODO: use a filter() call instead
+            if self.context['request'].user in obj.approvals.all():
+                return True
+            elif self.context['request'].user in obj.dislikes.all():
+                return False
+        return None
 
 
 class MotDitSerializer(serializers.ModelSerializer):
@@ -120,3 +131,20 @@ class ActivitySerializer(serializers.ModelSerializer):
             return 'Mot-Dit Aimee par:'
         elif obj.activity_type == 'motdit-comment':
             return 'Nouvelle Critique par:'
+
+
+class PhotoSerializer(serializers.ModelSerializer):
+    '''Creates a serialized version of a Photo object'''
+
+    s3_url = serializers.SerializerMethodField('get_s3_url')
+    created_by = compact.CompactUserSerializer()
+    motdit = compact.CompactMotDitSerializer()
+
+    class Meta:
+        model = Photo
+        fields = ('s3_url', 'created_by', 'motdit', )
+        depth = 1
+
+    def get_s3_url(self, obj):
+        '''Returns the amazon S3 url for a photo'''
+        return obj.photo.url

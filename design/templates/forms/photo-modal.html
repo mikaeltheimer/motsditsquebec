@@ -1,10 +1,27 @@
-<section class="semantic-content" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
-    <div class="modal-inner">
-      <header><h2 id="modal-label">Sample</h2></header>
-      <div class="modal-content">
-              <p>FORM GOES HERE.</p>
+{% verbatim %}
+  <section ng-controller="PhotoModalCtrl" class="modal semantic-content" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+      <div class="modal-inner">
+        <header><h2 id="modal-label">Ajouter un photo</h2></header>
+        <div class="modal-content">
+
+            <img ng-src="{{ form.photo }}">
+
+            <table class="photo-options">
+              <tr>
+                <td>
+                  <button id="photo-local">Ordinateur</button>
+                  <input type="file" accept="image/*" image="image" onchange="angular.element(this).scope().preload_image(this)" ng-model="image">
+                </td>
+                <td><button id="photo-facebook" disabled>Facebook</button></td>
+                <td><button id="photo-instagram" disabled>Instagram</button></td>
+              </tr>
+            </table>
+            <div class="submit">
+              <input type="submit" value="Publier" ng-click="submit_form()"> <!-- ng-disabled="{{ submit_disabled }}" -->
+            </div>
+        </div>
       </div>
-    </div>
-    <!-- Use Hash-Bang to maintain scroll position when closing modal -->
-    <a href="#!" class="modal-close" title="Close this modal" data-dismiss="modal">&times;</a>
-</section>
+      <!-- Use Hash-Bang to maintain scroll position when closing modal -->
+      <a href="#!" class="modal-close" title="Close this modal" data-dismiss="modal">&times;</a>
+  </section>
+{% endverbatim %}

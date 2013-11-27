@@ -5,7 +5,7 @@
     <div class="overlay add">
       Ajouter
       &nbsp;
-      <a href="#review-modal" class="call-modal" title="Ajouter un avis">
+      <a href="#opinion-modal" class="call-modal" title="Ajouter un avis">
         <i class="icon icon-pencil"></i>
       </a>
       <a href="#photo-modal" class="call-modal" title="Ajouter un photo">
@@ -55,7 +55,7 @@
           <tr>
             <td class="user">
               <div class="profile-image">
-                <img src="{{ review.created_by.gravatar }}" alt="{{ review.created_by.username }}" />
+                <img ng-src="{{ review.created_by.gravatar }}" alt="{{ review.created_by.username }}" />
               </div>
             </td>
           <td>
@@ -67,8 +67,8 @@
             </div>
           </td>
           <td class="thumbs">
-            <i class="icon icon-thumbs-up"></i>
-            <i class="icon icon-thumbs-down"></i>
+            <i class="icon icon-thumbs-up" ng-class="{'voted': review.user_vote == true}" ng-click="vote(review, true);"></i>
+            <i class="icon icon-thumbs-down" ng-class="{'voted': review.user_vote == false}" ng-click="vote(review, false);"></i>
           </td></tr>
         </table>
       </div>
@@ -76,5 +76,5 @@
   </div>
 {% endverbatim %}
 
-{% include "forms/review-modal.html" %}
+{% include "forms/opinion-modal.html" %}
 {% include "forms/photo-modal.html" %}

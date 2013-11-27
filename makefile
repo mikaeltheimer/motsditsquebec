@@ -34,6 +34,10 @@ assets:
 	lessc $(LESS)/edit-motdit.less $(CSS)/edit-motdit.css
 	@csso $(CSS)/edit-motdit.css $(CSS)/edit-motdit.min.css
 
+# Modal custom css
+	lessc $(LESS)/form-modal.less $(CSS)/form-modal.css
+	@csso $(CSS)/form-modal.css $(CSS)/form-modal.min.css
+
 # Creates a usable requirements file
 requirements:
 	pip freeze | sed -e '/git-remote-helpers/ d' > requirements.txt

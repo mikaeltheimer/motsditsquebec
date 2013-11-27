@@ -1,0 +1,14 @@
+<section ng-controller="OpinionModalCtrl" class="modal semantic-content" id="opinion-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+    <div class="modal-inner">
+      <header><h2 id="modal-label">Donner votre avis</h2></header>
+      <div class="modal-content">
+        <textarea placeholder="J'ai beaucoup aime car..." ng-model="form.opinion"></textarea>
+      </div>
+
+       <div class="submit">
+        <input type="submit" value="Publier" ng-click="submit_form()"> <!-- ng-disabled="{{ submit_disabled }}" -->
+      </div>
+    </div>
+    <!-- Use Hash-Bang to maintain scroll position when closing modal -->
+    <a href="#!" class="modal-close" title="Close this modal" data-dismiss="modal">&times;</a>
+</section>
