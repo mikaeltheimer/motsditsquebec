@@ -14,7 +14,7 @@
     </div>
 
     <!-- Like button -->
-    <div class="overlay heart"><i class="icon icon-heart"></i></div>
+    <div class="overlay heart"><i class="icon icon-heart" ng-class="{'liked': motdit && motdit.top_photo.user_likes}" ng-click="like_photo(motdit.top_photo)"></i></div>
 
     <!-- Actions overlay -->
     <div class="overlay actions">

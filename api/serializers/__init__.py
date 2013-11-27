@@ -74,14 +74,23 @@ class MotDitSerializer(serializers.ModelSerializer):
     category = compact.CompactCategorySerializer()
     subfilters = compact.CompactSubfilterSerializer(many=True)
     recommendations = compact.CompactUserSerializer(many=True)
-    top_photo = compact.CompactPhotoSerializer()
     top_opinion = compact.CompactOpinionSerializer()
+
+    top_photo = serializers.SerializerMethodField('get_top_photo')
 
     class Meta:
         model = MotDit
         depth = 1
         fields = ('id', 'created_by', 'created', 'category', 'subfilters', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', )
         lookup_field = 'slug'
+
+    def get_top_photo(self, obj):
+        '''Gets the top photo, adds some additional info'''
+        if obj.top_photo:
+            data = compact.CompactPhotoSerializer(obj.top_photo).data
+            if self.context.get('request'):
+                data['user_likes'] = self.context['request'].user in obj.top_photo.likes.all()
+            return data
 
 
 class FullUserSerializer(serializers.ModelSerializer):
@@ -142,7 +151,7 @@ class PhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
-        fields = ('s3_url', 'created_by', 'motdit', )
+        fields = ('id', 's3_url', 'created_by', 'motdit', )
         depth = 1
 
     def get_s3_url(self, obj):

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, routers
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.http import Http404
 
 from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
 import views
@@ -31,12 +32,36 @@ class SubfilterViewSet(viewsets.ModelViewSet):
     filter_fields = ('category', )
 
 
+class PhotoViewSet(viewsets.ModelViewSet):
+    '''Viewset for photos'''
+    model = Photo
+    serializer_class = serializers.PhotoSerializer
+
+    @action(methods=['POST'])
+    def like(self, request, pk=None):
+        '''Like a photo'''
+
+        photo = Photo.objects.get(pk=pk)
+        if request.DATA.get('like'):
+            photo.likes.add(request.user)
+        else:
+            photo.likes.remove(request.user)
+        photo.save()
+        return Response({'success': True})
+
+
 class MotDitViewSet(viewsets.ModelViewSet):
     '''Viewset for Mot-dit objects'''
     model = MotDit
     serializer_class = serializers.MotDitSerializer
     lookup_field = 'slug'
     filter_fields = ('category__id', )
+
+    def list(self, request, *args, **kwargs):
+        '''Ensures request gets passed along from mixins.ListModelMixin'''
+
+        self.request = request
+        return super(viewsets.ModelViewSet, self).list(self, request, *args, **kwargs)
 
     @action(methods=['GET', 'POST'])
     def photos(self, request, slug=None):
@@ -132,6 +157,7 @@ router.register(r'motsdits', MotDitViewSet)
 router.register(r'opinions', OpinionViewSet)
 router.register(r'guides', GuideViewSet)
 router.register(r'activities', ActivityViewSet)
+router.register(r'photos', PhotoViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.

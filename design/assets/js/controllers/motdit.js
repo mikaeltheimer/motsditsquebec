@@ -8,6 +8,7 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http
   // Related objects
   $scope.related = [];
 
+  // Vote on an opinion
   $scope.vote = function(opinion, approve){
     $http.post('/api/v1/opinions/' + opinion.id + '/vote/', {'approve': approve}).
       success(function(data){
@@ -18,6 +19,22 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http
         console.log("Error registering vote...");
       });
   };
+
+  // Like the currently displaying photo (presently uses top_photo)
+  $scope.like_photo = function(photo){
+    var new_state = !photo.user_likes;
+
+    $http.post('/api/v1/photos/' + photo.id + '/like/', {'like': new_state}).
+      success(function(data){
+        console.log("Photo like swapped!");
+        photo.user_likes = new_state;
+      }).
+      error(function(data){
+        console.log("Error registering vote...");
+    });
+
+  };
+
 
   // Pull the motdit from the URL
   var motdit_id = (/mot\/([^\/]+)\/?/g).exec($window.location)[1];

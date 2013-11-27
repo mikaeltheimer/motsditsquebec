@@ -32,7 +32,7 @@ class CompactPhotoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Photo
-        fields = ('s3_url', )
+        fields = ('id', 's3_url', )
 
     def get_s3_url(self, obj):
         '''Returns the amazon S3 url for a photo'''
