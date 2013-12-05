@@ -181,6 +181,16 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             }
         }
 
+        .subfilter {
+            cursor:pointer;
+            float:left; white-space: nowrap;
+            position:relative;
+            height:@actions-height - 2px;
+            line-height:@actions-height - 2px;
+            padding-left:@actions-height / 2 + 5px;
+            padding-right:5px;
+        }
+
         // Input boxes
         input { 
             padding:0px 5px; margin:0px;
@@ -193,7 +203,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
         // Set up filter colors
 
         // Yellow filters
-        .filter.yellow {
+        .filter.yellow, .subfilter.yellow {
             .menu { background: @accent-yellow; color:white; }
             background: @accent-yellow; color:white;
             .arrow { border-left-color: @accent-yellow;  }
@@ -203,7 +213,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
         input.yellow { border-color: @accent-yellow; }
 
         // Green filters
-        .filter.green {
+        .filter.green, .subfilter.green {
             .menu { background: @accent-green; color:white; }
             background: @accent-green; color:white;
             .arrow { border-left-color: @accent-green;  }
@@ -213,7 +223,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
         input.green { border-color: @accent-green; }
 
         // Red filters
-        .filter.red {
+        .filter.red, .subfilter.red {
             .menu { background: @accent-red; color:white; }
             background: @accent-red; color:white;
             .arrow { border-left-color: @accent-red;  }

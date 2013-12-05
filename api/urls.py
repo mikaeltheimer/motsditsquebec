@@ -3,7 +3,9 @@ from django.contrib.auth.models import User
 from rest_framework import viewsets, routers
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.http import Http404
+import django_filters
+from django import forms
+from django.db.models import Q
 
 from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
 import views
@@ -50,16 +52,43 @@ class PhotoViewSet(viewsets.ModelViewSet):
         return Response({'success': True})
 
 
+class SubfilterFilter(django_filters.Filter):
+
+    extra = lambda f: {
+        'queryset': f.rel.to._default_manager.complex_filter(
+            f.rel.limit_choices_to),
+    }
+
+    field_class = forms.CharField
+
+    def filter(self, qs, value):
+        '''Filters and chains and values to the filter'''
+        for v in value.split(','):
+            try:
+                qs = qs.filter(subfilters=Subfilter.objects.get(pk=v))
+            except (ValueError, Subfilter.DoesNotExist):
+                continue
+        return qs
+
+
+class MotDitFilter(django_filters.FilterSet):
+
+    with_subfilters = SubfilterFilter(name='subfilters', label='subfilters')
+
+    class Meta:
+        model = MotDit
+        fields = ['category', 'with_subfilters']
+
+
 class MotDitViewSet(viewsets.ModelViewSet):
     '''Viewset for Mot-dit objects'''
     model = MotDit
     serializer_class = serializers.MotDitSerializer
     lookup_field = 'slug'
-    filter_fields = ('category__id', )
+    filter_class = MotDitFilter
 
     def list(self, request, *args, **kwargs):
         '''Ensures request gets passed along from mixins.ListModelMixin'''
-
         self.request = request
         return super(viewsets.ModelViewSet, self).list(self, request, *args, **kwargs)
 

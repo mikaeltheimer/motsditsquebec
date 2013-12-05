@@ -69,7 +69,7 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
     $scope.active_subfilters[type] = subfilter;
 
     // Dispatch a subfilter event
-    $rootScope.$broadcast("categorySubFilterEvent", {category: $scope.active_category, subfilters: $scope.active_subfilters});
+    $rootScope.$broadcast("categorySubFilterEvent", $scope.active_category, $scope.active_subfilters);
 
   };
 
@@ -78,6 +78,8 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
    * @TODO implement
    */
   $scope.clearSubfilter = function(subfilter){
+    delete $scope.active_subfilters[subfilter.subfilter_type];
+    $rootScope.$broadcast("categorySubFilterEvent", $scope.active_category, $scope.active_subfilters);
   };
 
 

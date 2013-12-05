@@ -49,9 +49,9 @@
       <div class="arrow"></div>
     </div-->
 
-    <div class="filter green" ng-repeat="subfilter in active_subfilters">
+    <div class="subfilter green" ng-repeat="subfilter in active_subfilters">
       <span class="name">{{ subfilter.name }}</span>
-      <span class="close">×</span>
+      <span class="close" ng-click="clearSubfilter(subfilter);">×</span>
       <div class="arrow"></div>
     </div>
     <!--div class="filter red">
