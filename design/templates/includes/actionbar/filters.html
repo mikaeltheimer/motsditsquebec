@@ -29,7 +29,7 @@
     <!--  Subfilters -->
     <div class="filter" ng-repeat="subfilter_group in available_subfilters">
       <span class="name">{{subfilter_group.name}}:</span>
-      <span class="datalist"></span>
+      <span class="datalist">{{ active_subfilters[subfilter_group.name].name }}</span>
       <i class="icon icon-angle-down show-menu"></i>
       <div class="menu-container" ng-hide="hide_menus">
         <ul id="type-menu" class="menu">
@@ -50,7 +50,7 @@
     </div-->
 
     <div class="filter green" ng-repeat="subfilter in active_subfilters">
-      <span class="name">subfilter.name</span>
+      <span class="name">{{ subfilter.name }}</span>
       <span class="close">×</span>
       <div class="arrow"></div>
     </div>
