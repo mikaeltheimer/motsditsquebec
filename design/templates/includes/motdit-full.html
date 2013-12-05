@@ -1,49 +1,57 @@
-{% verbatim %}
   <div class="photo">
 
-    <!-- Add content overlay -->
-    <div class="overlay add">
-      Ajouter
-      &nbsp;
-      <a href="#opinion-modal" class="call-modal" title="Ajouter un avis">
-        <i class="icon icon-pencil"></i>
-      </a>
-      <a href="#photo-modal" class="call-modal" title="Ajouter un photo">
-        <i class="icon icon-camera"></i>
-      </a>
-    </div>
 
-    <!-- Like button -->
-    <div class="overlay heart"><i class="icon icon-heart" ng-class="{'liked': motdit && motdit.top_photo.user_likes}" ng-click="like_photo(motdit.top_photo)"></i></div>
-
-    <!-- Actions overlay -->
-    <div class="overlay actions">
-      <div class="star">
-        <div class="circle yellow"><i class="icon icon-star" ng-click="recommend()"></i></div>
+    {% if user.is_authenticated %}
+      <!-- Add content overlay -->
+      <div class="overlay add">
+        Ajouter
+        &nbsp;
+        <a href="#opinion-modal" class="call-modal" title="Ajouter un avis">
+          <i class="icon icon-pencil"></i>
+        </a>
+        <a href="#photo-modal" class="call-modal" title="Ajouter un photo">
+          <i class="icon icon-camera"></i>
+        </a>
       </div>
-      <div class="connector"></div>
-      <span class="counter yellow">{{ motdit.recommendations.length }}</span>
-      <span class="dot">&middot;</span>
-      <span class="name" ng-show="motdit.name">{{ motdit.name }}</span>
-      <i class="icon icon-map-marker">
-        <span class="tooltip">Location<span class="caret"></span></span>
-      </i>
-      <i class="icon icon-link">
-        <span class="tooltip">Site-Web<span class="caret"></span></span>
-      </i>
-      <i class="icon icon-share-alt">
-        <span class="tooltip">Partager<span class="caret"></span></span>
-      </i>
-      <i class="icon icon-bookmark">
-        <span class="tooltip">Sauver<span class="caret"></span></span>
-      </i>
-    </div>
+
+      <!-- Like button -->
+      <div class="overlay heart">
+        <i class="icon icon-heart" ng-class="{'liked': motdit && motdit.top_photo.user_likes}" ng-click="like_photo(motdit.top_photo)">
+      </i></div>
+    {% endif %}
+
+    {% verbatim %}
+      <!-- Actions overlay -->
+      <div class="overlay actions">
+        <div class="star">
+          <div class="circle yellow"><i class="icon icon-star" ng-click="recommend()"></i></div>
+        </div>
+        <div class="connector"></div>
+        <span class="counter yellow">{{ motdit.recommendations.length }}</span>
+        <span class="dot">&middot;</span>
+        <span class="name" ng-show="motdit.name">{{ motdit.name }}</span>
+        <i class="icon icon-map-marker">
+          <span class="tooltip">Location<span class="caret"></span></span>
+        </i>
+        <i class="icon icon-link">
+          <span class="tooltip">Site-Web<span class="caret"></span></span>
+        </i>
+        <i class="icon icon-share-alt">
+          <span class="tooltip">Partager<span class="caret"></span></span>
+        </i>
+        <i class="icon icon-bookmark">
+          <span class="tooltip">Sauver<span class="caret"></span></span>
+        </i>
+      </div>
+    
 
     <!-- And the image! -->
     <img ng-src="{{ motdit.top_photo.s3_url }}" alt="{{ motdit.name }}" />
 
+    {% endverbatim %}
   </div>
 
+{% verbatim %}
   <!-- Reviews -->
   <div class="content">
     <div class="header">

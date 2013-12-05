@@ -150,6 +150,8 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
                 display:inline-block; z-index:100;
             }
 
+            // Hide on click
+            .show-menu:focus~.menu-container, .menu-container:focus { display:none !important; }
             .show-menu:hover~.menu-container, .menu-container:hover { display:block; }
             .menu-container {
                 display:none;

@@ -13,7 +13,7 @@
 
       <i class="icon icon-angle-down show-menu"></i>
 
-      <div class="menu-container">
+      <div class="menu-container" ng-hide="hide_menus">
         <div class="right-align">
           <div class="arrow-up"></div>
         </div>
@@ -27,30 +27,17 @@
     </div>
 
     <!--  Subfilters -->
-
-    <!-- Type subfilter -->
-    <div class="filter" ng-hide="!type_subfilters">
-      <span class="name">Type:</span>
+    <div class="filter" ng-repeat="subfilter_group in available_subfilters">
+      <span class="name">{{subfilter_group.name}}:</span>
       <span class="datalist"></span>
       <i class="icon icon-angle-down show-menu"></i>
-      <ul id="type-menu" class="menu">
-        <li ng-repeat="subfilter in type_subfilters">
-          <a href ng-click="addSubfilter(subfilter);">{{ subfilter.name }}</a>
-        </li>
-      </ul>
-      <div class="arrow"></div>
-    </div>
-
-    <!-- Time subfilter -->
-    <div class="filter" ng-hide="!time_subfilters">
-      <span class="name">Quand:</span>
-      <span class="datalist"></span>
-      <i class="icon icon-angle-down show-menu"></i>
-      <ul id="type-menu" class="menu">
-        <li ng-repeat="subfilter in time_subfilters">
-          <a href ng-click="addSubfilter(subfilter);">{{ subfilter.name }}</a>
-        </li>
-      </ul>
+      <div class="menu-container" ng-hide="hide_menus">
+        <ul id="type-menu" class="menu">
+          <li ng-repeat="subfilter in subfilter_group.subfilters">
+            <a href ng-click="setSubfilter(subfilter_group.name, subfilter);">{{ subfilter.name }}</a>
+          </li>
+        </ul>
+      </div>
       <div class="arrow"></div>
     </div>
 
@@ -62,11 +49,11 @@
       <div class="arrow"></div>
     </div-->
 
-    <!--div class="filter green" ng-hide="subfilter == null">
-      <span class="name">Some Filter</span>
+    <div class="filter green" ng-repeat="subfilter in active_subfilters">
+      <span class="name">subfilter.name</span>
       <span class="close">×</span>
       <div class="arrow"></div>
-    </div-->
+    </div>
     <!--div class="filter red">
       <i class="icon icon-map-marker"></i>
       <span class="close">×</span>
