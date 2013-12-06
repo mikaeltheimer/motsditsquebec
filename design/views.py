@@ -20,4 +20,4 @@ def defaultview(request, template):
         ('Downtown', 'downtown-montreal.jpg'),
     ]
 
-    return render(request, '{}.html'.format(template), {'reviews': reviews, 'mots': mots})
+    return render(request, '{0}.html'.format(template), {'reviews': reviews, 'mots': mots})

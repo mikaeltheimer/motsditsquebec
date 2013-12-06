@@ -87,7 +87,7 @@ class TempUploadView(APIView):
         # @TODO: check file size
         # @TODO: Perform the read incrementally to ensure we can't be overwhelmed
         path = default_storage.save(
-            'tmp/images/{}.jpg'.format(uuid4()),
+            'tmp/images/{0}.jpg'.format(uuid4()),
             ContentFile(request.FILES['image'].read())
         )
 

@@ -134,7 +134,7 @@ class MotDit(BaseModel):
             mixins.unique_slugify(self, self.name)
 
         if self.website and not self.website.startswith('http'):
-            self.website = 'http://{}'.format(self.website)
+            self.website = 'http://{0}'.format(self.website)
 
         # Re-geocode, if necessary
         try:
@@ -144,7 +144,7 @@ class MotDit(BaseModel):
         except MotDit.DoesNotExist:
             try:
                 addr = unidecode(self.address.replace(' ', '+'))
-                url = "http://maps.googleapis.com/maps/api/geocode/json?address={},QC&sensor=false".format(addr)
+                url = "http://maps.googleapis.com/maps/api/geocode/json?address={0},QC&sensor=false".format(addr)
                 geocoded = json.loads(requests.get(url).content)
                 self.geo.latitude = geocoded['results'][0]['geometry']['location']['lat']
                 self.geo.longitude = geocoded['results'][0]['geometry']['location']['lng']
@@ -200,7 +200,7 @@ class Photo(BaseModel):
 
     def __unicode__(self):
         '''Stringifies a photo for admin purposes'''
-        return "{} ({})".format(self.title, self.photo)
+        return "{0} ({1})".format(self.title, self.photo)
 
 
 class UserGuide(BaseModel):
