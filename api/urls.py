@@ -81,10 +81,12 @@ class SortingFilter(django_filters.Filter):
         if value.strip():
             values = map(lambda x: x.strip(), value.split(','))
             # @TODO: This is a quick hack to get recommendation sorting working
+
             if value.strip('-') == 'recommendations':
                 qs.annotate(recommendation_count=Count('recommendations')).order_by(value + '_count')
             else:
                 qs = qs.order_by(*values)
+
         return qs
 
 
