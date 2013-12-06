@@ -7,6 +7,7 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
   // Set the default filter
   $scope.active_category = {"id": 0, "name": "Toutes Categories"};
   $scope.active_subfilters = {};
+  $scope.active_motdit = null;
 
   $scope.available_subfilters = {};
   $scope.categories = [$scope.active_category];
@@ -21,6 +22,25 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
   });
 
   /**
+   * Sets the active category and the related subfilters
+   */
+  var activateCategory = function(category){
+    $scope.active_category = category;
+    angular.forEach($scope.active_category.subfilters, function(subfilter){
+      if(!$scope.available_subfilters[subfilter.subfilter_type])
+        $scope.available_subfilters[subfilter.subfilter_type] = {name: subfilter.subfilter_type, subfilters: []};
+      $scope.available_subfilters[subfilter.subfilter_type].subfilters.push(subfilter);
+    });
+  };
+
+  /**
+   * Sends a categoryFilter event to make all active feeds refresh
+   */
+  var refresh = function(){
+    $rootScope.$broadcast("categoryFilterEvent", $scope.active_category, $scope.active_subfilters, $scope.ordering);
+  };
+
+  /**
    * Hides menus after changing category
    */
   $scope.hideMenus = function(){
@@ -30,10 +50,6 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
         $scope.hide_menus = false;
       });
     }, 500);
-  };
-
-  var refresh = function(){
-    $rootScope.$broadcast("categoryFilterEvent", $scope.active_category, $scope.active_subfilters, $scope.ordering);
   };
 
   /**
@@ -51,23 +67,11 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
     $scope.hideMenus();
 
-    // Set the active category
-
-    // Set up the new filter
-    $scope.active_category = category;
+    // Reset subfilters
     $scope.active_subfilters = {};
-
-    // Set up subfilters
     $scope.available_subfilters = {};
-
-    // Populate the available subfilters
-    angular.forEach($scope.active_category.subfilters, function(subfilter){
-      if(!$scope.available_subfilters[subfilter.subfilter_type])
-        $scope.available_subfilters[subfilter.subfilter_type] = {name: subfilter.subfilter_type, subfilters: []};
-      $scope.available_subfilters[subfilter.subfilter_type].subfilters.push(subfilter);
-    });
-
-    // Emit the event
+    activateCategory(category);
+    // Send a refresh event to the application
     refresh();
 
   };
@@ -75,7 +79,6 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
   /**
    * Choose a subfilter to show
-   * @TODO implement
    */
   $scope.setSubfilter = function(type, subfilter){
 
@@ -88,13 +91,27 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
   /** 
    * Remove the active subfilter
-   * @TODO implement
    */
   $scope.clearSubfilter = function(subfilter){
     delete $scope.active_subfilters[subfilter.subfilter_type];
     // Emit the event
     refresh();
   };
+
+  /**
+   * Event to auto-set the filters (for the mots-dit view)
+   */
+  $scope.$on('setMotDitEvent', function(e, motdit){
+
+    if(motdit.category){
+      activateCategory(motdit.category);
+      angular.forEach(motdit.subfilters, function(value){
+        $scope.active_subfilters[value.type] = value;
+      });
+    }
+    $scope.active_motdit = motdit;
+    refresh();
+  });
 
 
 });

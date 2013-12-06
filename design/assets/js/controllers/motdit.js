@@ -1,5 +1,5 @@
 
-angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http, $window, $cookies, $timeout) {
+angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $scope, $http, $window, $cookies, $timeout) {
 
   // Pull the motdit from the URL
   var motdit_id = (/mot\/([^\/\#\!]+)\/?/g).exec($window.location)[1];
@@ -65,6 +65,8 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http
   // Load the motdit
   $http.get('/api/v1/motsdits/' + motdit_id + '/?format=json').success(function(data) {
     $scope.motdit = data;
+    // Send a filters event
+    $rootScope.$broadcast("setMotDitEvent", $scope.motdit);
   });
 
   // Load all related motsdits
