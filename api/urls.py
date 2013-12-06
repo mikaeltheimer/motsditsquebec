@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 import django_filters
 from django import forms
-from django.db.models import Q
+from django.db.models import Count
 
 from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
 import views
@@ -80,7 +80,11 @@ class SortingFilter(django_filters.Filter):
         '''Sorts the queryset'''
         if value.strip():
             values = map(lambda x: x.strip(), value.split(','))
-            qs = qs.order_by(*values)
+            # @TODO: This is a quick hack to get recommendation sorting working
+            if value.strip('-') == 'recommendations':
+                qs.annotate(recommendation_count=Count('recommendations')).order_by(value + '_count')
+            else:
+                qs = qs.order_by(*values)
         return qs
 
 
