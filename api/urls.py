@@ -71,13 +71,27 @@ class SubfilterFilter(django_filters.Filter):
         return qs
 
 
+class SortingFilter(django_filters.Filter):
+    '''Provides sorting'''
+
+    field_class = forms.CharField
+
+    def filter(self, qs, value):
+        '''Sorts the queryset'''
+        if value.strip():
+            values = map(lambda x: x.strip(), value.split(','))
+            qs = qs.order_by(*values)
+        return qs
+
+
 class MotDitFilter(django_filters.FilterSet):
 
     with_subfilters = SubfilterFilter(name='subfilters', label='subfilters')
+    order_by = SortingFilter(name='order_by', label='order_by')
 
     class Meta:
         model = MotDit
-        fields = ['category', 'with_subfilters']
+        fields = ['category', 'with_subfilters', 'order_by']
 
 
 class MotDitViewSet(viewsets.ModelViewSet):

@@ -63,28 +63,14 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
 
 
   // Catch filter events
-  $scope.$on('categoryFilterEvent', function(e, category){
-    console.log("Filtering to show only motsdits from category " + category.name);
+  $scope.$on('categoryFilterEvent', function(e, category, subfilters, ordering){
+
     // Filter by category id
     if(category.id > 0) $scope.filters = {'category': category.id};
     // The special category 0 resets our filters
     else                $scope.filters = {};
 
-    // Reset the page
-    $scope.page = 1;
 
-    $scope.load_motsdits();
-  });
-
-  // Catch subfilter events
-  $scope.$on('categorySubFilterEvent', function(e, category, subfilters){
-    console.log("Filtering to show only motsdits with category " + category.name);
-    // Filter by category id
-    if(category.id > 0) $scope.filters = {'category': category.id};
-    // The special category 0 resets our filters
-    else                $scope.filters = {};
-
-    console.log(subfilters);
     // Filter by subfilters
     subfilter_ids = [];
 
@@ -97,6 +83,10 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
     if(subfilter_ids){
       console.log("Applying subfilters " + subfilter_ids.join());
       $scope.filters['with_subfilters'] = subfilter_ids.join();
+    }
+
+    if(ordering){
+      $scope.filters['order_by'] = ordering;
     }
 
     // Reset the page

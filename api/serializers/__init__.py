@@ -1,4 +1,4 @@
-from rest_framework import serializers
+from rest_framework import serializers, filters
 from django.contrib.auth.models import User
 from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity, Photo
 import compact
@@ -73,7 +73,7 @@ class MotDitSerializer(serializers.ModelSerializer):
     created_by = compact.CompactUserSerializer()
     category = compact.CompactCategorySerializer()
     subfilters = compact.CompactSubfilterSerializer(many=True)
-    recommendations = compact.CompactUserSerializer(many=True)
+    recommendations = serializers.SerializerMethodField('get_num_recommendations')
     top_opinion = compact.CompactOpinionSerializer()
 
     top_photo = serializers.SerializerMethodField('get_top_photo')
@@ -98,6 +98,10 @@ class MotDitSerializer(serializers.ModelSerializer):
         if self.context.get('request'):
             return self.context['request'].user in obj.recommendations.all()
 
+    def get_num_recommendations(self, obj):
+        '''Retrieves the number of recommendations'''
+        return obj.recommendations.count()
+
 
 class FullUserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -106,16 +110,17 @@ class FullUserSerializer(serializers.ModelSerializer):
 
 
 class ActivityObjectRelatedField(serializers.RelatedField):
-    """
-    A custom field to use for the `tagged_object` generic relationship.
-    """
+    """Converts an activity object to a serialized field for display"""
 
     def to_native(self, value):
         ''' Resolves the object and returns it'''
+
         if isinstance(value, MotDit):
             serializer = MotDitSerializer(value)
         elif isinstance(value, Opinion):
             serializer = OpinionSerializer(value)
+        else:
+            return {}
 
         return serializer.data
 

@@ -48,12 +48,12 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($scope, $http
       success(function(data){
         if(data.recommended){
           console.log("Recommended motdit!");
-          $scope.motdit.recommendations.unshift(data.user);
+          $scope.motdit.recommendations += 1;
           $scope.motdit.user_recommends = true;
         }else{
           console.log("Un-recommended motdit!");
           // @TODO: actually remove what we don't want to have in there
-          $scope.motdit.recommendations.shift();
+          $scope.motdit.recommendations -= 1;
           $scope.motdit.user_recommends = false;
         }
       }).

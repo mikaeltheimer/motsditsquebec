@@ -12,7 +12,8 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
   $scope.categories = [$scope.active_category];
   $scope.hide_menus = false;
 
-  // Set up a subfilter
+  $scope.ordering = '-recommendations';     // default to ordering by # recommendations DESC
+  $scope.mon_reseau = false;                // default to everything
 
   // Load the categories
   $http.get('/api/v1/categories/?format=json').success(function(data) {
@@ -31,15 +32,24 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
     }, 500);
   };
 
+  var refresh = function(){
+    $rootScope.$broadcast("categoryFilterEvent", $scope.active_category, $scope.active_subfilters, $scope.ordering);
+  };
+
+  /**
+   * Changes the sort priority of the mots-dits
+   */
+  $scope.setOrdering = function(type){
+    $scope.ordering = type;
+    refresh();
+  };
+
   /**
    * Choose a category to show
    */
   $scope.showCategory = function(category){
 
     $scope.hideMenus();
-
-    // Emit the event
-    $rootScope.$broadcast("categoryFilterEvent", category);
 
     // Set the active category
 
@@ -57,6 +67,9 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
       $scope.available_subfilters[subfilter.subfilter_type].subfilters.push(subfilter);
     });
 
+    // Emit the event
+    refresh();
+
   };
 
 
@@ -68,8 +81,8 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
     $scope.active_subfilters[type] = subfilter;
 
-    // Dispatch a subfilter event
-    $rootScope.$broadcast("categorySubFilterEvent", $scope.active_category, $scope.active_subfilters);
+    // Emit the event
+    refresh();
 
   };
 
@@ -79,7 +92,8 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
    */
   $scope.clearSubfilter = function(subfilter){
     delete $scope.active_subfilters[subfilter.subfilter_type];
-    $rootScope.$broadcast("categorySubFilterEvent", $scope.active_category, $scope.active_subfilters);
+    // Emit the event
+    refresh();
   };
 
 
