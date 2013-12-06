@@ -64,8 +64,8 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
 
   // Load the motdit
   $http.get('/api/v1/motsdits/' + motdit_id + '/?format=json').success(function(data) {
-    $scope.motdit = data;
     // Send a filters event
+    $scope.motdit = data;
     $rootScope.$broadcast("setMotDitEvent", $scope.motdit);
   });
 
@@ -77,6 +77,14 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
   // Load reviews
   $http.get('/api/v1/motsdits/' + motdit_id + '/opinions/?format=json').success(function(data) {
     $scope.reviews = data.results;
+  });
+
+  // Redirect when categories change
+  $scope.$on('filterChangedEvent', function(e, category, subfilters, ordering){
+
+    subfilter_ids = [];
+    angular.forEach(subfilters, function(subfilter){ subfilter_ids.push(subfilter.id); });
+    $window.location.href = "/?category=" + category.id + "&subfilters=" + subfilter_ids.join() + "&ordering=" + ordering;
   });
 
 });

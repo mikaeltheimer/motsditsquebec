@@ -2,7 +2,7 @@
  * Filter controller
  * Handles all logic related to the filter, using filtering events
  */
-angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $scope, $http, $window, $cookies, $log) {
+angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $scope, $http, $location, $window, $cookies, $log) {
 
   // Set the default filter
   $scope.active_category = {"id": 0, "name": "Toutes Categories"};
@@ -16,9 +16,71 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
   $scope.ordering = '-recommendations';     // default to ordering by # recommendations DESC
   $scope.mon_reseau = false;                // default to everything
 
+  var query_string = (function() {
+      var q = $window.location.search.substr(1), qs = {};
+      if (q.length) {
+          var keys = q.split("&"), k, kv, key, val, v;
+          for (k = keys.length; k--; ) {
+              kv = keys[k].split("=");
+              key = kv[0];
+              val = decodeURIComponent(kv[1]);
+              if (qs[key] === undefined) {
+                  qs[key] = val;
+              } else {
+                  v = qs[key];
+                  if (v.constructor != Array) {
+                      qs[key] = [];
+                      qs[key].push(v);
+                  }
+                  qs[key].push(val);
+              }
+          }
+      }
+      return qs;
+  })();
+
+  var initial_refresh = false;
+
   // Load the categories
   $http.get('/api/v1/categories/?format=json').success(function(data) {
     for(var i=0; i< data.count; i++) $scope.categories.push(data.results[i]);
+
+      // Once categories are loaded, check if the filters need to be set
+
+      initial_refresh = false;
+      if(query_string.category){
+
+        var queried_category;
+
+        // Find the category
+        angular.forEach($scope.categories, function(category){
+          console.log(category.id, query_string.category);
+          if(category.id == parseInt(query_string.category, 10)){
+            activateCategory(category);
+          }
+        });
+
+        // Find which subfilters to activate
+        if($scope.active_category.subfilters){
+          angular.forEach($scope.active_category.subfilters, function(subfilter){
+            // Iterate over all queried subfilters
+            angular.forEach(query_string.subfilters.split(','), function(subfilter_id){
+              if(parseInt(subfilter_id, 10) == subfilter.id)
+                $scope.active_subfilters[subfilter.subfilter_type] = subfilter;
+            });
+          });
+        }
+        initial_refresh = true;
+      }
+
+
+      if(query_string.ordering){
+        $scope.ordering = query_string.ordering;
+        initial_refresh = true;
+      }
+
+      refresh();
+
   });
 
   /**
@@ -38,6 +100,13 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
    */
   var refresh = function(){
     $rootScope.$broadcast("categoryFilterEvent", $scope.active_category, $scope.active_subfilters, $scope.ordering);
+  };
+
+  /**
+   *
+   */
+  $scope.changeFilter = function(){
+    $rootScope.$broadcast("filterChangedEvent", $scope.active_category, $scope.active_subfilters, $scope.ordering);
   };
 
   /**
@@ -71,8 +140,10 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
     $scope.active_subfilters = {};
     $scope.available_subfilters = {};
     activateCategory(category);
+
     // Send a refresh event to the application
     refresh();
+    $scope.changeFilter();
 
   };
 
@@ -86,6 +157,7 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
     // Emit the event
     refresh();
+    $scope.changeFilter();
 
   };
 
@@ -94,8 +166,10 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
    */
   $scope.clearSubfilter = function(subfilter){
     delete $scope.active_subfilters[subfilter.subfilter_type];
+
     // Emit the event
     refresh();
+    $scope.changeFilter();
   };
 
   /**
@@ -103,15 +177,26 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
    */
   $scope.$on('setMotDitEvent', function(e, motdit){
 
+    console.log("setting motdit");
+
     if(motdit.category){
-      angular.forEach($scope.categories, function(category){
-        console.log(category.id);
-        if(category.id == motdit.category.id)
-          activateCategory(category);
-      });
-      angular.forEach(motdit.subfilters, function(value){
-        $scope.active_subfilters[value.type] = value;
-      });
+
+      // @TODO: This checks every 0.1s to see if the categories are loaded, is there a better way?
+      var setCategory = function(){
+        if($scope.categories.length == 1) return setTimeout(setCategory, 100);
+        $scope.$apply(function() {
+          angular.forEach($scope.categories, function(category){
+            if(category.id == motdit.category.id){
+              activateCategory(category);
+            }
+          });
+          angular.forEach(motdit.subfilters, function(subfilter){
+            $scope.active_subfilters[subfilter.subfilter_type] = subfilter;
+          });
+        });
+      };
+
+      setTimeout(setCategory, 100);
     }
     $scope.active_motdit = motdit;
     refresh();

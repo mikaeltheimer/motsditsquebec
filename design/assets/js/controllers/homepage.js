@@ -23,6 +23,9 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
   };
 
 
+  var pending_load_request;
+
+
   /**
    * Reloads mots-dits for the page
    */
@@ -33,7 +36,7 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
     filters.page = $scope.page;
     filters.count = $scope.per_page;
 
-    $http.get('/api/v1/motsdits?' + serialize(filters) + '&format=json').success(function(data) {
+    pending_load_request = $http.get('/api/v1/motsdits?' + serialize(filters) + '&format=json').success(function(data) {
 
       $scope.next_page = data.next;
 
@@ -61,9 +64,11 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
     });
   };
 
-
+  var loaded_once = false;
   // Catch filter events
   $scope.$on('categoryFilterEvent', function(e, category, subfilters, ordering){
+
+    loaded_once = true;
 
     // Filter by category id
     if(category.id > 0) $scope.filters = {'category': category.id};
@@ -92,12 +97,9 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
     // Reset the page
     $scope.page = 1;
 
+    console.log($scope.filters);
+
     $scope.load_motsdits();
   });
-
-
-  // Load a list of motdits
-  $scope.load_motsdits();
-
 
 });
