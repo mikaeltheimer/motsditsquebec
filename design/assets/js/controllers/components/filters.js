@@ -104,7 +104,11 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
   $scope.$on('setMotDitEvent', function(e, motdit){
 
     if(motdit.category){
-      activateCategory(motdit.category);
+      angular.forEach($scope.categories, function(category){
+        console.log(category.id);
+        if(category.id == motdit.category.id)
+          activateCategory(category);
+      });
       angular.forEach(motdit.subfilters, function(value){
         $scope.active_subfilters[value.type] = value;
       });
