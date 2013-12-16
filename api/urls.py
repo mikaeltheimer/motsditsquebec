@@ -1,19 +1,23 @@
+import operator
+import functools
+
+from django import forms
+from django.db.models import Count, Q
 from django.conf.urls import url, patterns, include
 from django.contrib.auth.models import User
+
+# Django plugins
+import django_filters
 from rest_framework import viewsets, routers
 from rest_framework.decorators import action
 from rest_framework.response import Response
-import django_filters
-from django import forms
-from django.db.models import Count, Q
 
-from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
 import views
 import serializers
 from functions import temp_file_from_url
 from urlparse import urlparse
-import operator
-import functools
+from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
+import motsdits.mixins as mixins
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -133,20 +137,30 @@ class GeoFilter(django_filters.Filter):
     def filter(self, qs, value):
         '''Filter the queryset by distance'''
 
-        distance = 50
+        if value:
 
-        try:
-            split = value.split(',')
-            if len(split) == 2:
-                lat, lng = float(split[0]), float(split[1])
-            elif len(split) == 3:
-                lat, lng, distance = float(split[0]), float(split[1]), int(split[2])
-            else:
-                raise ValueError("Not a known geo-pattern")
-        except ValueError as e:
-            raise e
-        ids = self.find_by_distance(lat, lng, distance)
-        return qs.filter(id__in=ids)
+            distance = 50
+
+            try:
+                split = value.split(',')
+                if len(split) == 2:
+                    lat, lng = float(split[0]), float(split[1])
+                elif len(split) == 3:
+                    lat, lng, distance = float(split[0]), float(split[1]), int(split[2])
+                else:
+                    raise ValueError("Not a known geo-pattern")
+            except ValueError:
+                split = value.split(',')
+                try:
+                    distance = int(split[-1])
+                    value = ','.join(split[:-1])
+                except ValueError:
+                    pass
+                lat, lng = mixins.geocode(value)
+            ids = self.find_by_distance(lat, lng, distance)
+            return qs.filter(id__in=ids)
+
+        return qs
 
 
 class MotDitFilter(django_filters.FilterSet):
@@ -154,6 +168,7 @@ class MotDitFilter(django_filters.FilterSet):
     with_subfilters = SubfilterFilter(name='subfilters', label='subfilters')
     order_by = SortingFilter(name='order_by', label='order_by')
     search = SearchFilter(name='search', label='search')
+    geo = GeoFilter(name='geo', label='geo')
 
     class Meta:
         model = MotDit

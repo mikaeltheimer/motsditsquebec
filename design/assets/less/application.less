@@ -195,10 +195,13 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
 
         // Search box
         .search {
-            float:left; padding-left:@actions-height/2; position:relative;
+            float:left; position:relative;
             i { position: absolute; left: @actions-height * 2/3; top: @actions-height - 27px; font-size:18px; opacity:0.3;}
-            input { padding-left: @actions-height * 2/3; }
+            input { padding-left: @actions-height *4/3; width: 100px;}
         }
+
+        // Input box
+        .geo input { height: @actions-height - 10px; border:1px solid @theme-color; margin: 0 2px; margin-top:4px; width:100px; }
 
         // Input boxes
         input { 

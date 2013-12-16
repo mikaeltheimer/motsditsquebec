@@ -2,6 +2,13 @@
  * Filter controller
  * Handles all logic related to the filter, using filtering events
  */
+
+// Add a custom display filter for query-string data
+angular.module('MotsDitsQuebec').filter('from_querystring', function() {
+  return function(input) {
+    return decodeURIComponent(input).replace(/\+/g, ' ');
+  };
+});
 angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $scope, $http, $location, $window, $cookies, $log) {
 
   // Set the default filter
@@ -15,6 +22,10 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
   $scope.ordering = '-recommendations';     // default to ordering by # recommendations DESC
   $scope.mon_reseau = false;                // default to everything
+
+  $scope.search = null;   // Search value
+  $scope.distance = 50;   // Distance for search
+  $scope.geo = null;      // Geolocation value
 
   var query_string = (function() {
       var q = $window.location.search.substr(1), qs = {};
@@ -54,14 +65,13 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
         // Find the category
         angular.forEach($scope.categories, function(category){
-          console.log(category.id, query_string.category);
           if(category.id == parseInt(query_string.category, 10)){
             activateCategory(category);
           }
         });
 
         // Find which subfilters to activate
-        if($scope.active_category.subfilters){
+        if($scope.active_category.subfilters && query_string.subfilters){
           angular.forEach($scope.active_category.subfilters, function(subfilter){
             // Iterate over all queried subfilters
             angular.forEach(query_string.subfilters.split(','), function(subfilter_id){
@@ -74,10 +84,9 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
       }
 
 
-      if(query_string.ordering){
-        $scope.ordering = query_string.ordering;
-        initial_refresh = true;
-      }
+      if(query_string.ordering) $scope.ordering = query_string.ordering;
+      if(query_string.search) $scope.search = query_string.search;
+      if(query_string.geo) $scope.geo = query_string.geo;
 
       refresh();
 
@@ -97,16 +106,31 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
 
   /**
    * Sends a categoryFilter event to make all active feeds refresh
+   * TODO: merge with the below changeFilter function
    */
   var refresh = function(){
-    $rootScope.$broadcast("categoryFilterEvent", $scope.active_category, $scope.active_subfilters, $scope.ordering);
+    $rootScope.$broadcast(
+      "categoryFilterEvent",
+      $scope.active_category,
+      $scope.active_subfilters,
+      $scope.ordering,
+      $scope.search,
+      $scope.geo ? $scope.geo + ',' + $scope.distance : null
+    );
   };
 
   /**
-   *
+   * An event to be sent when the filter changes (different from a refresh, to avoid some first-run conflicts)
    */
   $scope.changeFilter = function(){
-    $rootScope.$broadcast("filterChangedEvent", $scope.active_category, $scope.active_subfilters, $scope.ordering);
+    $rootScope.$broadcast(
+      "filterChangedEvent",
+      $scope.active_category,
+      $scope.active_subfilters,
+      $scope.ordering,
+      $scope.search,
+      $scope.geo ? $scope.geo + ',' + $scope.distance : null
+    );
   };
 
   /**
@@ -202,5 +226,37 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
     refresh();
   });
 
+  /**
+   * Perform a search from the action bar
+   */
+  $scope.doSearch = function(ev, query){
+    if(ev.which == 13){
+      $scope.search = query;
+      $rootScope.$broadcast("motditSearchEvent", query);
+    }
+  };
+
+  /**
+   * Removes the geolocation filter
+   */
+  $scope.dropGeo = function(){
+    $scope.geo = null;
+    refresh();
+  };
+
+  /**
+   * Adds a geolocation filter
+   */
+  $scope.addGeo = function(ev, geo){
+    if(ev.which == 13){
+      $scope.geo = geo;
+      $scope.show_geo_box = false;
+      refresh();
+    }
+  };
+
+  $scope.toggleGeoBox = function(){
+    $scope.show_geo_box = $scope.show_geo_box ? false : true;
+  };
 
 });

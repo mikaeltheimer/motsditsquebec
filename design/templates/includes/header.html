@@ -1,9 +1,12 @@
-<div id="header">
+<div id="header" ng-controller="HeaderCtrl">
   <table>
     <tr>
       <td><a href="/new/"><i class="icon icon-plus"></i> Partager</td></a>
       <td><a href="/"><img src="/assets/img/logo-sm.png" alt="Mots Dits Quebec" /></a></td>
-      <td><i class="icon icon-search"></i> <input type="text" name="rechercher" placeholder="Rechercher"></td>
+      <td>
+        <i class="icon icon-search"></i>
+        <input type="text" placeholder="Rechercher" ng-model="header_search" ng-keypress="doGlobalSearch($event, header_search);">
+      </td>
     </tr>
   </table>
 </div>
