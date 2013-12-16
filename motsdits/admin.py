@@ -61,7 +61,7 @@ class PhotoInlineAdmin(admin.TabularInline):
 
 class MotDitAdmin(BaseModelAdmin):
     list_display = ('name', 'top_photo', 'top_opinion', )
-    fields = ('name', 'category', 'website', 'address', 'geo', 'created_by', 'top_photo', 'top_opinion', 'tags', 'subfilters', )
+    fields = ('name', 'category', 'website', 'address', 'created_by', 'top_photo', 'top_opinion', 'tags', 'subfilters', )
 
 
 class UserGuideAdmin(admin.ModelAdmin):

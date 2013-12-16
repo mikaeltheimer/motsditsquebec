@@ -5,13 +5,15 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 import django_filters
 from django import forms
-from django.db.models import Count
+from django.db.models import Count, Q
 
 from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
 import views
 import serializers
 from functions import temp_file_from_url
 from urlparse import urlparse
+import operator
+import functools
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -53,6 +55,7 @@ class PhotoViewSet(viewsets.ModelViewSet):
 
 
 class SubfilterFilter(django_filters.Filter):
+    '''Allows for filtering to ensure Mots-dits have all supplied subfilters'''
 
     extra = lambda f: {
         'queryset': f.rel.to._default_manager.complex_filter(
@@ -72,7 +75,7 @@ class SubfilterFilter(django_filters.Filter):
 
 
 class SortingFilter(django_filters.Filter):
-    '''Provides sorting'''
+    '''Provides sorting params'''
 
     field_class = forms.CharField
 
@@ -90,14 +93,71 @@ class SortingFilter(django_filters.Filter):
         return qs
 
 
+class SearchFilter(django_filters.Filter):
+    '''Provides sorting params'''
+
+    field_class = forms.CharField
+
+    def filter(self, qs, value):
+        '''Searches for the query'''
+        if value.strip():
+
+            queries = [
+                Q(name__icontains=value),            # search by name
+                Q(address__icontains=value),         # check for address
+                Q(category__slug__icontains=value)   # also search by category name
+            ]
+
+            qs = qs.filter(functools.reduce(operator.or_, queries))
+
+        return qs
+
+
+class GeoFilter(django_filters.Filter):
+    '''Allows geodistance filtering of querysets'''
+    field_class = forms.CharField
+
+    def find_by_distance(self, lat, lng, distance):
+        '''Determines a set of motdit ids that fit within N kilometers of a lat/lng point'''
+        from django.db import connection
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT id, (
+            6371 * acos( cos( radians({lat}) ) * cos( radians( lat ) ) *
+            cos( radians( lng ) - radians({lng}) ) + sin( radians({lat}) ) *
+            sin( radians( lat ) ) ) )
+            AS distance FROM motsdits_motdit HAVING distance < {distance}
+            ORDER BY distance""".format(lat=lat, lng=lng, distance=distance))
+        return [row[0] for row in cursor.fetchall()]
+
+    def filter(self, qs, value):
+        '''Filter the queryset by distance'''
+
+        distance = 50
+
+        try:
+            split = value.split(',')
+            if len(split) == 2:
+                lat, lng = float(split[0]), float(split[1])
+            elif len(split) == 3:
+                lat, lng, distance = float(split[0]), float(split[1]), int(split[2])
+            else:
+                raise ValueError("Not a known geo-pattern")
+        except ValueError as e:
+            raise e
+        ids = self.find_by_distance(lat, lng, distance)
+        return qs.filter(id__in=ids)
+
+
 class MotDitFilter(django_filters.FilterSet):
 
     with_subfilters = SubfilterFilter(name='subfilters', label='subfilters')
     order_by = SortingFilter(name='order_by', label='order_by')
+    search = SearchFilter(name='search', label='search')
 
     class Meta:
         model = MotDit
-        fields = ['category', 'with_subfilters', 'order_by']
+        fields = ['category', 'with_subfilters', 'order_by', 'search']
 
 
 class MotDitViewSet(viewsets.ModelViewSet):

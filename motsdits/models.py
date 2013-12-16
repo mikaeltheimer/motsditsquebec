@@ -111,7 +111,9 @@ class MotDit(BaseModel):
     # Non-required information
     website = models.CharField(max_length=255, null=True)
     address = models.CharField(max_length=255, null=True)
-    geo = GeopositionField(null=True)
+
+    lat = models.FloatField(null=True)
+    lng = models.FloatField(null=True)
 
     # Social information
     recommendations = models.ManyToManyField(User, related_name="motdit_recommendation")
@@ -146,8 +148,8 @@ class MotDit(BaseModel):
                 addr = unidecode(self.address.replace(' ', '+'))
                 url = "http://maps.googleapis.com/maps/api/geocode/json?address={0},QC&sensor=false".format(addr)
                 geocoded = json.loads(requests.get(url).content)
-                self.geo.latitude = geocoded['results'][0]['geometry']['location']['lat']
-                self.geo.longitude = geocoded['results'][0]['geometry']['location']['lng']
+                self.lat = float(geocoded['results'][0]['geometry']['location']['lat'])
+                self.lng = float(geocoded['results'][0]['geometry']['location']['lng'])
             except Exception:
                 pass
 

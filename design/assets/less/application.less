@@ -193,6 +193,13 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             padding-right:5px;
         }
 
+        // Search box
+        .search {
+            float:left; padding-left:@actions-height/2; position:relative;
+            i { position: absolute; left: @actions-height * 2/3; top: @actions-height - 27px; font-size:18px; opacity:0.3;}
+            input { padding-left: @actions-height * 2/3; }
+        }
+
         // Input boxes
         input { 
             padding:0px 5px; margin:0px;

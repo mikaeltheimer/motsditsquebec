@@ -47,6 +47,14 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
     });
   };
 
+  /**
+   * Perform a search
+   */
+  $scope.search = function(query){
+    $scope.filters.search = query;
+    $scope.load_motsdits();
+  };
+
 
   // Infinite scroll
   $scope.busy = false;
