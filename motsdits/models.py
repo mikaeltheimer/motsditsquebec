@@ -141,7 +141,7 @@ class MotDit(BaseModel):
         # Re-geocode, if necessary
         try:
             obj = MotDit.objects.get(pk=self.pk)
-            if not obj or obj.address != self.address and self.address:
+            if not obj or obj.address != self.address and self.address or not self.lat or not self.lng:
                 raise MotDit.DoesNotExist("Address geolocation is out of date or not available")
         except MotDit.DoesNotExist:
             try:
