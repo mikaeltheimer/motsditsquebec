@@ -59,15 +59,15 @@ class CompactTagSerializer(serializers.ModelSerializer):
     '''Creates a compact version of a Tag object'''
 
     word = serializers.SerializerMethodField('return_name')
-    size = serializers.SerializerMethodField('calculate_size')
+    weight = serializers.SerializerMethodField('calculate_weight')
 
     class Meta:
         model = Tag
-        fields = ('slug', 'word', 'size', )
+        fields = ('slug', 'word', 'weight', )
 
-    def calculate_size(self, obj):
+    def calculate_weight(self, obj):
         '''Determines the weight of the tag'''
-        return "{}px".format(min(obj.motsdits.count() * 10, 50))
+        return obj.motsdits.count()
 
     def return_name(self, obj):
         '''Remaps the name value to a different key'''

@@ -13,11 +13,6 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
   // Related objects
   $scope.related = [];
 
-  $scope.tags = [
-    {word: "test", size: "10px"},
-    {word: "awesome", size:"20px"}
-  ];
-
   // Vote on an opinion
   $scope.vote = function(opinion, approve){
     $http.post('/api/v1/opinions/' + opinion.id + '/vote/', {'approve': approve}).
@@ -73,6 +68,20 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
   $http.get('/api/v1/motsdits/' + motdit_id + '/?format=json').success(function(data) {
     // Send a filters event
     $scope.motdit = data;
+
+    var max_weight = 0;
+    angular.forEach($scope.motdit.tags, function(tag){ max_weight = max_weight < tag.weight ? tag.weight : max_weight;});
+
+    // Set the sizing on each tag
+    var max_size = 40;
+    angular.forEach($scope.motdit.tags, function(tag){
+      tag.size = max_size * (tag.weight / max_weight);
+      if(tag.size > max_size){
+        tag.size = max_size;
+      }
+      tag.size = tag.size + 'px';
+    });
+
     $rootScope.$broadcast("setMotDitEvent", $scope.motdit);
   });
 
