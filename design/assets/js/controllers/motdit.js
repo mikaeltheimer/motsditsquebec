@@ -4,12 +4,19 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
   // Pull the motdit from the URL
   var motdit_id = (/mot\/([^\/\#\!]+)\/?/g).exec($window.location)[1];
 
+  $scope.content_view = "reviews";
+
   // Motdit data
   $scope.motdit = {};
   // Motdit reviews
   $scope.reviews = [];
   // Related objects
   $scope.related = [];
+
+  $scope.tags = [
+    {word: "test", size: "10px"},
+    {word: "awesome", size:"20px"}
+  ];
 
   // Vote on an opinion
   $scope.vote = function(opinion, approve){

@@ -186,6 +186,25 @@
 
     }
 
+    // Tag display on Mots-dits page
+    #tags {
+        .word-cloud-group {
+            width:100%;
+            text-align: center;
+            display: inline-block;
+            .word-cloud-group-item {
+                word {
+                    font-size: inherit;
+                    display: inline-block;
+                    padding:5px;
+                    background: transparent;
+                    color: @theme-color;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+
     // Related mots-dit grid
     .related {
         width:98%; margin-left:1%;

@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from motsdits.models import Opinion, Category, Subfilter, Photo, MotDit
+from motsdits.models import Opinion, Category, Subfilter, Photo, MotDit, Tag
 
 import base
 
@@ -53,3 +53,22 @@ class CompactMotDitSerializer(serializers.ModelSerializer):
     class Meta:
         model = MotDit
         fields = ('id', 'slug', 'name', )
+
+
+class CompactTagSerializer(serializers.ModelSerializer):
+    '''Creates a compact version of a Tag object'''
+
+    word = serializers.SerializerMethodField('return_name')
+    size = serializers.SerializerMethodField('calculate_size')
+
+    class Meta:
+        model = Tag
+        fields = ('slug', 'word', 'size', )
+
+    def calculate_size(self, obj):
+        '''Determines the weight of the tag'''
+        return "{}px".format(min(obj.motsdits.count() * 10, 50))
+
+    def return_name(self, obj):
+        '''Remaps the name value to a different key'''
+        return obj.name

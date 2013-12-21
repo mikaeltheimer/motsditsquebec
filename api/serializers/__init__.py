@@ -79,10 +79,18 @@ class MotDitSerializer(serializers.ModelSerializer):
     top_photo = serializers.SerializerMethodField('get_top_photo')
     user_recommends = serializers.SerializerMethodField('get_user_recommends')
 
+    tags = compact.CompactTagSerializer(many=True)
+
     class Meta:
         model = MotDit
         depth = 1
-        fields = ('id', 'created_by', 'created', 'category', 'subfilters', 'recommendations', 'name', 'slug', 'top_photo', 'top_opinion', 'user_recommends', )
+        fields = (
+            'id', 'created_by', 'created', 'name', 'slug',
+            'category', 'subfilters',
+            'top_photo', 'top_opinion',
+            'recommendations', 'user_recommends',
+            'tags'
+        )
         lookup_field = 'slug'
 
     def get_top_photo(self, obj):

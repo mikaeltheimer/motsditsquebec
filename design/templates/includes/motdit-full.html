@@ -52,33 +52,45 @@
   </div>
 
 {% verbatim %}
-  <!-- Reviews -->
+  <!-- Reviews and Tags -->
   <div class="content">
     <div class="header">
-      <a href="#">Tags</a><span class="dot">&middot;</span><a class="selected" href="#">Critiques</a>
+      <a href="#" ng-click="content_view = 'tags';" ng-class="{'selected': content_view == 'tags'}">Tags</a>
+      <span class="dot">&middot;</span>
+      <a ng-click="content_view = 'reviews';" href="#" ng-class="{'selected': content_view == 'reviews'}">Critiques</a>
     </div>
-    <div id="reviews">
-      <div class="review" ng-repeat="review in reviews">
-        <table>
-          <tr>
-            <td class="user">
-              <div class="profile-image">
-                <img ng-src="{{ review.created_by.gravatar }}" alt="{{ review.created_by.username }}" />
+    <!-- Choose content type to display -->
+    <div ng-switch on="content_view">
+      <!-- Display reviews -->
+      <div id="reviews" ng-switch-when="reviews">
+        <div class="review" ng-repeat="review in reviews">
+          <table>
+            <tr>
+              <td class="user">
+                <div class="profile-image">
+                  <img ng-src="{{ review.created_by.gravatar }}" alt="{{ review.created_by.username }}" />
+                </div>
+              </td>
+            <td>
+              <div class="reviewbody">
+                <div class="username">{{ review.created_by.username }}</div>
+                <div class="text">
+                  {{ review.text }}
+                </div>
               </div>
             </td>
-          <td>
-            <div class="reviewbody">
-              <div class="username">{{ review.created_by.username }}</div>
-              <div class="text">
-                {{ review.text }}
-              </div>
-            </div>
-          </td>
-          <td class="thumbs">
-            <i class="icon icon-thumbs-up" ng-class="{'voted': review.user_vote == true}" ng-click="vote(review, true);"></i>
-            <i class="icon icon-thumbs-down" ng-class="{'voted': review.user_vote == false}" ng-click="vote(review, false);"></i>
-          </td></tr>
-        </table>
+            <td class="thumbs">
+              <i class="icon icon-thumbs-up" ng-class="{'voted': review.user_vote == true}" ng-click="vote(review, true);"></i>
+              <i class="icon icon-thumbs-down" ng-class="{'voted': review.user_vote == false}" ng-click="vote(review, false);"></i>
+            </td></tr>
+          </table>
+        </div>
+      </div>
+      <!-- Display Tags -->
+      <div id="tags" ng-switch-when="tags">
+        <word-cloud words="motdit.tags" type='cloud'>
+          <word>{{ word.word }}</word>
+        </word-cloud>
       </div>
     </div>
   </div>

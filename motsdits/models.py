@@ -117,7 +117,7 @@ class MotDit(BaseModel):
 
     # Social information
     recommendations = models.ManyToManyField(User, related_name="motdit_recommendation")
-    tags = models.ManyToManyField(Tag, related_name="motdit")
+    tags = models.ManyToManyField(Tag, related_name="motsdits")
     top_photo = models.ForeignKey("Photo", related_name="motdit_top", null=True, blank=True)
     top_opinion = models.ForeignKey("Opinion", related_name="motdit_top", null=True, blank=True)
 
