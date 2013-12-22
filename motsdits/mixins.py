@@ -79,9 +79,11 @@ def _slug_strip(value, separator='-'):
     return value
 
 
-def geocode(address):
+def geocode(address, autoQC=True):
     '''Performs geocoding of an address'''
-    url = "http://maps.googleapis.com/maps/api/geocode/json?address={0},QC&sensor=false"
+    if autoQC:
+        address = '{0},QC'.format(address)
+    url = "http://maps.googleapis.com/maps/api/geocode/json?address={0}&sensor=false"
     geocoded = json.loads(requests.get(url.format(unidecode(address.replace(' ', '+')))).content)
     return (
         float(geocoded['results'][0]['geometry']['location']['lat']),

@@ -1,19 +1,15 @@
 # coding=utf-8
 
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
-from geoposition.fields import GeopositionField
+from django.conf import settings
 
 import mixins
 from datetime import datetime
-import json
-import requests
 
-from unidecode import unidecode
-
-__all__ = ['Category', 'Subfilter', 'MotDit', 'Photo', 'Opinion', 'UserGuide', 'UserProfile']
+__all__ = ['Category', 'Subfilter', 'MotDit', 'Photo', 'Opinion', 'UserGuide', 'User']
 
 FORMAT_CHOICES = (
     ('H', 'HTML'),
@@ -38,7 +34,7 @@ class BaseModel(models.Model):
 
     # Meta information
     created = models.DateTimeField('date created', default=datetime.utcnow)
-    created_by = models.ForeignKey(User, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True)
     approved = models.BooleanField(default=True)
 
 
@@ -116,7 +112,7 @@ class MotDit(BaseModel):
     lng = models.FloatField(null=True)
 
     # Social information
-    recommendations = models.ManyToManyField(User, related_name="motdit_recommendation")
+    recommendations = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="motdit_recommendation")
     tags = models.ManyToManyField(Tag, related_name="motsdits")
     top_photo = models.ForeignKey("Photo", related_name="motdit_top", null=True, blank=True)
     top_opinion = models.ForeignKey("Opinion", related_name="motdit_top", null=True, blank=True)
@@ -166,8 +162,8 @@ class Opinion(BaseModel):
     format = models.CharField(max_length=1, choices=FORMAT_CHOICES, default='T')
 
     # Social information
-    approvals = models.ManyToManyField(User, related_name="approvals")
-    dislikes = models.ManyToManyField(User, related_name="dislikes")
+    approvals = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="approvals")
+    dislikes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="dislikes")
 
     score = models.IntegerField(default=0)
 
@@ -194,7 +190,7 @@ class Photo(BaseModel):
     photo = models.FileField(upload_to='motsdits')
     title = models.TextField(null=True, blank=True)
 
-    likes = models.ManyToManyField(User, related_name='photo_likes')
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='photo_likes')
 
     def __unicode__(self):
         '''Stringifies a photo for admin purposes'''
@@ -208,14 +204,46 @@ class UserGuide(BaseModel):
     title = models.CharField(max_length=200)
 
 
-class UserProfile(models.Model):
+class User(AbstractUser):
     '''User profile information'''
 
     # The primary guide of the user
-    primary = models.ForeignKey(UserGuide)
+    primary = models.ForeignKey(UserGuide, null=True)
+
+    # Other profile information
+    profile_photo = models.FileField(upload_to='profile_photos', null=True)
+
+    # Basic location information
+    # @TODO: Integrate something like Django-cities to allow us to properly organize
+    city = models.CharField(null=True, blank=True, max_length=150)
+    province = models.CharField(null=True, blank=True, max_length=150)
+    country = models.CharField(null=True, blank=True, max_length=150)
+
+    # Auto populated latlng
+    lat = models.FloatField(null=True)
+    lng = models.FloatField(null=True)
+
+    description = models.TextField(null=True)
 
     # Other guides relevant to this user
     guides = models.ManyToManyField(UserGuide, related_name='guides')
+
+    def save(self, *args, **kwargs):
+        '''Performs geocoding before saving the AppUser
+        @TODO: Move to a pre-save hook'''
+        try:
+            obj = User.objects.get(pk=self.pk)
+            # Check of any of city, province or country has changed
+            for k in ('city', 'province', 'country', ):
+                if not obj or (getattr(obj, k) != getattr(self, k) and getattr(self, k)) or not self.lat or not self.lng:
+                    raise User.DoesNotExist("Address geolocation is out of date or not available")
+        except User.DoesNotExist:
+            try:
+                self.lat, self.lng = mixins.geocode(self.address)
+            except Exception:
+                pass
+
+        return super(User, self).save(*args, **kwargs)
 
 
 ACTIVITY_CHOICES = (

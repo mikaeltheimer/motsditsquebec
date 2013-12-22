@@ -4,7 +4,6 @@ import functools
 from django import forms
 from django.db.models import Count, Q
 from django.conf.urls import url, patterns, include
-from django.contrib.auth.models import User
 
 # Django plugins
 import django_filters
@@ -16,7 +15,7 @@ import views
 import serializers
 from functions import temp_file_from_url
 from urlparse import urlparse
-from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo
+from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo, User
 import motsdits.mixins as mixins
 
 

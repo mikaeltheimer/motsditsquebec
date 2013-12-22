@@ -1,6 +1,5 @@
 from rest_framework import serializers, filters
-from django.contrib.auth.models import User
-from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity, Photo
+from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity, Photo, User
 import compact
 
 

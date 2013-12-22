@@ -1,5 +1,10 @@
 from django.contrib import admin
-from models import Category, Subfilter, Photo, Opinion, Tag, MotDit, Activity, UserGuide
+from models import Category, Subfilter, Photo, Opinion, Tag, MotDit, Activity, UserGuide, User
+
+# Custom user forms
+from django.contrib.auth.admin import UserAdmin
+from django.utils.translation import ugettext_lazy as _
+from motsdits.forms import CustomUserChangeForm, CustomUserCreationForm
 
 
 class BaseModelAdmin(admin.ModelAdmin):
@@ -68,6 +73,34 @@ class UserGuideAdmin(admin.ModelAdmin):
     list_display = ('title', 'created_by')
 
 
+class CustomUserAdmin(UserAdmin):
+    '''Administration for user profiles'''
+    list_display = ('username', 'email', 'full_name', 'is_staff', 'date_joined', )
+    fieldsets = (
+        (None, {'fields': ('email', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    add_fieldsets = (
+        (None, {'classes': ('wide',), 'fields': ('email', 'password1', 'password2')}),
+    )
+    form = CustomUserChangeForm
+    add_form = CustomUserCreationForm
+    search_fields = ('email', 'first_name', 'last_name')
+    ordering = ('email', 'date_joined', )
+
+    def full_name(self, obj):
+        '''Returns the full user name'''
+        if obj.first_name and obj.last_name:
+            return obj.first_name + ' ' + obj.last_name
+
+    def description_short(self, obj):
+        '''Truncated copy of the description'''
+        if obj.description:
+            return obj.description[:100] + '...' if len(obj.description) > 100 else ''
+
+
 class ActivityAdmin(admin.ModelAdmin):
     '''Activity model'''
     list_display = ('activity_type', 'content_object', 'created_by', 'created', )
@@ -82,3 +115,4 @@ admin.site.register(Subfilter, SubfilterAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(UserGuide, UserGuideAdmin)
+admin.site.register(User, CustomUserAdmin)

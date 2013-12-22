@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from motsdits.models import User
 
 
 class EmailAuthBackend(object):

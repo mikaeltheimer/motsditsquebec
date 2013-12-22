@@ -147,7 +147,7 @@ from django.template.loader import add_to_builtins
 
 add_to_builtins('motsdits.templatetags.verbatim')
 
-AUTH_PROFILE_MODULE = 'app.UserProfile'
+AUTH_USER_MODEL = 'motsdits.User'
 AUTHENTICATION_BACKENDS = ('motsdits.backends.EmailAuthBackend', 'django.contrib.auth.backends.ModelBackend', )
 
 INSTALLED_APPS = (

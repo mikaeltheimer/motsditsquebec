@@ -8,9 +8,9 @@
       <div class="arrow-up"></div>
     </div>
     <ul>
-      <li><a href="#">Mon Guide</a></li>
-      <li><a href="/feed/">Mes Favoris</a></li>
-      <li><a href="#">Mes amis</a></li>
+      <li><a href="/feed/">Mon Guide</a></li>
+      <li><a href="#" class="disabled">Mes Favoris</a></li>
+      <li><a href="#" class="disabled">Mes amis</a></li>
     </ul>
     <hr>
     {% if user.is_superuser %}
@@ -21,7 +21,7 @@
       <hr>
     {% endif %}
     <ul>
-      <li><a href="#">Editer mon profil</a></li>
+      <li><a href="/feed/?edit=true">Editer mon profil</a></li>
       <li><a href="/logout/">Deconnexion</a></li>
     </ul>
   </div>
