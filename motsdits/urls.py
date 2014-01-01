@@ -10,7 +10,7 @@ except:
     pass
 
 # Enable hooks
-from motsdits import hooks
+from motsdits.hooks import *
 
 urlpatterns = patterns(
 
