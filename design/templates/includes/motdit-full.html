@@ -6,10 +6,10 @@
       <div class="overlay add">
         Ajouter
         &nbsp;
-        <a href="#opinion-modal" class="call-modal" title="Ajouter un avis">
+        <a href="#" title="Ajouter un avis" ng-click="toggleModal('review')">
           <i class="icon icon-pencil"></i>
         </a>
-        <a href="#photo-modal" class="call-modal" title="Ajouter un photo">
+        <a href="#" title="Ajouter un photo" ng-click="toggleModal('photo')">
           <i class="icon icon-camera"></i>
         </a>
       </div>
@@ -96,5 +96,5 @@
   </div>
 {% endverbatim %}
 
-{% include "forms/opinion-modal.html" %}
-{% include "forms/photo-modal.html" %}
+<div ng-show="modals.review">{% include "forms/opinion-modal.html" %}</div>
+<div ng-show="modals.photo">{% include "forms/photo-modal.html" %}</div>

@@ -16,7 +16,7 @@ angular.module('MotsDitsQuebec').controller('OpinionModalCtrl', function($rootSc
 
     $http.post('/api/v1/motsdits/' + motdit_id + '/opinions/', $scope.form).
       success(function(result){
-        alert("Saved your motdit, redirecting to the page!");
+        $scope.closeModal();
         $window.location.href = "/mot/" + motdit_id;
       }).
       error(function(data, status){
@@ -24,5 +24,7 @@ angular.module('MotsDitsQuebec').controller('OpinionModalCtrl', function($rootSc
         $scope.submit_disabled = false;
     });
   };
+
+  $scope.closeModal = function(){ $rootScope.$broadcast("closeModal", {}); };
 
 });

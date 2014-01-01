@@ -1,5 +1,5 @@
 {% verbatim %}
-  <section ng-controller="PhotoModalCtrl" class="modal semantic-content" id="photo-modal" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+  <section ng-controller="PhotoModalCtrl" class="modal semantic-content" id="photo-modal" tabindex="-1">
       <div class="modal-inner">
         <header><h2 id="modal-label">Ajouter un photo</h2></header>
         <div class="modal-content">
@@ -21,7 +21,6 @@
             </div>
         </div>
       </div>
-      <!-- Use Hash-Bang to maintain scroll position when closing modal -->
-      <a href="#!" class="modal-close" title="Close this modal" data-dismiss="modal">&times;</a>
+      <a class="modal-close" title="Close this modal" data-dismiss="modal" ng-click="closeModal()">&times;</a>
   </section>
 {% endverbatim %}

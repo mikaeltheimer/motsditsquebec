@@ -13,6 +13,8 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
   // Related objects
   $scope.related = [];
 
+  $scope.modals = {};
+
   // Vote on an opinion
   $scope.vote = function(opinion, approve){
     $http.post('/api/v1/opinions/' + opinion.id + '/vote/', {'approve': approve}).
@@ -102,5 +104,20 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
     angular.forEach(subfilters, function(subfilter){ subfilter_ids.push(subfilter.id); });
     $window.location.href = "/?category=" + category.id + "&subfilters=" + subfilter_ids.join() + "&ordering=" + ordering;
   });
+
+  var clearModals = function(){
+    // Clear all modals
+    angular.forEach($scope.modals, function(value, key){
+      $scope.modals[key] = false;
+    });
+  };
+
+  $scope.$on('closeModal', clearModals);
+
+  $scope.toggleModal = function(name){
+
+    clearModals();
+    $scope.modals[name] = !$scope.modals[name];
+  };
 
 });
