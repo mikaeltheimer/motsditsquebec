@@ -1,6 +1,7 @@
-from rest_framework import serializers, filters
+from rest_framework import serializers
 from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity, Photo, User
 import compact
+import base
 
 
 class LoginSerializer(serializers.Serializer):
@@ -110,10 +111,26 @@ class MotDitSerializer(serializers.ModelSerializer):
         return obj.recommendations.count()
 
 
-class FullUserSerializer(serializers.ModelSerializer):
+class FullUserSerializer(base.BaseUserSerializer):
+
+    name = serializers.SerializerMethodField('construct_name')
+
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name', 'date_joined', 'email', 'last_login', )
+        fields = (
+            'id', 'username', 'date_joined', 'last_login',
+            'name', 'photo', 'description', 'city', 'province',
+            'twitter', 'facebook', 'website'
+        )
+
+    def construct_name(self, obj):
+        '''Serializes the user's name'''
+        if obj.first_name and obj.last_name:
+            return obj.first_name + ' ' + obj.last_name
+        elif obj.first_name:
+            return obj.first_name
+        else:
+            return obj.username
 
 
 class ActivityObjectRelatedField(serializers.RelatedField):

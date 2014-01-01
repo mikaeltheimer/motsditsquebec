@@ -10,6 +10,17 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
   $scope.next_page = null;
 
   $scope.date_reported = null;
+  $scope.active_user = null;
+
+  try {
+    var username = (/feed\/([^\/\#\!]+)\/?/g).exec($window.location)[1];
+    $http.get('/api/v1/users/' + username).success(function(data){
+      $scope.active_user = data;
+      console.log($scope.active_user);
+    });
+  } catch(err){
+    // Do nothing
+  }
 
   // Set up the request to ensure we can access resources
   $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
@@ -36,6 +47,8 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
     var filters = $scope.filters;
     filters.page = $scope.page;
     filters.count = $scope.per_page;
+
+    if(username) filters.created_by = username;
 
     $http.get('/api/v1/activities?' + serialize(filters) + '&format=json').success(function(data) {
 

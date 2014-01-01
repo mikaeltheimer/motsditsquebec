@@ -1,0 +1,64 @@
+/**
+ * Styles for the profile section of the feed page
+ */
+
+@import "vars.less";
+
+#profile-container { background: transparent; width: 100%; }
+
+// Main profile
+#profile {
+
+    @height: 100px;
+
+    height: @height; background: white; margin:5px; padding: 5px;
+    .profile-table { width: 100%; }
+    .photo-column { width: 110px; }
+    .photo {
+
+        @radius: 50px;
+        @padding: 5px;
+
+        width: 100px; height: @height;
+        background: black;
+        border-radius:50%;
+        img {
+            border-radius:50%;
+            width:@radius * 2 - @padding; height: @radius * 2 - @padding;
+            margin: @padding / 2;
+        }
+    }
+    .info {
+        margin: 5px; height: @height - 10px;
+        border:1px solid #000;
+
+        td { vertical-align: top; }
+
+        // Primary contact / user information
+        .primary {
+            padding-left: 1em;
+            color: @theme-color;
+            h1 { margin:0px; font-size: 20px; }
+            p { margin: 0px; font-size: 16px; }
+            a { text-decoration: none; color: inherit; }
+            .icons i{
+                font-size: 14px; padding-right: 1em;
+            }
+        }
+
+        // Line divider
+        .vertical-rule {
+            border-left: 1px solid @theme-color; width:1px;
+            height: @height * 0.6;
+            margin: 0px 30px;
+            margin-top: @height * 0.1;
+        }
+
+        // Description
+        .description {
+            h2 { margin:0px; font-size: 16px; }
+            p { margin:0px; }
+        }
+
+    }
+}

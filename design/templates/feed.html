@@ -2,6 +2,7 @@
 
 {% block css %}
   <link href="/assets/css/grid.min.css" rel="stylesheet" media="screen">
+  <link href="/assets/css/profile.min.css" rel="stylesheet" media="screen">
 {% endblock %}
 
 {% block ctrl %}
@@ -10,12 +11,61 @@
 
 
 {% block content %}
-  <div id="grid" ng-controller="FeedCtrl" masonry
-    class="ng-cloak" ng-cloak
-    infinite-scroll="load_more()" infinite-scroll-disabled='busy' infinite-scroll-distance='1.5'
-  >
-    <div class="grid-item masonry-brick" ng-repeat="item in activities">
-      {% include "includes/grid/feed-item.html" %}
+
+  <div ng-controller="FeedCtrl" class="ng-cloak" ng-cloak>
+
+    {% verbatim %}
+      <div id="profile-container">
+        <div id="profile" ng-show="active_user">
+          <table class="profile-table"><tr>
+            <td class="photo-column">
+              <div class="photo">
+                <img ng-src="{{ active_user.photo }}">
+              </div>
+            </td>
+            <td class="info-column">
+              <div class="info">
+                <table class="info-table"><tr>
+                  <!-- Primary user information -->
+                  <td>
+                    <div class="primary">
+                      <h1>{{ active_user.username }}</h1>
+                      <p><strong>Nom:</strong> {{ active_user.name }}</p>
+                      <p><strong>De:</strong> {{ active_user.city }}, {{ active_user.province }}</p>
+                      <div class="social">
+                        <a target="_blank" href="{{ active_user.facebook }}" ng-show="active_user.facebook">
+                          <i class="icon icon-facebook"></i>
+                        </a>
+                        <a target="_blank" href="{{ active_user.twitter }}" ng-show="active_user.twitter">
+                          <i class="icon icon-twitter"></i>
+                        </a>
+                        <a target="_blank" href="{{ active_user.website }}" ng-show="active_user.website">
+                          <i class="icon icon-link"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </td>
+                  <!-- Vertical divider -->
+                  <td><div class="vertical-rule"></div></td>
+                  <!-- Description + abonner -->
+                  <td>
+                    <div class="description">
+                      <h2>A Propos</h2>
+                      <p>{{ active_user.description }}</p>
+                    </div>
+                  </td>
+                </tr></table>
+              </div>
+            </td>
+          </tr></table>
+        </div>
+      </div>
+    {% endverbatim %}
+
+    <div id="grid" masonry infinite-scroll="load_more()" infinite-scroll-disabled='busy' infinite-scroll-distance='1.5'>
+      <div class="grid-item masonry-brick" ng-repeat="item in activities">
+        {% include "includes/grid/feed-item.html" %}
+      </div>
     </div>
   </div>
 {% endblock %}

@@ -9,6 +9,9 @@ try:
 except:
     pass
 
+# Enable hooks
+from motsdits import hooks
+
 urlpatterns = patterns(
 
     '',  # Pattern base

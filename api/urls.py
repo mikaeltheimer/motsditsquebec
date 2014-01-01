@@ -23,6 +23,28 @@ class UserViewSet(viewsets.ModelViewSet):
     '''Returns the subset of public data for the User model'''
     model = User
     serializer_class = serializers.FullUserSerializer
+    lookup_field = 'username'
+
+    @action(methods=['POST'])
+    def photo(self, request, username=None):
+        '''Allows adding / viewing of photos'''
+
+        user = User.objects.get(username=username)
+        serializer = serializers.FullUserSerializer
+
+        if request.user == user and request.user.is_authenticated():
+
+            url = request.DATA['photo']
+
+            user.profile_photo.save(
+                urlparse(url).path.split('/')[-1],
+                temp_file_from_url(url),
+                save=True
+            )
+
+            user.save()
+
+            return Response(serializer(user).data)
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -283,6 +305,7 @@ class ActivityViewSet(viewsets.ModelViewSet):
     '''Viewset for activity objects'''
     model = Activity
     serializer_class = serializers.ActivitySerializer
+    filter_fields = ('created_by__username', )
 
 
 # Routers provide an easy way of automatically determining the URL conf

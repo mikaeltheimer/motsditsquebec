@@ -225,6 +225,11 @@ class User(AbstractUser):
 
     description = models.TextField(null=True)
 
+    # Social profiles
+    facebook = models.URLField(null=True, blank=True)
+    twitter = models.URLField(null=True, blank=True)
+    website = models.URLField(null=True, blank=True)
+
     # Other guides relevant to this user
     guides = models.ManyToManyField(UserGuide, related_name='guides')
 

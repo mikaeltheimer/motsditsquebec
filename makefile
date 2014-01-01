@@ -30,10 +30,12 @@ assets:
 # Grid css
 	lessc $(LESS)/grid.less $(CSS)/grid.css
 	@csso $(CSS)/grid.css $(CSS)/grid.min.css
+# CSS for profile
+	lessc $(LESS)/includes/profile.less $(CSS)/profile.css
+	@csso $(CSS)/profile.css $(CSS)/profile.min.css
 # Edit page css
 	lessc $(LESS)/edit-motdit.less $(CSS)/edit-motdit.css
-	@csso $(CSS)/edit-motdit.css $(CSS)/edit-motdit.min.css
-
+	@csso $(CSS)/edit-motdit.css $(CSS)/edit-motit.min.css
 # Modal custom css
 	lessc $(LESS)/form-modal.less $(CSS)/form-modal.css
 	@csso $(CSS)/form-modal.css $(CSS)/form-modal.min.css
