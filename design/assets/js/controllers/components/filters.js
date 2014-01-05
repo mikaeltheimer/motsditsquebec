@@ -238,6 +238,11 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
     }
   };
 
+  $scope.closeSearch = function(){
+    $scope.search=null;
+    refresh();
+  };
+
   /**
    * Removes the geolocation filter
    */

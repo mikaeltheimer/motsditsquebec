@@ -199,6 +199,9 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             float:left; position:relative;
             i { position: absolute; left: @actions-height * 2/3; top: @actions-height - 27px; font-size:18px; opacity:0.3;}
             input { padding-left: @actions-height *4/3; width: 100px;}
+            .close {
+                position:absolute; top: 5px; right:2px; z-index: 1000; cursor:pointer;
+            }
         }
 
         // Input box
