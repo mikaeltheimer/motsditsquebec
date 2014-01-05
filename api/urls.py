@@ -10,6 +10,7 @@ from django.conf.urls import url, patterns, include
 from rest_framework import viewsets, routers
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import filters
 
 from urlparse import urlparse
 from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo, User
@@ -17,7 +18,7 @@ from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Act
 from functions import temp_file_from_url
 import views
 import serializers
-import filters
+from filters import MotDitFilter
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -85,7 +86,8 @@ class MotDitViewSet(viewsets.ModelViewSet):
     model = MotDit
     serializer_class = serializers.MotDitSerializer
     lookup_field = 'slug'
-    filter_class = filters.MotDitFilter
+    filter_backends = (filters.DjangoFilterBackend, )
+    filter_class = MotDitFilter
 
     def list(self, request, *args, **kwargs):
         '''Ensures request gets passed along from mixins.ListModelMixin'''

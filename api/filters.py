@@ -47,7 +47,7 @@ class SortingFilter(django_filters.Filter):
             # @TODO: This is a quick hack to get recommendation sorting working
 
             if value.strip('-') == 'recommendations':
-                qs.annotate(recommendation_count=Count('recommendations')).order_by(value + '_count')
+                qs = qs.annotate(recommendation_count=Count('recommendations')).order_by('{}recommendation_count'.format('-' if value.startswith('-') else ''))
             else:
                 qs = qs.order_by(*values)
 
