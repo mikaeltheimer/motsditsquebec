@@ -44,10 +44,15 @@
       <div class="arrow"></div>
     </div>
 
-    <div class="subfilter green" ng-repeat="subfilter in active_subfilters">
-      <span class="name">{{ subfilter.name }}</span>
-      <span class="close" ng-click="clearSubfilter(subfilter);">×</span>
-    </div>
+    {% endverbatim %}
+
+    {% comment %}
+      <div class="subfilter green" ng-repeat="subfilter in active_subfilters">
+        <span class="name">{{ subfilter.name }}</span>
+        <span class="close" ng-click="clearSubfilter(subfilter);">×</span>
+      </div>
+    {% endcomment %}
+    {% verbatim %}
 
     <div class="subfilter yellow" ng-show="active_motdit">
       <span class="name">{{ active_motdit.name }}</span>
@@ -71,6 +76,7 @@
     <div class="search" ng-show="search != null">
       <i class="icon icon-search"></i>
       <input type="text" name="search-box" class="red" ng-model="search" ng-keypress="doSearch($event, search);">
+      <span class="close">×</span>
     </div>
 
     <div class="ordering">

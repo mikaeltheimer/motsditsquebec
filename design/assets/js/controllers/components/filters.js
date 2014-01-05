@@ -96,11 +96,13 @@ angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $
    * Sets the active category and the related subfilters
    */
   var activateCategory = function(category){
+    var blank_subfilter = {'id': 0, 'name': 'Tout'};
     $scope.active_category = category;
     angular.forEach($scope.active_category.subfilters, function(subfilter){
       if(!$scope.available_subfilters[subfilter.subfilter_type])
-        $scope.available_subfilters[subfilter.subfilter_type] = {name: subfilter.subfilter_type, subfilters: []};
+        $scope.available_subfilters[subfilter.subfilter_type] = {name: subfilter.subfilter_type, subfilters: [blank_subfilter]};
       $scope.available_subfilters[subfilter.subfilter_type].subfilters.push(subfilter);
+      $scope.active_subfilters[subfilter.subfilter_type] = blank_subfilter;
     });
   };
 
