@@ -96,5 +96,5 @@
   </div>
 {% endverbatim %}
 
-<div ng-show="modals.review">{% include "forms/opinion-modal.html" %}</div>
-<div ng-show="modals.photo">{% include "forms/photo-modal.html" %}</div>
+<div ng-show="modals.review" ng-controller="OpinionModalCtrl">{% include "forms/opinion-modal.html" %}</div>
+<div ng-show="modals.photo" ng-controller="PhotoModalCtrl">{% include "forms/photo-modal.html" %}</div>

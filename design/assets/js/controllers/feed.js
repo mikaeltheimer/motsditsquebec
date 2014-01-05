@@ -117,4 +117,23 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
   $scope.load_activities();
 
 
+  $scope.modals = {};
+
+  var clearModals = function(){
+    // Clear all modals
+    angular.forEach($scope.modals, function(value, key){
+      $scope.modals[key] = false;
+    });
+  };
+
+  $scope.$on('closeModal', clearModals);
+
+  $scope.toggleModal = function(name){
+
+    clearModals();
+    $scope.modals[name] = !$scope.modals[name];
+    console.log("toggled " + name);
+  };
+
+
 });

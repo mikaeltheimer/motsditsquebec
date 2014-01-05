@@ -10,9 +10,13 @@ class BaseUserSerializer(serializers.ModelSerializer):
 
     def get_gravatar(self, obj):
         '''Generates a gravatar url'''
-        # default = "`http://example.com/static/images/defaultavatar.jpg"
-        size = 150
 
-        gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(obj.email.lower()).hexdigest() + "?"
-        gravatar_url += urllib.urlencode({'s': str(size)})
-        return gravatar_url
+        if getattr(obj, 'profile_photo'):
+            return obj.profile_photo.url
+        else:
+            # default = "`http://example.com/static/images/defaultavatar.jpg"
+            size = 150
+
+            gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(obj.email.lower()).hexdigest() + "?"
+            gravatar_url += urllib.urlencode({'s': str(size)})
+            return gravatar_url

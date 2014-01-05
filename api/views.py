@@ -1,5 +1,4 @@
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -62,7 +61,7 @@ class RegisterView(APIView):
                 if serializer.data['password'] != serializer.data['password2']:
                     raise ValueError("Passwords don't match")
 
-                user = User.objects.create_user(serializer.data['username'], serializer.data['email'], serializer.data['password'])
+                user = models.User.objects.create_user(serializer.data['username'], serializer.data['email'], serializer.data['password'])
                 user.first_name = serializer.data['firstname']
                 user.last_name = serializer.data['lastname']
                 # TODO: Add userprofile data
@@ -170,3 +169,35 @@ class CreateNewMotDitView(APIView):
                 'success': True,
                 'motdit': serializers.compact.CompactMotDitSerializer(motdit).data
             }, status=status.HTTP_200_OK)
+
+
+class UpdateProfilePhotoView(APIView):
+
+    @decorators.method_decorator(ensure_csrf_cookie)
+    def post(self, request):
+        '''Updates a user profile photo'''
+
+        try:
+
+            if request.user.username != request.DATA['user_id']:
+                raise ValueError("User requested is not same as active user")
+
+            user = models.User.objects.get(username=request.DATA['user_id'])
+            url = request.DATA['photo']
+
+            # Save the photo
+            user.profile_photo.save(
+                urlparse(url).path.split('/')[-1],
+                temp_file_from_url(url),
+                save=True
+            )
+
+            return Response({
+                'success': True
+            }, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': str(e)
+            }, status=status.HTTP_400_BAD_REQUEST)

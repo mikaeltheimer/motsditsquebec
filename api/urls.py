@@ -328,6 +328,7 @@ urlpatterns = patterns(
     url(r'v1/photos/upload/tmp', views.TempUploadView.as_view()),
     # @TODO: this breaks REST, work out a better override / path
     url(r'v1/motsdits/new', views.CreateNewMotDitView.as_view()),
+    url(r'v1/profile_photo', views.UpdateProfilePhotoView.as_view()),
 
     # Basic API
     url(r'v1/', include(router.urls)),

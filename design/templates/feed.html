@@ -3,10 +3,14 @@
 {% block css %}
   <link href="/assets/css/grid.min.css" rel="stylesheet" media="screen">
   <link href="/assets/css/profile.min.css" rel="stylesheet" media="screen">
+  <link href="/assets/css/thirdparty/modal.css" rel="stylesheet" media="screen">
+  <link href="/assets/css/form-modal.css" rel="stylesheet" media="screen">
 {% endblock %}
 
 {% block ctrl %}
   <script type="text/javascript" src="/assets/js/controllers/feed.js"></script>
+  <script type="text/javascript" src="/assets/js/controllers/modals/profile-photo.js"></script>
+  <script type="text/javascript" src="/assets/js/thirdparty/modal.js"></script>
 {% endblock %}
 
 
@@ -21,6 +25,7 @@
             <td class="photo-column">
               <div class="photo">
                 <img ng-src="{{ active_user.photo }}">
+                <i class="icon icon-pencil" ng-click="toggleModal('photo');"></i>
               </div>
             </td>
             <td class="info-column">
@@ -67,5 +72,10 @@
         {% include "includes/grid/feed-item.html" %}
       </div>
     </div>
+
+    <div ng-show="modals.photo" ng-controller="ProfilePhotoModalCtrl">
+      {% include "forms/photo-modal.html" %}
+    </div>
   </div>
+
 {% endblock %}

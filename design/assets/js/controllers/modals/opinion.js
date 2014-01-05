@@ -1,3 +1,7 @@
+/**
+ * Opinion Modal
+ * Handles submission of new opinion/reviews for MotsDits
+ */
 angular.module('MotsDitsQuebec').controller('OpinionModalCtrl', function($rootScope, $scope, $http, $window, $cookies) {
 
   var motdit_id = (/mot\/([^\/\#\!]+)\/?/g).exec($window.location)[1];
@@ -17,7 +21,7 @@ angular.module('MotsDitsQuebec').controller('OpinionModalCtrl', function($rootSc
     $http.post('/api/v1/motsdits/' + motdit_id + '/opinions/', $scope.form).
       success(function(result){
         $scope.closeModal();
-        $window.location.href = "/mot/" + motdit_id;
+        $window.location.reload(false);
       }).
       error(function(data, status){
         alert("Error saving mot-dit " + status);

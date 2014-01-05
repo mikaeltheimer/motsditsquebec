@@ -1,18 +1,13 @@
 /**
- * Photo Modal
- * Handles uploading of new user photos 
- * @TODO: Generalize the preload functionality
+ * Profile photo modal
+ * Handles changing of user profile photos
+ * @TODO: Generalize the preload_image functionality
  */
-angular.module('MotsDitsQuebec').controller('PhotoModalCtrl', function($rootScope, $scope, $http, $window, $cookies) {
+angular.module('MotsDitsQuebec').controller('ProfilePhotoModalCtrl', function($rootScope, $scope, $http, $window, $cookies) {
 
-  $http.defaults.headers.post['X-CSRFToken'] = $cookies.csrftoken;
-
-  $scope.submit_disabled = true;
-  $scope.form = {};
-
-  // Pull the motdit from the URL
-  // @TODO: Move this to an auto-included global variable
-  var motdit_id = (/mot\/([^\/\#\!]+)\/?/g).exec($window.location)[1];
+  $scope.form = {
+    'user_id': (/feed\/([^\/\#\!]+)\/?/g).exec($window.location)[1]
+  };
 
   $scope.preload_image = function(el) {
 
@@ -43,17 +38,16 @@ angular.module('MotsDitsQuebec').controller('PhotoModalCtrl', function($rootScop
 
     $scope.submit_disabled = true;
 
-    $http.post('/api/v1/motsdits/' + motdit_id + '/photos/', $scope.form).
+    $http.post('/api/v1/profile_photo', $scope.form).
       success(function(result){
         $scope.closeModal();
         $window.location.reload(false);
       }).
       error(function(data, status){
-        alert("Error saving mot-dit " + status);
+        alert("Error saving photo " + status);
         $scope.submit_disabled = false;
     });
   };
 
   $scope.closeModal = function(){ $rootScope.$broadcast("closeModal", {}); };
-
 });
