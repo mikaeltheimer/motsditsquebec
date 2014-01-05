@@ -18,4 +18,23 @@ def run():
             'is_active': is_active
         })
 
-        print user
+    print "You now have to manually update the auth_user constraints below:"
+    cursor.execute("show create table motsdits_photo_likes")
+    print iter(cursor).next()
+    raw_input("alter table motsdits_photo_likes drop foreign key {0}".format(raw_input("constraint id> ")))
+    cursor.execute("alter table motsdits_photo_likes add constraint `user_id_refs_user_new` FOREIGN KEY (`user_id`) REFERENCES `motsdits_user` (`id`);")
+
+    cursor.execute("show create table motsdits_opinion_approvals")
+    print iter(cursor).next()
+    raw_input("alter table motsdits_opinion_approvals drop foreign key {0}".format(raw_input("constraint id> ")))
+    cursor.execute("alter table motsdits_opinion_approvals add constraint `user_id_refs_user_opinion` FOREIGN KEY (`user_id`) REFERENCES `motsdits_user` (`id`);")
+
+    cursor.execute("show create table motsdits_opinion_dislikes")
+    print iter(cursor).next()
+    raw_input("alter table motsdits_opinion_dislikes drop foreign key {0}".format(raw_input("constraint id> ")))
+    cursor.execute("alter table motsdits_opinion_dislikes add constraint `user_id_opinion_dislike` FOREIGN KEY (`user_id`) REFERENCES `motsdits_user` (`id`);")
+
+    cursor.execute("show create table motsdits_motdit_recommendations")
+    print iter(cursor).next()
+    cursor.execute("alter table motsdits_motdit_recommendations drop foreign key {0}".format(raw_input("constraint id> ")))
+    cursor.execute("alter table motsdits_motdit_recommendations add constraint `user_id_recommend` FOREIGN KEY (`user_id`) REFERENCES `motsdits_user` (`id`);")
