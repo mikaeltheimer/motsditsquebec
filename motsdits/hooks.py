@@ -1,6 +1,6 @@
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from motsdits.models import User
+from motsdits.models import User, MotDit
 from django.core.exceptions import ValidationError
 
 
@@ -37,3 +37,8 @@ def format_website(sender, instance, *args, **kwargs):
     '''Ensures the website url is in the right format'''
     if instance.website:
         instance.website = ensure_http(instance.website)
+
+
+@receiver(pre_save, sender=MotDit)
+def create_motdit_activity(sender, instance, *args, **kwargs):
+    '''Ensures the motdit created activity gets created'''
