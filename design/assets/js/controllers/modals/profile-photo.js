@@ -5,9 +5,13 @@
  */
 angular.module('MotsDitsQuebec').controller('ProfilePhotoModalCtrl', function($rootScope, $scope, $http, $window, $cookies) {
 
-  $scope.form = {
-    'user_id': (/feed\/([^\/\#\!]+)\/?/g).exec($window.location)[1]
-  };
+  try {
+    $scope.form = {
+      'user_id': (/feed\/([^\/\#\!]+)\/?/g).exec($window.location)[1]
+    };
+  } catch(err){
+    $scope.form = {};
+  }
 
   $scope.preload_image = function(el) {
 

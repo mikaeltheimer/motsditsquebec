@@ -14,6 +14,7 @@ from rest_framework import filters
 
 from urlparse import urlparse
 from motsdits.models import Category, Subfilter, MotDit, Opinion, UserGuide, Activity, Photo, User
+from motsdits import signals
 
 from functions import temp_file_from_url
 import views
@@ -75,9 +76,11 @@ class PhotoViewSet(viewsets.ModelViewSet):
         photo = Photo.objects.get(pk=pk)
         if request.DATA.get('like'):
             photo.likes.add(request.user)
+            signals.photo_like.send(request.user, photo=photo)
         else:
             photo.likes.remove(request.user)
         photo.save()
+
         return Response({'success': True})
 
 
@@ -141,6 +144,9 @@ class MotDitViewSet(viewsets.ModelViewSet):
             opinion.save()
             motdit.top_opinion = opinion
             motdit.save()
+
+            signals.motdit_comment.send(request.user, opinion=opinion)
+
             return Response(serializer(opinion, context={'request': request}).data)
 
     @action(methods=['POST'])
@@ -152,6 +158,7 @@ class MotDitViewSet(viewsets.ModelViewSet):
 
         if request.DATA['recommend']:
             motdit.recommendations.add(request.user)
+            signals.motdit_recommended.send(request.user, motdit=motdit)
         else:
             motdit.recommendations.remove(request.user)
         motdit.save()
@@ -192,6 +199,8 @@ class ActivityViewSet(viewsets.ModelViewSet):
     model = Activity
     serializer_class = serializers.ActivitySerializer
     filter_fields = ('created_by__username', )
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    ordering = ('-created', )
 
 
 # Routers provide an easy way of automatically determining the URL conf

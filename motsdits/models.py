@@ -255,6 +255,9 @@ ACTIVITY_CHOICES = (
     ('motdit-add', 'Added Mot-dit'),
     ('motdit-favourite', 'Favourited Mot-dit'),
     ('motdit-comment', 'Commented on a Mot-dit'),
+
+    # Photo activity
+    ('photo-like', 'Commented on a Mot-dit'),
 )
 
 
