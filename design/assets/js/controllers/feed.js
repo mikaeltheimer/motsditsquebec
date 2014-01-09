@@ -16,7 +16,6 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
     var username = (/feed\/([^\/\#\!]+)\/?/g).exec($window.location)[1];
     $http.get('/api/v1/users/' + username).success(function(data){
       $scope.active_user = data;
-      console.log($scope.active_user);
     });
   } catch(err){
     // Do nothing
@@ -48,7 +47,7 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
     filters.page = $scope.page;
     filters.count = $scope.per_page;
 
-    if(username) filters.created_by = username;
+    if(username) filters.created_by__username = username;
 
     $http.get('/api/v1/activities?' + serialize(filters) + '&format=json').success(function(data) {
 
@@ -108,6 +107,10 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
 
     // Reset the page
     $scope.page = 1;
+
+    if($scope.active_user) $scope.filters['created_by__username'] = $scope.active_user;
+
+    console.log($scope.filters);
 
     $scope.load_activities();
   });
