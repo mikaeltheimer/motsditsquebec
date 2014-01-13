@@ -15,7 +15,14 @@ import motsdits.mixins as mixins
 from motsdits.models import Subfilter, MotDit
 
 
-class SubfilterFilter(django_filters.Filter):
+class MultiDepthFilter(django_filters.Filter):
+
+    def __init__(self, apply_prefix='', *args, **kwargs):
+        '''Allows for applying filters to a subobject'''
+        return django_filters.Filter.__init__(self, *args, **kwargs)
+
+
+class SubfilterFilter(MultiDepthFilter):
     '''Allows for filtering to ensure Mots-dits have all supplied subfilters'''
 
     extra = lambda f: {
@@ -35,7 +42,7 @@ class SubfilterFilter(django_filters.Filter):
         return qs
 
 
-class SortingFilter(django_filters.Filter):
+class SortingFilter(MultiDepthFilter):
     '''Provides sorting params'''
 
     field_class = forms.CharField
@@ -44,8 +51,6 @@ class SortingFilter(django_filters.Filter):
         '''Sorts the queryset'''
         if value.strip():
             values = map(lambda x: x.strip(), value.split(','))
-            # @TODO: This is a quick hack to get recommendation sorting working
-
             if value.strip('-') == 'recommendations':
                 qs = qs.annotate(recommendation_count=Count('recommendations')).order_by('{}recommendation_count'.format('-' if value.startswith('-') else ''))
             else:
@@ -54,7 +59,7 @@ class SortingFilter(django_filters.Filter):
         return qs
 
 
-class SearchFilter(django_filters.Filter):
+class SearchFilter(MultiDepthFilter):
     '''Provides sorting params'''
 
     field_class = forms.CharField
@@ -74,7 +79,7 @@ class SearchFilter(django_filters.Filter):
         return qs
 
 
-class GeoFilter(django_filters.Filter):
+class GeoFilter(MultiDepthFilter):
     '''Allows geodistance filtering of querysets'''
     field_class = forms.CharField
 
@@ -131,3 +136,12 @@ class MotDitFilter(django_filters.FilterSet):
     class Meta:
         model = MotDit
         fields = ['category', 'with_subfilters', 'order_by', 'search']
+
+
+class ActivityFilter(django_filters.FilterSet):
+    '''Provides all necessary filters for activity objects'''
+
+    with_subfilters = SubfilterFilter(name='subfilters', label='subfilters')
+    order_by = SortingFilter(name='order_by', label='order_by')
+    search = SearchFilter(name='search', label='search')
+    geo = GeoFilter(name='geo', label='geo')

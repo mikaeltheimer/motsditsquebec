@@ -108,10 +108,37 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
     // Reset the page
     $scope.page = 1;
 
-    if($scope.active_user) $scope.filters['created_by__username'] = $scope.active_user;
+    $scope.load_activities();
+  });
 
-    console.log($scope.filters);
+  // Catch filter events
+  $scope.$on('categoryFilterEvent', function(e, category, subfilters, ordering, search, geo){
 
+    loaded_once = true;
+
+    // Filter by category id
+    if(category.id > 0) $scope.filters = {'category__id': category.id};
+    // The special category 0 resets our filters
+    else                $scope.filters = {};
+
+    // Filter by subfilters
+    subfilter_ids = [];
+
+    angular.forEach(subfilters, function(subfilter){
+      subfilter_ids.push(subfilter.id);
+    });
+
+    // Apply subfilters
+    if(subfilter_ids) $scope.filters['with_subfilters'] = subfilter_ids.join();
+    // Apply sort
+    if(ordering) $scope.filters['order_by'] = ordering;
+    // Apply search
+    if(search) $scope.filters['search'] = search;
+    // Apply geo
+    if(geo) $scope.filters['geo'] = geo;
+
+    // Reset the page
+    $scope.page = 1;
     $scope.load_activities();
   });
 
