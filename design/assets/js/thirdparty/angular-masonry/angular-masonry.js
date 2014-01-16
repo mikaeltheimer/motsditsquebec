@@ -87,9 +87,12 @@
               itemSelector: attrs.itemSelector || '.masonry-brick',
               columnWidth: parseInt(attrs.columnWidth, 10)
             });
-          element.masonry(options);
-          scope.$emit('masonry.created', element);
-          scope.$on('$destroy', ctrl.destroy);
+          // Edit to ensure we don't have weird issues
+          element.imagesLoaded(function(){
+            element.masonry(options);
+            scope.$emit('masonry.created', element);
+            scope.$on('$destroy', ctrl.destroy);
+          });
         }
       }
     };
