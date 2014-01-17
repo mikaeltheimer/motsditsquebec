@@ -1,0 +1,106 @@
+[
+    {
+        "fields": {
+            "hex_code": "c15c31",
+            "name": "red"
+        },
+        "model": "motsdits.color",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "hex_code": "d6823e",
+            "name": "darkorange"
+        },
+        "model": "motsdits.color",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "hex_code": "de9f46",
+            "name": "orange"
+        },
+        "model": "motsdits.color",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "hex_code": "de9f46",
+            "name": "lightorange"
+        },
+        "model": "motsdits.color",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "hex_code": "cebd58",
+            "name": "yellow"
+        },
+        "model": "motsdits.color",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "hex_code": "9cbe79",
+            "name": "lightgreen"
+        },
+        "model": "motsdits.color",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "hex_code": "5abc94",
+            "name": "green"
+        },
+        "model": "motsdits.color",
+        "pk": 7
+    },
+    {
+        "fields": {
+            "hex_code": "39a8a4",
+            "name": "darkgreen"
+        },
+        "model": "motsdits.color",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "hex_code": "3babd8",
+            "name": "blue"
+        },
+        "model": "motsdits.color",
+        "pk": 9
+    },
+    {
+        "fields": {
+            "hex_code": "8c99cb",
+            "name": "lightpurple"
+        },
+        "model": "motsdits.color",
+        "pk": 10
+    },
+    {
+        "fields": {
+            "hex_code": "9d7fb7",
+            "name": "purple"
+        },
+        "model": "motsdits.color",
+        "pk": 11
+    },
+    {
+        "fields": {
+            "hex_code": "685678",
+            "name": "darkpurple"
+        },
+        "model": "motsdits.color",
+        "pk": 12
+    },
+    {
+        "fields": {
+            "hex_code": "ffffff",
+            "name": "white"
+        },
+        "model": "motsdits.color",
+        "pk": 13
+    }
+]
