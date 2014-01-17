@@ -1,4 +1,4 @@
-angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, $window, $cookies, $timeout, $log) {
+angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $rootScope, $http, $window, $cookies, $timeout, $log) {
 
   // Current active set of Activities + the filters that generated them
   $scope.activities = [];
@@ -76,6 +76,8 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
           $scope.activities.push(data.results[i]);
 
         }
+
+        $rootScope.$broadcast('masonry.reload');
       // Handler allows full override
       }else return handler(data);
     });

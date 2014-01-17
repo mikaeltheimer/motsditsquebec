@@ -68,7 +68,7 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
 
 #account-menu {
     .action-text();
-    z-index:10000;
+    z-index:1000;
     position:absolute; top: @header-height / 2 - @actions-font-size / 2; right:5px;
     background:white;
     padding:5px @actions-font-size;
@@ -96,6 +96,10 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
             a { .reset-a(); display:block; width:100%; height:100%;}
         }
         li:hover { background:@menu-hover; color:white; }
+
+        .disabled { color: @grey-inactive !important; }
+        .disabled a { cursor: default !important; }
+        .disabled:hover { background: white; color: @grey-inactive !important; }
     }
     hr { margin:0px; padding:0px; border-color: @theme-color; background:white; border-top:0px; }
 }
