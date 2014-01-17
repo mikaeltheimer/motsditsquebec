@@ -33,15 +33,22 @@ class CategorySerializer(serializers.ModelSerializer):
     '''Returns a full category object, including all subfilters'''
 
     subfilters = serializers.SerializerMethodField('get_subfilters')
+    color = serializers.SerializerMethodField('flat_color')
 
     class Meta:
         model = Category
         depth = 1
-        fields = ('id', 'name', 'slug', 'subfilters', )
+        fields = ('id', 'name', 'slug', 'subfilters', 'color', )
 
     def get_subfilters(self, obj):
         '''Returns a set of subfilters related to this object'''
         return map(lambda o: compact.CompactSubfilterSerializer(o).data, Subfilter.objects.filter(category=obj))
+
+    def flat_color(self, obj):
+        '''Flattens the color object to just the name needed for display'''
+        if obj.color:
+            return obj.color.name
+        return 'white'
 
 
 class OpinionSerializer(serializers.ModelSerializer):
@@ -133,27 +140,14 @@ class FullUserSerializer(base.BaseUserSerializer):
             return obj.username
 
 
-class ActivityObjectRelatedField(serializers.RelatedField):
-    """Converts an activity object to a serialized field for display"""
-
-    def to_native(self, value):
-        ''' Resolves the object and returns it'''
-
-        if isinstance(value, MotDit):
-            serializer = MotDitSerializer(value)
-        elif isinstance(value, Opinion):
-            serializer = OpinionSerializer(value)
-        else:
-            return {}
-
-        return serializer.data
-
-
 class ActivitySerializer(serializers.ModelSerializer):
     '''Ensures that related objects get serialized'''
 
-    created_by = compact.CompactUserSerializer()
-    content_object = ActivityObjectRelatedField()
+    created_by = FullUserSerializer()
+    motdit = MotDitSerializer()
+    opinion = OpinionSerializer()
+    photo = compact.CompactPhotoSerializer()
+
     type = serializers.SerializerMethodField('get_type')
     message = serializers.SerializerMethodField('get_message')
     # @TODO: content_object serializer
@@ -161,11 +155,19 @@ class ActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Activity
         depth = 2
-        fields = ('id', 'created_by', 'created', 'content_object', 'activity_type', 'type', 'message', )
+        fields = (
+            'id', 'created_by', 'created', 'activity_type', 'type', 'message',
+            'motdit', 'opinion', 'photo'
+        )
 
     def get_type(self, obj):
         '''Returns the amazon S3 url for a photo'''
-        return obj.content_object.__class__.__name__
+        if obj.opinion:
+            return 'Opinion'
+        elif obj.photo:
+            return 'Photo'
+        elif obj.motdit:
+            return 'MotDit'
 
     def get_message(self, obj):
         '''Returns a message related to this activity'''

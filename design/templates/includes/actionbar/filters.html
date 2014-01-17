@@ -8,7 +8,7 @@
     </div>
 
     <!-- Primary filter -->
-    <div class="filter red">
+    <div class="filter {{ active_category.color }}">
       <span class="name">{{ active_category.name }}</span>
 
       <i class="icon icon-angle-down show-menu"></i>
@@ -18,7 +18,7 @@
           <div class="arrow-up"></div>
         </div>
         <ul id="category-menu" class="menu">
-          <li ng-repeat="category in categories">
+          <li ng-repeat="category in categories" class="{{ category.color }}">
             <a href ng-click="showCategory(category);">{{ category.name }}</a>
           </li>
         </ul>
@@ -27,7 +27,7 @@
     </div>
 
     <!--  Subfilters -->
-    <div class="filter" ng-repeat="subfilter_group in available_subfilters">
+    <div class="filter {{ active_category.color }}-light" ng-repeat="subfilter_group in available_subfilters">
       <span class="name">{{subfilter_group.name}}:</span>
       <span class="datalist">{{ active_subfilters[subfilter_group.name].name }}</span>
       <i class="icon icon-angle-down show-menu"></i>
@@ -54,20 +54,20 @@
     {% endcomment %}
     {% verbatim %}
 
-    <div class="subfilter yellow" ng-show="active_motdit">
+    <div class="subfilter {{ active_motdit.category.color }}" ng-show="active_motdit">
       <span class="name">{{ active_motdit.name }}</span>
       <span class="close" ng-click="changeFilter();">×</span>
     </div>
 
     <!-- Display geo information -->
-    <div class="subfilter yellow" ng-show="geo != null" ng-click="dropGeo()">
+    <div class="subfilter accent-red" ng-show="geo != null" ng-click="dropGeo()">
       <i class="icon icon-map-marker"></i>
       {{ geo | from_querystring }}
       <span class="close">×</span>
     </div>
 
     <!-- Allow entering of geo information, if none present -->
-    <div class="subfilter geo yellow" ng-show="!geo">
+    <div class="subfilter geo accent-red" ng-show="!geo">
       <i class="icon icon-map-marker" ng-click="toggleGeoBox()"></i>
       <input type="text" ng-hide="!show_geo_box" ng-model="geo_value" ng-keypress="addGeo($event, geo_value)">
     </div>
@@ -75,7 +75,7 @@
     <!-- Display search information -->
     <div class="search" ng-show="search != null">
       <i class="icon icon-search"></i>
-      <input type="text" name="search-box" class="red" ng-model="search" ng-keypress="doSearch($event, search);">
+      <input type="text" name="search-box" class="accent-yellow-border" ng-model="search" ng-keypress="doSearch($event, search);">
       <span class="close" ng-click="closeSearch()">×</span>
     </div>
 

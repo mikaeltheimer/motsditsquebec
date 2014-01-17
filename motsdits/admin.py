@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Category, Subfilter, Photo, Opinion, Tag, MotDit, Activity, UserGuide, User
+from models import Category, Subfilter, Photo, Opinion, Tag, MotDit, Activity, UserGuide, User, Color
 
 # Custom user forms
 from django.contrib.auth.admin import UserAdmin
@@ -20,10 +20,7 @@ class BaseModelAdmin(admin.ModelAdmin):
 
 
 class CategoryAdmin(BaseModelAdmin):
-    list_display = ('name', 'slug')
-
-    def parent_name(self, obj):
-        return obj.parent.name if obj.parent else None
+    list_display = ('name', 'slug', 'color', )
 
 
 class SubfilterAdmin(BaseModelAdmin):
@@ -104,7 +101,12 @@ class CustomUserAdmin(UserAdmin):
 
 class ActivityAdmin(admin.ModelAdmin):
     '''Activity model'''
-    list_display = ('activity_type', 'content_object', 'created_by', 'created', )
+    list_display = ('activity_type', 'motdit', 'opinion', 'created_by', 'created', )
+
+
+class ColorAdmin(admin.ModelAdmin):
+    '''Activity model'''
+    list_display = ('name', 'hex_code', )
 
 
 # Register all the models in the admin
@@ -117,3 +119,4 @@ admin.site.register(Tag, TagAdmin)
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(UserGuide, UserGuideAdmin)
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Color, ColorAdmin)

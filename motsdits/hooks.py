@@ -40,14 +40,15 @@ def format_website(sender, instance, *args, **kwargs):
         instance.website = ensure_http(instance.website)
 
 
-def add_activity(activity_type, instance, created_by):
+def add_activity(activity_type, created_by=None, motdit=None, opinion=None, photo=None):
     '''Adds an activity object for the supplied instance'''
     try:
-        instance_type = ContentType.objects.get_for_model(instance)
-        models.Activity.objects.get(content_type__pk=instance_type.id, object_id=instance.id, activity_type=activity_type)
+        models.Activity.objects.get(motdit=motdit, opinion=opinion, created_by=created_by, activity_type=activity_type)
     except models.Activity.DoesNotExist:
         models.Activity(
-            content_object=instance,
+            motdit=motdit,
+            opinion=opinion,
+            photo=photo,
             activity_type=activity_type,
             created_by=created_by
         ).save()
@@ -57,7 +58,7 @@ def add_activity(activity_type, instance, created_by):
 def create_motdit_activity(sender, instance, *args, **kwargs):
     '''Ensures the motdit created activity gets created'''
     if not instance.id:
-        return add_activity('motdit-add', instance, instance.created_by)
+        return add_activity('motdit-add', motdit=instance, created_by=instance.created_by)
 
 
 @receiver(signals.motdit_recommended)
@@ -65,18 +66,18 @@ def recommend_motdit_activity(sender, motdit=None, *args, **kwargs):
     '''Creates a "user favourited motdit" activity
     @TODO: what happens when we un-recommend a mot-dit'''
     print "ACTIVITY RECOMMEND"
-    return add_activity('motdit-favourite', motdit, sender)
+    return add_activity('motdit-favourite', motdit=motdit, created_by=sender)
 
 
 @receiver(signals.motdit_comment)
 def comment_motdit_activity(sender, instance=None, opinion=None, *args, **kwargs):
     '''Creates a "user commented on motdit" activity'''
     print "Activity!"
-    return add_activity('motdit-comment', opinion, sender)
+    return add_activity('motdit-comment', opinion=opinion, motdit=opinion.motdit, created_by=sender)
 
 
 @receiver(signals.photo_like)
 def like_photo_activity(sender, instance=None, photo=None, *args, **kwargs):
     '''Creates a "user liked photo" activity
     @TODO: what happens when we un-like a photo'''
-    return add_activity('photo-like', photo, sender)
+    return add_activity('photo-like', photo=photo, motdit=opinion.motdit, created_by=sender)

@@ -7,19 +7,19 @@
   <div class="motdit">
     <div class="overlay">
       <div class="star">
-        <div class="circle yellow"><i class="icon icon-star"></i></div>
+        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star"></i></div>
       </div>
-      <span class="counter yellow">{{ item.content_object.recommendations }}</span>
+      <span class="counter {{ item.motdit.category.color }}-text">{{ item.motdit.recommendations }}</span>
       <span class="dot">&middot;</span>
-      <span class="name">{{ item.content_object.name }}</span>
+      <span class="name">{{ item.motdit.name }}</span>
     </div>
-    <a href="/mot/{{ item.content_object.slug }}">
-      <img ng-src="{{ item.content_object.top_photo.s3_url }}" alt="{{ item.content_object.name }}">
+    <a href="/mot/{{ item.motdit.slug }}">
+      <img ng-src="{{ item.motdit.top_photo.s3_url }}" alt="{{ item.content_object.name }}">
     </a>
   </div>
   <div class="caption">
     <div class="connector">
-      <div class="dot yellow"></div>
+      <div class="dot {{ item.motdit.category.color }}"></div>
     </div>
     <div class="description">
       <div class="description-text">{{ item.message }}</div>
@@ -46,24 +46,24 @@
     <div class="overlay">
       <div class="bridge"></div>
       <div class="star">
-        <div class="circle yellow"><i class="icon icon-star"></i></div>
+        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star"></i></div>
       </div>
-      <span class="counter yellow">0</span>
+      <span class="counter {{ item.motdit.category.color }}-text">{{ item.motdit.recommendations }}</span>
       <span class="dot">&middot;</span>
       <span class="name">
-        <a href="/mot/{{ item.content_object.motdit.slug }}">
-          {{ item.content_object.motdit.name }}
+        <a href="/mot/{{ item.motdit.slug }}">
+          {{ item.motdit.name }}
         </span>
       </a>
     </div>
     <blockquote>
-      {{ item.content_object.text }}
+      {{ item.opinion.text }}
     </blockquote>
     <div class="watermark">&ldquo;</div>
   </div>
   <div class="caption">
     <div class="connector">
-      <div class="dot yellow"></div>
+      <div class="dot {{ item.content_object.motdit.category.color }}"></div>
     </div>
     <div class="description">
       <div class="description-text">{{ item.message }}</div>

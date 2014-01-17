@@ -12,7 +12,7 @@ angular.module('MotsDitsQuebec').filter('from_querystring', function() {
 angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $scope, $http, $location, $window, $cookies, $log) {
 
   // Set the default filter
-  $scope.active_category = {"id": 0, "name": "Toutes Categories"};
+  $scope.active_category = {"id": 0, "name": "Toutes Categories", "color": "white"};
   $scope.active_subfilters = {};
   $scope.active_motdit = null;
 

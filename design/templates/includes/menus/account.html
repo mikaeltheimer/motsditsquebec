@@ -15,13 +15,13 @@
     <hr>
     {% if user.is_superuser %}
       <ul>
-        <li><a href="/admin/">Admin</a></li>
+        <li><a href="/admin/motsdits/">Admin</a></li>
         <li><a href="/api/v1/">API Root</a></li>
       </ul>
       <hr>
     {% endif %}
     <ul>
-      <li><a href="/feed/?edit=true">Editer mon profil</a></li>
+      <li><a href="/feed/{{ user.username }}">Editer mon profil</a></li>
       <li><a href="/logout/">Deconnexion</a></li>
     </ul>
   </div>

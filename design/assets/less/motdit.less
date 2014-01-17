@@ -25,7 +25,7 @@
 
     margin-top:1em; 
 
-    .column { /*.drop-shadow(0, 1px, 4px, 0.6);*/ }
+    .column { width: 50%; float:left; margin:0; padding:0;/*.drop-shadow(0, 1px, 4px, 0.6);*/ }
 
     .mot {
         width: 98%;
@@ -36,6 +36,7 @@
         .photo {
 
             position:relative;
+            min-height:300px;
             img {
                 width: 100%; 
                 margin-bottom:0px;
@@ -238,13 +239,18 @@
 
 // Responsiveness for grid
 @media (max-width: 767px) {
-    #motdit .related .grid-item { width:@fill-space; }
+    #motdit .related .grid-item { display:none; }
+    .column { width: 100% !important; }
 }
 
-@media (min-width: 768px) and (max-width: 1439px) {
+@media (min-width: 768px) {
     #motdit .related .grid-item { width: @fill-space / 2; }
+    .lhs { width:60% !important; }
+    .rhs { width:40% !important; }
 }
 
-@media (min-width: 1440px) {
+@media (min-width: 1024px) {
     #motdit .related .grid-item { width: @fill-space / 3; }
+    .lhs { width:50% !important; }
+    .rhs { width:50% !important; }
 }

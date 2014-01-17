@@ -13,9 +13,18 @@ class CompactOpinionSerializer(serializers.ModelSerializer):
 
 class CompactCategorySerializer(serializers.ModelSerializer):
     '''Creates a smaller version of a Category object'''
+
+    color = serializers.SerializerMethodField('flat_color')
+
     class Meta:
         model = Category
-        fields = ('id', 'name', 'slug', )
+        fields = ('id', 'name', 'slug', 'color', )
+
+    def flat_color(self, obj):
+        '''Flattens the color object to just the name needed for display'''
+        if obj.color:
+            return obj.color.name
+        return 'white'
 
 
 class CompactSubfilterSerializer(serializers.ModelSerializer):

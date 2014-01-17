@@ -38,6 +38,16 @@ class BaseModel(models.Model):
     approved = models.BooleanField(default=True)
 
 
+class Color(models.Model):
+    '''Easiest way of managing colors used in the system'''
+
+    name = models.CharField(max_length=30)
+    hex_code = models.CharField(max_length=8)
+
+    def __str__(self):
+        return '{} (#{})'.format(self.name, self.hex_code)
+
+
 class Category(BaseModel):
     '''A category'''
 
@@ -47,6 +57,7 @@ class Category(BaseModel):
     # Category name
     name = models.CharField(max_length=200)
     slug = models.SlugField(null=True)
+    color = models.ForeignKey(Color, null=True, blank=True)
 
     def save(self, **kwargs):
         '''Saves a unique slug for the category'''
@@ -267,8 +278,9 @@ class Activity(BaseModel):
     class Meta:
         verbose_name_plural = 'activities'
 
-    # Maps the activity to any object in the database
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    # Individual FKs for each activity-worthy datatype (ensures that activities can be filtered properly)
+    motdit = models.ForeignKey(MotDit, null=True, blank=True)
+    opinion = models.ForeignKey(Opinion, null=True, blank=True)
+    photo = models.ForeignKey(Photo, null=True, blank=True)
+
     activity_type = models.CharField(max_length=30, choices=ACTIVITY_CHOICES)

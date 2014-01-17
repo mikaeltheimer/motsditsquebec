@@ -18,23 +18,20 @@
 {% block content %}
 
   <div id="motdit" ng-controller="MotDitCtrl" class="ng-cloak" ng-cloak>
-    <div class="pure-g">
-      <div class="pure-u-1-2">
-        <div class="column mot">
-          {% include "includes/motdit-full.html" %}
-        </div>
+    <div class="column lhs">
+      <div class="mot">
+        {% include "includes/motdit-full.html" %}
       </div>
-      <div class="pure-u-1-2">
-        <div class="column related">
-          <div class="mots-grid" masonry>
-            <div class="grid-item masonry-brick" ng-repeat="item in related">
-              {% include "includes/grid/motdit.html" %}
-            </div>
+    </div>
+    <div class="column rhs">
+      <div class="related">
+        <div class="mots-grid" masonry>
+          <div class="grid-item masonry-brick" ng-repeat="item in related">
+            {% include "includes/grid/motdit.html" %}
           </div>
         </div>
       </div>
     </div>
-
   </div>
 
 {% endblock %}

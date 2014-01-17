@@ -51,6 +51,7 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
 
     $http.get('/api/v1/activities?' + serialize(filters) + '&format=json').success(function(data) {
 
+      $scope.date_reported = null;
       $scope.next_page = data.next;
 
       if(!handler){
@@ -73,6 +74,7 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
           }
 
           $scope.activities.push(data.results[i]);
+
         }
       // Handler allows full override
       }else return handler(data);

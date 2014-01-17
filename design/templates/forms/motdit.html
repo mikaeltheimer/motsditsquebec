@@ -15,11 +15,22 @@
     <div class="subfilter" ng-show="form.category.assoc_subfilters">
       <h3>Selectionnez le ou les filtres correspondant au mot-dit</h3>
 
-      <div class="select multi" ng-repeat="(type, values) in form.category.assoc_subfilters">
-        <select name="subfilter" multiple ng-model="form.subfilters[type]" ng-options="f.name for f in values">
-          <option style="display:none" value="">-- Selectionnez un {{ type }} --</option>
-        </select>
-      </div>
+      <table>
+        <tr ng-repeat="(type, values) in form.category.assoc_subfilters">
+          <th>Selectionnez un {{ type }}</th>
+          <td>
+            <label ng-repeat="v in values">
+              <input
+                type="checkbox"
+                name=""
+                value="{{v.name}}"
+                ng-checked="selected_subfilters[type].indexOf(v) > -1"
+                ng-click="toggleSelection(type, v)"
+              > {{v.name}}
+            </label>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <hr>

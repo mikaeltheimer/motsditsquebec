@@ -24,10 +24,10 @@
       <!-- Actions overlay -->
       <div class="overlay actions">
         <div class="star">
-          <div class="circle yellow"><i class="icon icon-star" ng-click="recommend()"></i></div>
+          <div class="circle {{ motdit.category.color }}"><i class="icon icon-star" ng-click="recommend()"></i></div>
         </div>
         <div class="connector"></div>
-        <span class="counter yellow">{{ motdit.recommendations }}</span>
+        <span class="counter {{ motdit.category.color }}-text">{{ motdit.recommendations }}</span>
         <span class="dot">&middot;</span>
         <span class="name" ng-show="motdit.name">{{ motdit.name }}</span>
         <i class="icon icon-map-marker">
@@ -68,7 +68,7 @@
             <tr>
               <td class="user">
                 <div class="profile-image">
-                  <img ng-src="{{ review.created_by.gravatar }}" alt="{{ review.created_by.username }}" />
+                  <img ng-src="{{ review.created_by.photo }}" alt="{{ review.created_by.username }}" />
                 </div>
               </td>
             <td>

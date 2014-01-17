@@ -19,7 +19,6 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
   $scope.vote = function(opinion, approve){
     $http.post('/api/v1/opinions/' + opinion.id + '/vote/', {'approve': approve}).
       success(function(data){
-        console.log("Vote accepted!");
         opinion.user_vote = approve;
       }).
       error(function(data){
@@ -66,6 +65,52 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
     });
   };
 
+  /**
+   * Helper function, serializes objects to query components
+   */
+  var serialize = function(obj) {
+    var str = [];
+    for(var p in obj)
+       str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    return str.join("&");
+  };
+
+  /**
+   * After the motdit is loaded, we can load the related motsdits using its filters
+   */
+  $scope.$on('setMotDitEvent', function(e, motdit){
+
+    console.log("Caught event!!");
+
+    // Filter by category id
+    if(motdit.category.id > 0)  filters = {'category': motdit.category.id};
+    else                        filters = {};
+
+
+    // Filter by subfilters
+    subfilter_ids = [];
+
+    angular.forEach(motdit.subfilters, function(subfilter){
+      subfilter_ids.push(subfilter.id);
+    });
+
+    // Apply subfilters
+    if(subfilter_ids) filters['with_subfilters'] = subfilter_ids.join();
+    // Apply sort
+    //if(ordering) $scope.filters['order_by'] = ordering;
+
+    // Load all related motsdits
+    $http.get('/api/v1/motsdits?format=json&' + serialize(filters)).success(function(data) {
+      $scope.related = [];
+      angular.forEach(data.results, function(md){
+        if(md.id != motdit.id)
+          $scope.related.push(md);
+      });
+      //$scope.related = data.results;
+    });
+
+  });
+
   // Load the motdit
   $http.get('/api/v1/motsdits/' + motdit_id + '/?format=json').success(function(data) {
     // Send a filters event
@@ -87,12 +132,8 @@ angular.module('MotsDitsQuebec').controller('MotDitCtrl', function($rootScope, $
     $rootScope.$broadcast("setMotDitEvent", $scope.motdit);
   });
 
-  // Load all related motsdits
-  $http.get('/api/v1/motsdits?format=json').success(function(data) {
-    $scope.related = data.results;
-  });
-
   // Load reviews
+  // @TODO: Fold this into the load motdit call?
   $http.get('/api/v1/motsdits/' + motdit_id + '/opinions/?format=json').success(function(data) {
     $scope.reviews = data.results;
   });

@@ -19,9 +19,9 @@
           <div class="motdit">
             <div class="overlay">
               <div class="star">
-                <div class="circle yellow"><i class="icon icon-star"></i></div>
+                <div class="circle {{ mot.category.color }}"><i class="icon icon-star"></i></div>
               </div>
-              <span class="counter yellow">{{ mot.recommendations.length }}</span>
+              <span class="counter {{ mot.category.color }}-text">{{ mot.recommendations.length }}</span>
               <span class="dot">&middot;</span>
               <span class="name">{{ mot.name }}</span>
             </div>

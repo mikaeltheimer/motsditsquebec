@@ -16,7 +16,7 @@ from django.core.files.base import ContentFile
 
 from urlparse import urlparse
 
-from functions import temp_file_from_url
+from functions import temp_file_from_url, crop_photo
 
 import os.path
 from uuid import uuid4
@@ -185,10 +185,13 @@ class UpdateProfilePhotoView(APIView):
             user = models.User.objects.get(username=request.DATA['user_id'])
             url = request.DATA['photo']
 
+            photo_file = temp_file_from_url(url)
+            cropped_photo = crop_photo(photo_file.file, 200)     # Crop to a 200px square, ensure jpg
+
             # Save the photo
             user.profile_photo.save(
                 urlparse(url).path.split('/')[-1],
-                temp_file_from_url(url),
+                cropped_photo,
                 save=True
             )
 

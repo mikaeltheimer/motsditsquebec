@@ -32,13 +32,12 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
     if($scope.submit_disabled)
       return console.log("Can't submit...");
 
-    console.log("Submitting a new mot-dit...");
+    $scope.form.subfilters = $scope.selected_subfilters;
 
     $scope.submit_disabled = true;
 
     $http.post('/api/v1/motsdits/new', $scope.form).
       success(function(result){
-        alert("Saved your motdit, redirecting to the page!");
         $window.location.href = "/mot/" + result.motdit.slug;
       }).
       error(function(data, status){
@@ -68,5 +67,26 @@ angular.module('MotsDitsQuebec').controller('EditMotditCtrl', function($rootScop
     $scope.form.category = $scope.categories[0];
     $scope.submit_disabled = false;
   });
+
+  // Subfilters!
+  $scope.selected_subfilters = {};
+
+  // toggle selected_subfilters for a given filter
+  $scope.toggleSelection = function(type, subfilter) {
+
+    if(!$scope.selected_subfilters[type])
+        $scope.selected_subfilters[type] = [];
+    var idx = $scope.selected_subfilters[type].indexOf(subfilter);
+
+    // is currently selected
+    if (idx > -1) {
+      $scope.selected_subfilters[type].splice(idx, 1);
+    }
+
+    // is newly selected
+    else {
+      $scope.selected_subfilters[type].push(subfilter);
+    }
+  };
 
 });

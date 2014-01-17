@@ -18,6 +18,8 @@ cleandb:
 	python manage.py syncdb;
 
 assets:
+# Build the color file
+	python manage.py runscript build_colors
 # Main application css
 	lessc $(LESS)/application.less $(CSS)/application.css
 	@csso $(CSS)/application.css $(CSS)/application.min.css
@@ -35,7 +37,7 @@ assets:
 	@csso $(CSS)/profile.css $(CSS)/profile.min.css
 # Edit page css
 	lessc $(LESS)/edit-motdit.less $(CSS)/edit-motdit.css
-	@csso $(CSS)/edit-motdit.css $(CSS)/edit-motit.min.css
+	@csso $(CSS)/edit-motdit.css $(CSS)/edit-motdit.min.css
 # Modal custom css
 	lessc $(LESS)/form-modal.less $(CSS)/form-modal.css
 	@csso $(CSS)/form-modal.css $(CSS)/form-modal.min.css
