@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from rest_framework import serializers
 from motsdits.models import Category, Subfilter, Opinion, MotDit, Activity, Photo, User
 import compact
@@ -148,6 +149,7 @@ class ActivitySerializer(serializers.ModelSerializer):
     opinion = OpinionSerializer()
     photo = compact.CompactPhotoSerializer()
 
+    icon = serializers.SerializerMethodField('get_icon')
     type = serializers.SerializerMethodField('get_type')
     message = serializers.SerializerMethodField('get_message')
     # @TODO: content_object serializer
@@ -157,7 +159,7 @@ class ActivitySerializer(serializers.ModelSerializer):
         depth = 2
         fields = (
             'id', 'created_by', 'created', 'activity_type', 'type', 'message',
-            'motdit', 'opinion', 'photo'
+            'motdit', 'opinion', 'photo', 'icon'
         )
 
     def get_type(self, obj):
@@ -171,12 +173,23 @@ class ActivitySerializer(serializers.ModelSerializer):
 
     def get_message(self, obj):
         '''Returns a message related to this activity'''
-        if obj.activity_type == 'motdit-add':
-            return 'Nouveau Mot-Dit par:'
-        elif obj.activity_type == 'motdit-favourite':
-            return 'Mot-Dit Aimee par:'
-        elif obj.activity_type == 'motdit-comment':
-            return 'Nouvelle Critique par:'
+
+        return {
+            'motdit-add': 'MotDit crée par:',
+            'motdit-favourite': 'MotDit recommandé par:',
+            'motdit-comment': 'MotDit rédigé par:',
+            'photo-like': 'Photo aimée par:',
+            'opinion-approve': 'Avis approuvé par:'
+        }.get(obj.activity_type)
+
+    def get_icon(self, obj):
+        return {
+            'motdit-add': 'icon-plus',
+            'motdit-favourite': 'icon-star',
+            'motdit-comment': 'icon-pencil',
+            'photo-like': 'icon-camera',
+            'opinion-approve': 'icon-thumbs-up'
+        }.get(obj.activity_type)
 
 
 class PhotoSerializer(serializers.ModelSerializer):

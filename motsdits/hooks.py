@@ -1,5 +1,4 @@
-from django.contrib.contenttypes.models import ContentType
-from django.db.models.signals import pre_save, post_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from motsdits import models, signals
 from django.core.exceptions import ValidationError
@@ -54,10 +53,12 @@ def add_activity(activity_type, created_by=None, motdit=None, opinion=None, phot
         ).save()
 
 
-@receiver(post_save, sender=models.MotDit)
+@receiver(pre_save, sender=models.MotDit)
 def create_motdit_activity(sender, instance, *args, **kwargs):
     '''Ensures the motdit created activity gets created'''
-    if not instance.id:
+    try:
+        models.Activity.objects.get(activity_type='motdit-add', motdit=instance)
+    except models.Activity.DoesNotExist:
         return add_activity('motdit-add', motdit=instance, created_by=instance.created_by)
 
 
@@ -65,14 +66,12 @@ def create_motdit_activity(sender, instance, *args, **kwargs):
 def recommend_motdit_activity(sender, motdit=None, *args, **kwargs):
     '''Creates a "user favourited motdit" activity
     @TODO: what happens when we un-recommend a mot-dit'''
-    print "ACTIVITY RECOMMEND"
     return add_activity('motdit-favourite', motdit=motdit, created_by=sender)
 
 
 @receiver(signals.motdit_comment)
 def comment_motdit_activity(sender, instance=None, opinion=None, *args, **kwargs):
     '''Creates a "user commented on motdit" activity'''
-    print "Activity!"
     return add_activity('motdit-comment', opinion=opinion, motdit=opinion.motdit, created_by=sender)
 
 
@@ -80,4 +79,10 @@ def comment_motdit_activity(sender, instance=None, opinion=None, *args, **kwargs
 def like_photo_activity(sender, instance=None, photo=None, *args, **kwargs):
     '''Creates a "user liked photo" activity
     @TODO: what happens when we un-like a photo'''
-    return add_activity('photo-like', photo=photo, motdit=opinion.motdit, created_by=sender)
+    return add_activity('photo-like', photo=photo, motdit=photo.motdit, created_by=sender)
+
+
+@receiver(signals.opinion_approve)
+def approve_opinion_activity(sender, instance=None, opinion=None, *args, **kwargs):
+    '''Creates a "user approves opinion" activity'''
+    return add_activity('opinion-approve', opinion=opinion, motdit=opinion.motdit, created_by=sender)

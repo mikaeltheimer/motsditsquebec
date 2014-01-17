@@ -26,7 +26,36 @@
       <div class="user">{{ item.created_by.username }}</div>
     </div>
     <div class="action">
-      <i class="icon icon-heart"></i>
+      <i class="icon {{ item.icon }}"></i>
+    </div>
+  </div>
+</div>
+
+<!-- Photo format -->
+<div ng-hide="item.type != 'Photo'">
+  <div class="motdit">
+    <div class="overlay">
+      <div class="star">
+        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star"></i></div>
+      </div>
+      <span class="counter {{ item.motdit.category.color }}-text">{{ item.motdit.recommendations }}</span>
+      <span class="dot">&middot;</span>
+      <span class="name">{{ item.motdit.name }}</span>
+    </div>
+    <a href="/mot/{{ item.motdit.slug }}">
+      <img ng-src="{{ item.photo.s3_url }}" alt="{{ item.content_object.name }}">
+    </a>
+  </div>
+  <div class="caption">
+    <div class="connector">
+      <div class="dot {{ item.motdit.category.color }}"></div>
+    </div>
+    <div class="description">
+      <div class="description-text">{{ item.message }}</div>
+      <div class="user">{{ item.created_by.username }}</div>
+    </div>
+    <div class="action">
+      <i class="icon {{ item.icon }}"></i>
     </div>
   </div>
 </div>
@@ -70,8 +99,8 @@
       <div class="user">{{ item.created_by.username }}</div>
     </div>
     <div class="action">
-      <i class="icon icon-thumbs-down"></i>
-      <i class="icon icon-thumbs-up"></i>
+      <i class="icon {{ item.icon }}"></i>
+      <!--i class="icon icon-thumbs-up"></i-->
     </div>
   </div>
 </div>

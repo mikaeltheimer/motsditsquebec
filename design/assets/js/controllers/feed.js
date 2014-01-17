@@ -119,7 +119,7 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
     loaded_once = true;
 
     // Filter by category id
-    if(category.id > 0) $scope.filters = {'category__id': category.id};
+    if(category.id > 0) $scope.filters = {'category': category.id};
     // The special category 0 resets our filters
     else                $scope.filters = {};
 
@@ -133,7 +133,7 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $http, 
     // Apply subfilters
     if(subfilter_ids) $scope.filters['with_subfilters'] = subfilter_ids.join();
     // Apply sort
-    if(ordering) $scope.filters['order_by'] = ordering;
+    if(ordering) $scope.filters['order_by'] = '-created';
     // Apply search
     if(search) $scope.filters['search'] = search;
     // Apply geo

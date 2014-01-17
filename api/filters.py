@@ -12,17 +12,10 @@ from django.db.models import Count, Q
 import django_filters
 
 import motsdits.mixins as mixins
-from motsdits.models import Subfilter, MotDit
+from motsdits.models import Subfilter, MotDit, Activity
 
 
-class MultiDepthFilter(django_filters.Filter):
-
-    def __init__(self, apply_prefix='', *args, **kwargs):
-        '''Allows for applying filters to a subobject'''
-        return django_filters.Filter.__init__(self, *args, **kwargs)
-
-
-class SubfilterFilter(MultiDepthFilter):
+class SubfilterFilter(django_filters.Filter):
     '''Allows for filtering to ensure Mots-dits have all supplied subfilters'''
 
     extra = lambda f: {
@@ -42,7 +35,7 @@ class SubfilterFilter(MultiDepthFilter):
         return qs
 
 
-class SortingFilter(MultiDepthFilter):
+class SortingFilter(django_filters.Filter):
     '''Provides sorting params'''
 
     field_class = forms.CharField
@@ -59,7 +52,7 @@ class SortingFilter(MultiDepthFilter):
         return qs
 
 
-class SearchFilter(MultiDepthFilter):
+class SearchFilter(django_filters.Filter):
     '''Provides sorting params'''
 
     field_class = forms.CharField
@@ -79,7 +72,7 @@ class SearchFilter(MultiDepthFilter):
         return qs
 
 
-class GeoFilter(MultiDepthFilter):
+class GeoFilter(django_filters.Filter):
     '''Allows geodistance filtering of querysets'''
     field_class = forms.CharField
 
@@ -138,10 +131,114 @@ class MotDitFilter(django_filters.FilterSet):
         fields = ['category', 'with_subfilters', 'order_by', 'search']
 
 
+class ActivityCategoryFilter(django_filters.Filter):
+    '''Allows for filtering to ensure Mots-dits have all supplied subfilters'''
+
+    extra = lambda f: {
+        'queryset': f.rel.to._default_manager.complex_filter(
+            f.rel.limit_choices_to),
+    }
+
+    field_class = forms.CharField
+
+    def filter(self, qs, value):
+        '''Filters and chains and values to the filter'''
+        if value:
+            qs = qs.filter(motdit__category=int(value))
+        return qs
+
+
+class ActivitySubfilterFilter(django_filters.Filter):
+    '''Allows for filtering to ensure Mots-dits have all supplied subfilters'''
+
+    extra = lambda f: {
+        'queryset': f.rel.to._default_manager.complex_filter(
+            f.rel.limit_choices_to),
+    }
+
+    field_class = forms.CharField
+
+    def filter(self, qs, value):
+        '''Filters and chains and values to the filter'''
+        for v in value.split(','):
+            try:
+                qs = qs.filter(motdit__subfilters=Subfilter.objects.get(pk=v))
+            except (ValueError, Subfilter.DoesNotExist):
+                continue
+        return qs
+
+
+class ActivitySortingFilter(django_filters.Filter):
+    '''Provides sorting params'''
+
+    field_class = forms.CharField
+
+    def filter(self, qs, value):
+        '''Sorts the queryset'''
+        if value.strip():
+            values = map(lambda x: x.strip(), value.split(','))
+            if value.strip('-') == 'recommendations':
+                qs = qs.annotate(recommendation_count=Count('motdit__recommendations')).order_by('{}recommendation_count'.format('-' if value.startswith('-') else ''))
+            else:
+                qs = qs.order_by(*values)
+
+        return qs
+
+
+class ActivityGeoFilter(django_filters.Filter):
+    '''Allows geodistance filtering of querysets'''
+    field_class = forms.CharField
+
+    def find_by_distance(self, lat, lng, distance):
+        '''Determines a set of motdit ids that fit within N kilometers of a lat/lng point'''
+        from django.db import connection
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT id, (
+            6371 * acos( cos( radians({lat}) ) * cos( radians( lat ) ) *
+            cos( radians( lng ) - radians({lng}) ) + sin( radians({lat}) ) *
+            sin( radians( lat ) ) ) )
+            AS distance FROM motsdits_motdit HAVING distance < {distance}
+            ORDER BY distance""".format(lat=lat, lng=lng, distance=distance))
+        return [row[0] for row in cursor.fetchall()]
+
+    def filter(self, qs, value):
+        '''Filter the queryset by distance'''
+
+        if value:
+
+            distance = 50
+
+            try:
+                split = value.split(',')
+                if len(split) == 2:
+                    lat, lng = float(split[0]), float(split[1])
+                elif len(split) == 3:
+                    lat, lng, distance = float(split[0]), float(split[1]), int(split[2])
+                else:
+                    raise ValueError("Not a known geo-pattern")
+            except ValueError:
+                split = value.split(',')
+                try:
+                    distance = int(split[-1])
+                    value = ','.join(split[:-1])
+                except ValueError:
+                    pass
+                lat, lng = mixins.geocode(value)
+            ids = self.find_by_distance(lat, lng, distance)
+            return qs.filter(motdit__id__in=ids)
+
+        return qs
+
+
 class ActivityFilter(django_filters.FilterSet):
     '''Provides all necessary filters for activity objects'''
 
-    with_subfilters = SubfilterFilter(name='subfilters', label='subfilters')
-    order_by = SortingFilter(name='order_by', label='order_by')
-    search = SearchFilter(name='search', label='search')
-    geo = GeoFilter(name='geo', label='geo')
+    category = ActivityCategoryFilter(name='categories', label='categories')
+    with_subfilters = ActivitySubfilterFilter(name='subfilters', label='subfilters')
+    order_by = ActivitySortingFilter(name='order_by', label='order_by')
+    geo = ActivityGeoFilter(name='geo', label='geo')
+
+    class Meta:
+        model = Activity
+        fields = ['category', 'with_subfilters', 'order_by']

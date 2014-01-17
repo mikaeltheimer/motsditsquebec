@@ -19,7 +19,7 @@ from motsdits import signals
 from functions import temp_file_from_url
 import views
 import serializers
-from filters import MotDitFilter
+from filters import MotDitFilter, ActivityFilter
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -180,6 +180,7 @@ class OpinionViewSet(viewsets.ModelViewSet):
         if request.DATA['approve']:
             opinion.approvals.add(request.user)
             opinion.dislikes.remove(request.user)
+            signals.opinion_approve.send(request.user, opinion=opinion)
         else:
             opinion.dislikes.add(request.user)
             opinion.approvals.remove(request.user)
@@ -199,8 +200,8 @@ class ActivityViewSet(viewsets.ModelViewSet):
     model = Activity
     serializer_class = serializers.ActivitySerializer
     filter_fields = ('created_by__username', )
-    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
-    ordering = ('-created', )
+    filter_backends = (filters.DjangoFilterBackend, )
+    filter_class = ActivityFilter
 
 
 # Routers provide an easy way of automatically determining the URL conf
