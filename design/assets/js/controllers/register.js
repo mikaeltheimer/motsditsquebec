@@ -11,7 +11,8 @@ angular.module('MotsDitsQuebec').controller('RegisterCtrl', function($scope, $ht
       'username': this.username,
       'password': this.password,
       'password2': this.password2,
-      'website': this.website
+      'website': this.website,
+      "invite_code": this.invite_code
     };
     console.log(message);
     $http.post('/api/auth/register/?format=json', message).success(function(data) {

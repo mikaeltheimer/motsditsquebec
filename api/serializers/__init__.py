@@ -21,6 +21,7 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=255)
     password2 = serializers.CharField(max_length=255)
     website = serializers.URLField(required=False)
+    invite_code = serializers.CharField(max_length=200)
 
 
 class SubfilterSerializer(serializers.ModelSerializer):

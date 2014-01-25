@@ -61,6 +61,11 @@ class RegisterView(APIView):
                 if serializer.data['password'] != serializer.data['password2']:
                     raise ValueError("Passwords don't match")
 
+                # Use the invite code, if required
+                if settings.REQUIRE_INVITE_CODE:
+                    code = models.InviteCode.objects.get(code=serializer.data['invite_code'])
+                    code.use()
+
                 user = models.User.objects.create_user(serializer.data['username'], serializer.data['email'], serializer.data['password'])
                 user.first_name = serializer.data['firstname']
                 user.last_name = serializer.data['lastname']

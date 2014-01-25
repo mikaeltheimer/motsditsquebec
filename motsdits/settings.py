@@ -7,6 +7,8 @@ PROJECT_PATH = os.path.abspath(
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+REQUIRE_INVITE_CODE = True
+
 ADMINS = (
     ('Stephen Young', 'me@hownowstephen.com'),
 )

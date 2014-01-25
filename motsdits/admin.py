@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Category, Subfilter, Photo, Opinion, Tag, MotDit, Activity, UserGuide, User, Color
+from models import Category, Subfilter, Photo, Opinion, Tag, MotDit, Activity, UserGuide, User, Color, InviteCode
 
 # Custom user forms
 from django.contrib.auth.admin import UserAdmin
@@ -107,6 +107,14 @@ class ActivityAdmin(admin.ModelAdmin):
 class ColorAdmin(admin.ModelAdmin):
     '''Activity model'''
     list_display = ('name', 'hex_code', )
+
+
+class InviteCodeAdmin(admin.ModelAdmin):
+    model = InviteCode
+    readonly_fields = ('code', )
+    list_display = ('code', 'active', 'uses_remaining', 'expires', )
+
+admin.site.register(InviteCode, InviteCodeAdmin)
 
 
 # Register all the models in the admin

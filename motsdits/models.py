@@ -2,12 +2,12 @@
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from django.contrib.contenttypes import generic
-from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 
 import mixins
 from datetime import datetime
+
+from uuid import uuid4
 
 __all__ = ['Category', 'Subfilter', 'MotDit', 'Photo', 'Opinion', 'UserGuide', 'User']
 
@@ -287,3 +287,26 @@ class Activity(BaseModel):
     photo = models.ForeignKey(Photo, null=True, blank=True)
 
     activity_type = models.CharField(max_length=30, choices=ACTIVITY_CHOICES)
+
+
+class InviteCode(BaseModel):
+    '''Invite code class'''
+
+    code = models.CharField(max_length=200, default=lambda: str(uuid4()).replace('-', ''))
+    expires = models.DateTimeField(default=None, null=True, blank=True)
+    uses_remaining = models.IntegerField(default=1)
+    active = models.BooleanField(default=True)
+
+    def use(self):
+        '''Uses the invite code once'''
+
+        if not self.uses_remaining or (self.expires and datetime.datetime.utcnow() > self.expires):
+            self.active = False
+            self.save()
+            raise ValueError("This invite code can no longer be used")
+
+        self.uses_remaining -= 1
+        if self.uses_remaining <= 0:
+            self.active = False
+
+        return self.save()

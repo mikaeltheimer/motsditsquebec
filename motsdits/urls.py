@@ -37,8 +37,8 @@ urlpatterns = patterns(
 
     ## Displaying data
     url(r'^mot/([^/]+)/?$', 'motsdits.views.motdit'),
-    url(r'^feed/?$', 'motsdits.views.feed'),
+    url(r'^motsdits/?$', 'motsdits.views.homepage'),
     url(r'^feed/(?P<username>[^/]+)/?$', 'motsdits.views.feed'),
 
-    url(r'^$', 'motsdits.views.homepage'),
+    url(r'^$', 'motsdits.views.feed'),
 )
