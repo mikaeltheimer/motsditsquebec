@@ -8,7 +8,7 @@ angular.module('MotsDitsQuebec').controller('HeaderCtrl', function($rootScope, $
    * Perform a global search
    */
   $scope.doGlobalSearch = function(ev, query){
-    if(ev.which == 13) $window.location.href = "/?search=" + query;
+    if(ev.which == 13) $window.location.href = "/motsdits/?search=" + query;
   };
 
 });
