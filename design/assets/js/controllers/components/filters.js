@@ -11,6 +11,9 @@ angular.module('MotsDitsQuebec').filter('from_querystring', function() {
 });
 angular.module('MotsDitsQuebec').controller('FilterCtrl', function($rootScope, $scope, $http, $location, $window, $cookies, $log) {
 
+
+  $scope.feed_page = $window.location.href.indexOf('/motsdits') == -1;
+
   // Set the default filter
   $scope.active_category = {"id": 0, "name": "Toutes Categories", "color": "white"};
   $scope.active_subfilters = {};

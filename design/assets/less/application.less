@@ -270,10 +270,11 @@ body { background: @body-color; font-family:"PT Sans", "Montserrat", Helvetica, 
         .ordering {
             float:right; color: @theme-color; height:@actions-height; line-height: @actions-height; padding-right:25px;
             i { color: @grey-inactive; font-size: 20px; cursor:pointer; padding-right: 5px; }
-            i.active { color: inherit; }
+            //.active { color: @theme-color; }
             .dot { padding-right:5px; font-size:20px; }
             a { color: @grey-inactive; text-transform: uppercase; text-decoration: none; font-weight:bold; cursor:pointer; padding-right: 5px; }
-            a.active { color: inherit; }
+            .active { color: @theme-color; }
+            .active i { color: inherit; }
         }
     }
 

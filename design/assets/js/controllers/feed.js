@@ -47,7 +47,7 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $rootSc
     filters.page = $scope.page;
     filters.count = $scope.per_page;
 
-    if(username) filters.created_by__username = username;
+    if(username) filters.created_by = username;
 
     $http.get('/api/v1/activities?' + serialize(filters) + '&format=json').success(function(data) {
 

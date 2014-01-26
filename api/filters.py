@@ -231,6 +231,16 @@ class ActivityGeoFilter(django_filters.Filter):
         return qs
 
 
+class ActivityCreatedByFilter(django_filters.Filter):
+    '''Provides sorting params'''
+
+    field_class = forms.CharField
+
+    def filter(self, qs, value):
+        '''Filters the queryset by the created_by field'''
+        return qs.filter(created_by__username=value)
+
+
 class ActivityFilter(django_filters.FilterSet):
     '''Provides all necessary filters for activity objects'''
 
@@ -238,7 +248,8 @@ class ActivityFilter(django_filters.FilterSet):
     with_subfilters = ActivitySubfilterFilter(name='subfilters', label='subfilters')
     order_by = ActivitySortingFilter(name='order_by', label='order_by')
     geo = ActivityGeoFilter(name='geo', label='geo')
+    created_by = ActivityCreatedByFilter(name='created_by', label='created_by')
 
     class Meta:
         model = Activity
-        fields = ['category', 'with_subfilters', 'order_by']
+        fields = ['category', 'with_subfilters', 'order_by', 'created_by']

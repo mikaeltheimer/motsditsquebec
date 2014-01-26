@@ -79,6 +79,8 @@
       <span class="close" ng-click="closeSearch()">×</span>
     </div>
 
+{% endverbatim %}
+  {% comment %}
     <div class="ordering">
       <i class="icon icon-calendar" ng-class="{active: ordering == '-created'}" ng-click="setOrdering('-created');"></i>
       <i class="icon icon-star" ng-class="{active: ordering == '-recommendations'}" ng-click="setOrdering('-recommendations');"></i>
@@ -86,6 +88,17 @@
       <a href="#" ng-class="{active: mon_reseau}">Mon Reseau</a>
       <a href="#" ng-class="{active: !mon_reseau}">Tout</a>
     </div>
+  {% endcomment %}
 
+  <div class="ordering">
+    <a href="/" ng-class="{active: feed_page}"><i class="icon icon-calendar"></i></a>
+    <a href="/motsdits/" ng-class="{active: !feed_page}"><i class="icon icon-star"></i></a>
+    <span class="dot">&middot;</span>
+    <a href="#" ng-class="{disabled: true}">Mon Reseau</a>
+    <a href="#" ng-class="{disabled: true}">Tout</a>
+  </div>
+
+
+{% verbatim %}
   </div>
 {% endverbatim %}
