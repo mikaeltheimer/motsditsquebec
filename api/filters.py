@@ -238,7 +238,9 @@ class ActivityCreatedByFilter(django_filters.Filter):
 
     def filter(self, qs, value):
         '''Filters the queryset by the created_by field'''
-        return qs.filter(created_by__username=value)
+        if value.strip():
+            qs = qs.filter(created_by__username=value)
+        return qs
 
 
 class ActivityFilter(django_filters.FilterSet):
