@@ -23,14 +23,14 @@ DATABASES = {
         'PASSWORD': 'goose',
         'OPTIONS': {'init_command': 'SET storage_engine=INNODB'},  # Improve performance once DB is settled by removing this
     },
-    'postgres': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'motsdits',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '/tmp/',
-        'PORT': '',
-    }
+    # 'postgres': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'motsdits',
+    #     'USER': '',
+    #     'PASSWORD': '',
+    #     'HOST': '/tmp/',
+    #     'PORT': '',
+    # }
 }
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
