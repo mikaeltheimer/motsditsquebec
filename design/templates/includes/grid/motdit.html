@@ -2,7 +2,7 @@
   <div class="motdit">
     <div class="overlay">
       <div class="star">
-        <div class="circle {{ item.category.color }}"><i class="icon icon-star"></i></div>
+        <div class="circle {{ item.category.color }}"><i class="icon icon-star" ng-click="recommend(item)"></i></div>
       </div>
       <span class="counter {{ item.category.color }}-text">{{ item.recommendations }}</span>
       <span class="dot">&middot;</span>

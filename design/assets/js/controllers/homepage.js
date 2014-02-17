@@ -25,6 +25,23 @@ angular.module('MotsDitsQuebec').controller('HomepageCtrl', function($scope, $ht
 
   var pending_load_request;
 
+  $scope.recommend = function(motdit){
+
+    console.log('/api/v1/motsdits/' + motdit.slug + '/recommend/');
+
+    $http.post('/api/v1/motsdits/' + motdit.slug + '/recommend/', {'recommend': true}).
+      success(function(data){
+        if(data.recommended){
+          motdit.recommendations += 1;
+        }else{
+          motdit.recommendations -= 1;
+        }
+      }).
+      error(function(data){
+        console.log("Error recommending motdit");
+    });
+  };
+
 
   /**
    * Reloads mots-dits for the page

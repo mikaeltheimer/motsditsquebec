@@ -7,7 +7,7 @@
   <div class="motdit">
     <div class="overlay">
       <div class="star">
-        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star"></i></div>
+        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star" ng-click="recommend(item.motdit.slug, item)"></i></div>
       </div>
       <span class="counter {{ item.motdit.category.color }}-text">{{ item.motdit.recommendations }}</span>
       <span class="dot">&middot;</span>
@@ -36,7 +36,7 @@
   <div class="motdit">
     <div class="overlay">
       <div class="star">
-        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star"></i></div>
+        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star" ng-click="recommend(item.motdit.slug, item)"></i></div>
       </div>
       <span class="counter {{ item.motdit.category.color }}-text">{{ item.motdit.recommendations }}</span>
       <span class="dot">&middot;</span>
@@ -76,7 +76,7 @@
     <div class="overlay">
       <div class="bridge"></div>
       <div class="star">
-        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star"></i></div>
+        <div class="circle {{ item.motdit.category.color }}"><i class="icon icon-star" ng-click="recommend(item.motdit.slug, item)"></i></div>
       </div>
       <span class="counter {{ item.motdit.category.color }}-text">{{ item.motdit.recommendations }}</span>
       <span class="dot">&middot;</span>
@@ -95,7 +95,7 @@
   </div>
   <div class="caption">
     <div class="connector">
-      <div class="dot {{ item.content_object.motdit.category.color }}"></div>
+      <div class="dot {{ item.motdit.category.color }}"></div>
     </div>
     <div class="description">
       <div class="description-text">{{ item.message }}</div>

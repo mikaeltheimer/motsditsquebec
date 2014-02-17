@@ -83,6 +83,23 @@ angular.module('MotsDitsQuebec').controller('FeedCtrl', function($scope, $rootSc
     });
   };
 
+  $scope.recommend = function(motdit_id, activity){
+
+    console.log('/api/v1/motsdits/' + motdit_id + '/recommend/');
+
+    $http.post('/api/v1/motsdits/' + motdit_id + '/recommend/', {'recommend': true}).
+      success(function(data){
+        if(data.recommended){
+          activity.motdit.recommendations += 1;
+        }else{
+          activity.motdit.recommendations -= 1;
+        }
+      }).
+      error(function(data){
+        console.log("Error recommending motdit");
+    });
+  };
+
 
   // Infinite scroll
   $scope.busy = false;
