@@ -69,6 +69,7 @@
     <div class="fade">{{ item.year }}</div>
   </div>
 </div>
+
 <!-- Opinion format -->
 <div class="grid-text" ng-hide="item.type != 'Opinion'">
   <div class="quote">
@@ -85,10 +86,12 @@
         </span>
       </a>
     </div>
-    <blockquote>
-      {{ item.opinion.text }}
-    </blockquote>
-    <div class="watermark">&ldquo;</div>
+    <a href="/mot/{{ item.motdit.slug }}">
+      <blockquote>
+        {{ item.opinion.text }}
+      </blockquote>
+      <div class="watermark">&ldquo;</div>
+    </a>
   </div>
   <div class="caption">
     <div class="connector">
