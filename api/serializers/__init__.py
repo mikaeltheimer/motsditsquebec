@@ -176,9 +176,9 @@ class ActivitySerializer(serializers.ModelSerializer):
         '''Returns a message related to this activity'''
 
         return {
-            'motdit-add': 'MotDit crée par:',
-            'motdit-favourite': 'MotDit recommandé par:',
-            'motdit-comment': 'MotDit rédigé par:',
+            'motdit-add': 'Mot-Dits crée par:',
+            'motdit-favourite': 'Mot-Dits recommandé par:',
+            'motdit-comment': 'Mot-Dits rédigé par:',
             'photo-like': 'Photo aimée par:',
             'opinion-approve': 'Avis approuvé par:'
         }.get(obj.activity_type)
