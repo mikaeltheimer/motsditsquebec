@@ -269,6 +269,7 @@ ACTIVITY_CHOICES = (
 
     # Photo activity
     ('photo-like', 'Commented on a Mot-dit'),
+    ('photo-add', 'Added a Photo'),
 
     # Opinion activity
     ('opinion-approve', 'Approved an opinion'),

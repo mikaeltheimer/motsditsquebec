@@ -180,6 +180,7 @@ class ActivitySerializer(serializers.ModelSerializer):
             'motdit-favourite': 'Mot-Dits recommandé par:',
             'motdit-comment': 'Mot-Dits rédigé par:',
             'photo-like': 'Photo aimée par:',
+            'photo-add': 'Photo ajoutée par:',
             'opinion-approve': 'Avis approuvé par:'
         }.get(obj.activity_type)
 
@@ -189,6 +190,7 @@ class ActivitySerializer(serializers.ModelSerializer):
             'motdit-favourite': 'icon-star',
             'motdit-comment': 'icon-pencil',
             'photo-like': 'icon-camera',
+            'photo-add': 'icon-camera',
             'opinion-approve': 'icon-thumbs-up'
         }.get(obj.activity_type)
 

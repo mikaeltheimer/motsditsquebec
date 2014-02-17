@@ -56,10 +56,11 @@ def add_activity(activity_type, created_by=None, motdit=None, opinion=None, phot
 @receiver(pre_save, sender=models.MotDit)
 def create_motdit_activity(sender, instance, *args, **kwargs):
     '''Ensures the motdit created activity gets created'''
-    try:
-        models.Activity.objects.get(activity_type='motdit-add', motdit=instance)
-    except models.Activity.DoesNotExist:
-        return add_activity('motdit-add', motdit=instance, created_by=instance.created_by)
+    if not instance.id:
+        try:
+            models.Activity.objects.get(activity_type='motdit-add', motdit=instance)
+        except models.Activity.DoesNotExist:
+            return add_activity('motdit-add', motdit=instance, created_by=instance.created_by)
 
 
 @receiver(signals.motdit_recommended)
@@ -80,6 +81,14 @@ def like_photo_activity(sender, instance=None, photo=None, *args, **kwargs):
     '''Creates a "user liked photo" activity
     @TODO: what happens when we un-like a photo'''
     return add_activity('photo-like', photo=photo, motdit=photo.motdit, created_by=sender)
+
+
+@receiver(pre_save, sender=models.Photo)
+def add_photo_activity(sender, instance=None, *args, **kwargs):
+    '''Creates a "user liked photo" activity
+    @TODO: what happens when we un-like a photo'''
+    if not instance.id:
+        return add_activity('photo-add', photo=instance, motdit=instance.motdit, created_by=instance.created_by)
 
 
 @receiver(signals.opinion_approve)
